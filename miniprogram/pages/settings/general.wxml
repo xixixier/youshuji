@@ -1,4 +1,4 @@
-<!--pages/settings/general.wxml-->
+<!--pages/settings/general.wxml — 有数记 · 偏好设置-->
 <view class="container">
 
   <!-- 表单头部 -->
@@ -7,10 +7,10 @@
     <text class="form-subtitle">自定义货币符号、默认分类等个人偏好</text>
   </view>
 
-  <!-- 表单内容主体 -->
-  <view class="form-panel">
+  <!-- 表单内容主体 — 悬浮典雅面板 -->
+  <view class="fluent-form-panel">
 
-    <!-- 1. 默认货币符号 (Selector Picker) -->
+    <!-- 1. 默认货币符号 -->
     <view class="form-row-item">
       <text class="form-row-label">默认货币</text>
       <picker mode="selector" range="{{currencies}}" value="{{currencyIndex}}" bindchange="onCurrencyChange">
@@ -21,28 +21,28 @@
       </picker>
     </view>
 
-    <!-- 2. 默认分类选择 (Category Grid Selector) -->
+    <!-- 2. 默认分类选择 -->
     <view class="form-row-group">
-      <text class="form-section-label">默认新增分类</text>
+      <text class="form-field-label">默认新增分类</text>
       <view class="category-grid">
-        <view class="category-chip {{selectedCategory === '影音娱乐' ? 'selected' : ''}}" bindtap="selectCategory" data-category="影音娱乐" hover-class="press-active">
-          <view class="cat-avatar">影</view>
+        <view class="category-chip-item {{selectedCategory === '影音娱乐' ? 'selected' : ''}}" bindtap="selectCategory" data-category="影音娱乐">
+          <view class="cat-circle-avatar">影</view>
           <text class="cat-name">影音娱乐</text>
         </view>
-        <view class="category-chip {{selectedCategory === '实用工具' ? 'selected' : ''}}" bindtap="selectCategory" data-category="实用工具" hover-class="press-active">
-          <view class="cat-avatar">工</view>
+        <view class="category-chip-item {{selectedCategory === '实用工具' ? 'selected' : ''}}" bindtap="selectCategory" data-category="实用工具">
+          <view class="cat-circle-avatar">工</view>
           <text class="cat-name">实用工具</text>
         </view>
-        <view class="category-chip {{selectedCategory === '学习办公' ? 'selected' : ''}}" bindtap="selectCategory" data-category="学习办公" hover-class="press-active">
-          <view class="cat-avatar">学</view>
+        <view class="category-chip-item {{selectedCategory === '学习办公' ? 'selected' : ''}}" bindtap="selectCategory" data-category="学习办公">
+          <view class="cat-circle-avatar">学</view>
           <text class="cat-name">学习办公</text>
         </view>
-        <view class="category-chip {{selectedCategory === '游戏' ? 'selected' : ''}}" bindtap="selectCategory" data-category="游戏" hover-class="press-active">
-          <view class="cat-avatar">游</view>
+        <view class="category-chip-item {{selectedCategory === '游戏' ? 'selected' : ''}}" bindtap="selectCategory" data-category="游戏">
+          <view class="cat-circle-avatar">游</view>
           <text class="cat-name">游戏</text>
         </view>
-        <view class="category-chip {{selectedCategory === '其他' ? 'selected' : ''}}" bindtap="selectCategory" data-category="其他" hover-class="press-active">
-          <view class="cat-avatar">其</view>
+        <view class="category-chip-item {{selectedCategory === '其他' ? 'selected' : ''}}" bindtap="selectCategory" data-category="其他">
+          <view class="cat-circle-avatar">其</view>
           <text class="cat-name">其他</text>
         </view>
       </view>
@@ -50,7 +50,7 @@
 
     <!-- 3. 数据重置与清空 -->
     <view class="form-row-group" style="border-bottom: none;">
-      <text class="form-section-label">高级管理</text>
+      <text class="form-field-label">高级管理</text>
       <view class="danger-zone-box">
         <text class="danger-tip">清空账本所有本地缓存数据。注意：此操作不会清除云开发云数据库上的账单数据。</text>
         <button class="danger-outline-btn" bindtap="clearLocalSettings" hover-class="press-active">
@@ -61,7 +61,7 @@
 
   </view>
 
-  <!-- 底部保存按钮 -->
+  <!-- 底部操作按钮 -->
   <view class="form-action-bar">
     <button class="primary-btn" bindtap="handleSave" hover-class="press-active">
       <view class="icon icon-sm icon-check-white" style="margin-right: 12rpx;"></view>

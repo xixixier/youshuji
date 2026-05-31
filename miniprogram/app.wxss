@@ -1,43 +1,54 @@
-/**app.wxss — 有数记 · 像素级全局设计系统 */
+/**
+ * app.wxss — 有数记 · 高端生活美学与温暖人文主义（Premium Editorial & Neo-Humanist）
+ * 设计原则：温和护眼、空气感留白、纤细发丝线、极致质感与排版一致性。
+ */
 
 /* ==========================================
-   1. 像素级设计变量 (Pixel-Perfect Design Tokens)
+   1. 高定视觉变量定义 (Luxury Design Tokens)
    ========================================== */
 page {
-  /* —— 精密色彩系统 (Color Architecture) —— */
-  --color-canvas: #FAF9F6;          /* 粉垩砂白背景 */
-  --color-surface: #FFFFFF;         /* 纯净白容器 */
-  --color-primary: #0A5C43;         /* 曜岩翠绿（品牌色） */
-  --color-primary-soft: #E8F5EE;    /* 淡翡翠背景 */
-  --color-primary-mist: rgba(10, 92, 67, 0.06); /* 极淡翡翠雾 */
-  --color-text-1: #0F172A;          /* 曜石极黑（主文字） */
-  --color-text-2: #475569;          /* 板岩中灰（次级） */
-  --color-text-3: #94A3B8;          /* 冷杉浅灰（弱化） */
-  --color-danger: #B91C1C;          /* 绯红警示 */
-  --color-danger-soft: #FEF2F2;     /* 淡绯红背景 */
-  --color-wechat: #07C160;          /* 微信绿 */
-  --color-divider: rgba(15, 23, 42, 0.04); /* 极淡分割线 */
-  --color-divider-solid: #F1F0EE;   /* 实体分割线（用于需要精确控制处） */
+  /* —— 护眼色彩架构 (Soothing Eyes Palette) —— */
+  --color-canvas: #F8F7F4;          /* 温暖燕麦纸白（阻断蓝光，极致护眼） */
+  --color-surface: #FFFFFF;         /* 纯净乳酪白容器 */
+  --color-primary: #1C3D32;         /* 暮色松叶绿（沉稳高级的主体色） */
+  --color-primary-soft: #EBF0EE;    /* 冷松绿浅雾（柔和高光） */
+  --color-accent: #C2A582;          /* 温暖香槟金（高雅点缀色） */
+  --color-accent-soft: #F6F2EB;     /* 香槟金软底 */
+  --color-text-1: #191E1C;          /* 深灰曜石黑（柔和的主标题字） */
+  --color-text-2: #4A524F;          /* 湿地青苔灰（优雅的阅读正文） */
+  --color-text-3: #8C9691;          /* 晨雾石板灰（弱化元数据标签） */
+  --color-danger: #A64030;          /* 温暖陶土红（警示色，克制而不刺眼） */
+  --color-danger-soft: #FDF4F2;     /* 陶土红软底 */
+  
+  --color-wechat: #1C3D32;          /* 与微信统一，但融入松绿调 */
+  --color-divider: rgba(28, 61, 50, 0.05); /* 超纤细发丝分割线 */
+  --color-divider-solid: #EAE8E2;   /* 实线分割线 */
 
-  /* —— 黄金间距尺度 (Golden Spacing Scale) —— */
+  /* —— 黄金网格间距系统 (Spacious Grid System) —— */
   --sp-xs: 8rpx;
   --sp-sm: 16rpx;
   --sp-md: 24rpx;
   --sp-lg: 32rpx;
   --sp-xl: 48rpx;
+  --sp-xxl: 64rpx;
 
-  /* —— 精密字体系统 (Typography) —— */
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", sans-serif;
-  --font-mono: "Segoe UI", "SF Pro Display", -apple-system, monospace;
+  /* —— 经典人文版式字体 (Soothing Typography) —— */
+  --font-serif: Georgia, "Nimbus Roman No9 L", "Songti SC", "SimSun", serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-mono: "Courier New", Courier, monospace, SFMono-Regular;
 
-  /* —— 圆角系统 (Border Radius) —— */
-  --radius-xs: 6rpx;
-  --radius-sm: 8rpx;
-  --radius-md: 12rpx;
-  --radius-lg: 16rpx;
-  --radius-pill: 200rpx;
+  /* —— 弧度与微立体 (Soft Radii & Atmosphere) —— */
+  --radius-xs: 8rpx;
+  --radius-sm: 12rpx;
+  --radius-md: 20rpx;
+  --radius-lg: 28rpx;
+  --radius-pill: 500rpx;
 
-  /* 基础页面重置 */
+  /* —— 极致微阴影（呼吸感悬浮） —— */
+  --shadow-organic: 0 8px 32px rgba(28, 61, 50, 0.03), 0 2px 8px rgba(0, 0, 0, 0.01);
+  --shadow-active: 0 4px 12px rgba(28, 61, 50, 0.02);
+
+  /* 全局基底重置 */
   background-color: var(--color-canvas);
   font-family: var(--font-sans);
   color: var(--color-text-1);
@@ -53,181 +64,138 @@ page {
 }
 
 /* ==========================================
-   2. 全局元素重置 (Element Reset)
+   2. 通用交互重置 (Reset & Animation)
    ========================================== */
 button {
   background: initial;
   padding: 0;
   margin: 0;
   border-radius: 0;
+  line-height: normal;
 }
 button::after {
   border: none;
 }
 
-/* ==========================================
-   3. 微交互通用类 (Micro-interactions)
-   ========================================== */
+/* 按钮微动按下态：慢速沉降，模拟气垫按压，无抖动 */
 .press-active {
-  transform: scale(0.97);
-  opacity: 0.88;
+  opacity: 0.9;
+  transform: scale(0.985);
+  transition: all 0.15s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 /* ==========================================
-   4. 统一 1.5px 精细矢量图标系统 (SVG Icon Library)
+   3. 高定纤细矢量 SVG 图标库 (Fine Line Iconset)
    ========================================== */
 .icon {
   display: inline-block;
-  width: 40rpx;
-  height: 40rpx;
+  width: 44rpx;
+  height: 44rpx;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
   vertical-align: middle;
   flex-shrink: 0;
-  transition: all 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-.icon-sm { width: 32rpx; height: 32rpx; }
-.icon-lg { width: 48rpx; height: 48rpx; }
-.icon-xl { width: 64rpx; height: 64rpx; }
+.icon-sm { width: 36rpx; height: 36rpx; }
+.icon-lg { width: 52rpx; height: 52rpx; }
+.icon-xl { width: 72rpx; height: 72rpx; }
 
-/* 主页 (Home) */
+/* 优雅冷松绿 / 苔藓灰 SVG 图标绑定 */
+
+/* 首页 (Home) */
 .icon-home {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'></path><polyline points='9 22 9 12 15 12 15 22'></polyline></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238C9691' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'></path><polyline points='9 22 9 12 15 12 15 22'></polyline></svg>");
 }
 .icon-home.active {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230A5C43' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'></path><polyline points='9 22 9 12 15 12 15 22'></polyline></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231C3D32' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'></path><polyline points='9 22 9 12 15 12 15 22'></polyline></svg>");
 }
 
-/* 统计 (Stat/Bar Chart) */
+/* 统计报告 (Stat) */
 .icon-stat {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><line x1='18' y1='20' x2='18' y2='10'></line><line x1='12' y1='20' x2='12' y2='4'></line><line x1='6' y1='20' x2='6' y2='14'></line></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238C9691' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><line x1='18' y1='20' x2='18' y2='10'></line><line x1='12' y1='20' x2='12' y2='4'></line><line x1='6' y1='20' x2='6' y2='14'></line></svg>");
 }
 .icon-stat.active {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230A5C43' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><line x1='18' y1='20' x2='18' y2='10'></line><line x1='12' y1='20' x2='12' y2='4'></line><line x1='6' y1='20' x2='6' y2='14'></line></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231C3D32' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><line x1='18' y1='20' x2='18' y2='10'></line><line x1='12' y1='20' x2='12' y2='4'></line><line x1='6' y1='20' x2='6' y2='14'></line></svg>");
 }
 
-/* 用户 (User) */
+/* 个人中心 (User) */
 .icon-user {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238C9691' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>");
 }
 .icon-user.active {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230A5C43' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231C3D32' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>");
 }
 
-/* 加号 (Plus) */
+/* 优雅加号 (Plus) */
 .icon-plus {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230A5C43' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><line x1='12' y1='5' x2='12' y2='19'></line><line x1='5' y1='12' x2='19' y2='12'></line></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231C3D32' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><line x1='12' y1='5' x2='12' y2='19'></line><line x1='5' y1='12' x2='19' y2='12'></line></svg>");
 }
 .icon-plus-white {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><line x1='12' y1='5' x2='12' y2='19'></line><line x1='5' y1='12' x2='19' y2='12'></line></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><line x1='12' y1='5' x2='12' y2='19'></line><line x1='5' y1='12' x2='19' y2='12'></line></svg>");
 }
 
-/* 勾号 (Check) */
+/* 精致勾号 (Check) */
 .icon-check-white {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'></polyline></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'></polyline></svg>");
 }
 
 /* 微信 (WeChat) */
 .icon-wechat {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230A5C43' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M17 10c0-3.3-3.6-6-8-6s-8 2.7-8 6c0 1.9 1.2 3.6 3 4.7l-.8 2.5 2.7-1.4c1 .3 2.1.4 3.1.4 4.4 0 8-2.7 8-6zM23 15c0-2.8-2.9-5-6.5-5-.3 0-.6 0-.8.1 2.6 1.8 2.6 4.3 2.6 4.9 0 1.4-.9 2.7-2.3 3.5l.6 1.8 2-1c.8.2 1.6.3 2.4.3 3.6 0 6.5-2.2 6.5-5z'></path></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231C3D32' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M17 10c0-3.3-3.6-6-8-6s-8 2.7-8 6c0 1.9 1.2 3.6 3 4.7l-.8 2.5 2.7-1.4c1 .3 2.1.4 3.1.4 4.4 0 8-2.7 8-6zM23 15c0-2.8-2.9-5-6.5-5-.3 0-.6 0-.8.1 2.6 1.8 2.6 4.3 2.6 4.9 0 1.4-.9 2.7-2.3 3.5l.6 1.8 2-1c.8.2 1.6.3 2.4.3 3.6 0 6.5-2.2 6.5-5z'></path></svg>");
 }
 .icon-wechat-white {
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M17 10c0-3.3-3.6-6-8-6s-8 2.7-8 6c0 1.9 1.2 3.6 3 4.7l-.8 2.5 2.7-1.4c1 .3 2.1.4 3.1.4 4.4 0 8-2.7 8-6zM23 15c0-2.8-2.9-5-6.5-5-.3 0-.6 0-.8.1 2.6 1.8 2.6 4.3 2.6 4.9 0 1.4-.9 2.7-2.3 3.5l.6 1.8 2-1c.8.2 1.6.3 2.4.3 3.6 0 6.5-2.2 6.5-5z'></path></svg>");
 }
 
-/* 手机 (Phone) */
-.icon-phone {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><rect x='5' y='2' width='14' height='20' rx='2' ry='2'></rect><line x1='12' y1='18' x2='12.01' y2='18'></line></svg>");
-}
-
-/* 邮箱 (Mail) */
-.icon-mail {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z'></path><polyline points='22,6 12,13 2,6'></polyline></svg>");
-}
-
-/* 锁 (Lock) */
-.icon-lock {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='11' width='18' height='11' rx='2' ry='2'></rect><path d='M7 11V7a5 5 0 0 1 10 0v4'></path></svg>");
-}
-
-/* 编辑 (Edit) */
-.icon-edit {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M12 20h9'></path><path d='M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z'></path></svg>");
-}
-
-/* 删除 (Trash) */
-.icon-delete {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23B91C1C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='3 6 5 6 21 6'></polyline><path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'></path><line x1='10' y1='11' x2='10' y2='17'></line><line x1='14' y1='11' x2='14' y2='17'></line></svg>");
-}
-
-/* 同步 (Sync/Refresh) */
-.icon-sync {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230A5C43' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='23 4 23 10 17 10'></polyline><polyline points='1 20 1 14 7 14'></polyline><path d='M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15'></path></svg>");
-}
-.icon-sync-muted {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='23 4 23 10 17 10'></polyline><polyline points='1 20 1 14 7 14'></polyline><path d='M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15'></path></svg>");
-}
-
-/* 箭头 (Chevron-Right) */
+/* 右向精致箭头 (Chevron Right) */
 .icon-arrow {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='9 18 15 12 9 6'></polyline></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238C9691' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='9 18 15 12 9 6'></polyline></svg>");
 }
 
-/* 齿轮 (Settings) */
+/* 齿轮设置 (Settings) */
 .icon-settings {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='3'></circle><path d='M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z'></path></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234A524F' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='3'></circle><path d='M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z'></path></svg>");
 }
 
-/* 信息 (Info) */
-.icon-info {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'></circle><line x1='12' y1='16' x2='12' y2='12'></line><line x1='12' y1='8' x2='12.01' y2='8'></line></svg>");
-}
-
-/* 云备份 (Upload/Backup) */
+/* 备份云盘 (Cloud/Backup) */
 .icon-backup {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'></path><polyline points='17 8 12 3 7 8'></polyline><line x1='12' y1='3' x2='12' y2='15'></line></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234A524F' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'></path><polyline points='17 8 12 3 7 8'></polyline><line x1='12' y1='3' x2='12' y2='15'></line></svg>");
 }
 
-/* 帮助 (Help) */
+/* 信息叹号 (Info) */
+.icon-info {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234A524F' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'></circle><line x1='12' y1='16' x2='12' y2='12'></line><line x1='12' y1='8' x2='12.01' y2='8'></line></svg>");
+}
+
+/* 帮助手册 (Help) */
 .icon-help {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'></circle><path d='M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3'></path><line x1='12' y1='17' x2='12.01' y2='17'></line></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234A524F' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'></circle><path d='M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3'></path><line x1='12' y1='17' x2='12.01' y2='17'></line></svg>");
 }
 
-/* 时钟 (Clock) */
-.icon-clock {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230A5C43' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'></circle><polyline points='12 6 12 12 16 14'></polyline></svg>");
+/* 同步箭头 (Sync) */
+.icon-sync {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231C3D32' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='23 4 23 10 17 10'></polyline><polyline points='1 20 1 14 7 14'></polyline><path d='M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15'></path></svg>");
 }
 
-/* ==========================================
-   5. 全局通用骨架样式 (Universal Skeletons)
-   ========================================== */
-
-/* Fluent 设置列表 */
-.fluent-list {
-  background-color: var(--color-surface);
-  border-top: 1rpx solid var(--color-divider-solid);
-  border-bottom: 1rpx solid var(--color-divider-solid);
-  width: 100%;
+/* 垃圾桶删除 (Delete) */
+.icon-delete {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A64030' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='3 6 5 6 21 6'></polyline><path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'></path><line x1='10' y1='11' x2='10' y2='17'></line><line x1='14' y1='11' x2='14' y2='17'></line></svg>");
 }
 
-.fluent-item {
-  display: flex;
-  align-items: center;
-  padding: var(--sp-lg) var(--sp-lg);
-  border-bottom: 1rpx solid var(--color-divider);
-  background-color: var(--color-surface);
-  transition: background-color 0.15s ease;
+/* 邮件信板 (Mail) */
+.icon-mail {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238C9691' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z'></path><polyline points='22,6 12,13 2,6'></polyline></svg>");
 }
 
-.fluent-item:last-child {
-  border-bottom: none;
+/* 电话手柄 (Phone) */
+.icon-phone {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238C9691' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><rect x='5' y='2' width='14' height='20' rx='2' ry='2'></rect><line x1='12' y1='18' x2='12.01' y2='18'></line></svg>");
 }
 
-.fluent-item:active {
-  background-color: var(--color-canvas);
+/* 安全挂锁 (Lock) */
+.icon-lock {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238C9691' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='11' width='18' height='11' rx='2' ry='2'></rect><path d='M7 11V7a5 5 0 0 1 10 0v4'></path></svg>");
 }
-
-/* 通用文本修正 */
-.text-right { text-align: right; }

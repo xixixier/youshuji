@@ -1,4 +1,4 @@
-<!--pages/settings/reminder.wxml-->
+<!--pages/settings/reminder.wxml — 有数记 · 提醒设置-->
 <view class="container">
 
   <!-- 表单头部 -->
@@ -7,16 +7,16 @@
     <text class="form-subtitle">配置扣款消息推送规则，避免忘记续费</text>
   </view>
 
-  <!-- 表单内容主体 -->
-  <view class="form-panel">
+  <!-- 表单内容主体 — 悬浮典雅面板 -->
+  <view class="fluent-form-panel">
 
-    <!-- 1. 开启订阅提醒 (Switch Row) -->
+    <!-- 1. 开启订阅提醒 -->
     <view class="form-row-item">
       <text class="form-row-label" style="flex: 1;">启用账单续费提醒</text>
-      <switch checked="{{remindEnabled}}" bindchange="onRemindToggle" color="#0A5C43" />
+      <switch checked="{{remindEnabled}}" bindchange="onRemindToggle" color="#1C3D32" />
     </view>
 
-    <!-- 2. 提前提醒天数 (Selector Picker) -->
+    <!-- 2. 提前提醒天数 -->
     <view class="form-row-item" wx:if="{{remindEnabled}}">
       <text class="form-row-label">提前提醒时间</text>
       <picker mode="selector" range="{{offsets}}" value="{{offsetIndex}}" bindchange="onOffsetChange">
@@ -28,11 +28,11 @@
     </view>
 
     <!-- 3. 微信订阅消息模板授权状态 -->
-    <view class="form-row-group" wx:if="{{remindEnabled}}">
-      <text class="form-section-label">微信官方消息推送授权</text>
+    <view class="form-row-group" wx:if="{{remindEnabled}}" style="border-bottom: none;">
+      <text class="form-field-label">微信官方消息推送授权</text>
       <view class="subscribe-auth-box">
         <view class="auth-status-row">
-          <view class="icon icon-sm {{authorized ? 'icon-sync' : 'icon-sync-muted'}}"></view>
+          <view class="icon icon-sm {{authorized ? 'icon-sync' : 'icon-sync-muted'}}" style="margin-right: 12rpx;"></view>
           <text class="auth-status-text {{authorized ? 'authorized' : 'unauthorized'}}">
             {{authorized ? '已成功订阅扣款通知模板 (云端已就绪)' : '未获取微信消息订阅权限'}}
           </text>

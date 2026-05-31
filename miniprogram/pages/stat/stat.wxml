@@ -1,7 +1,7 @@
-<!--pages/stat/stat.wxml-->
+<!--pages/stat/stat.wxml — 有数记 · 支出分析报告-->
 <view class="container">
 
-  <!-- 1. Report Header -->
+  <!-- 1. 艺术杂志式报告头 -->
   <view class="report-header">
     <text class="report-meta">STATISTICAL REPORT</text>
     <view class="report-title-row">
@@ -10,7 +10,7 @@
     </view>
   </view>
 
-  <!-- 2. Metrics Grid -->
+  <!-- 2. 典雅数据看板格 -->
   <view class="metrics-grid">
     <view class="metric-cell">
       <text class="metric-label">月度预估总支出</text>
@@ -36,27 +36,27 @@
     </view>
   </view>
 
-  <!-- 3. Command Bar -->
+  <!-- 3. 无框分栏导航键 -->
   <view class="command-bar">
     <view class="command-item active">
       <view class="icon icon-stat active"></view>
       <text class="command-text active">构成概览</text>
     </view>
-    <view class="command-item" bindtap="showToastInfo">
+    <view class="command-item" bindtap="showToastInfo" hover-class="press-active">
       <view class="icon icon-home"></view>
       <text class="command-text">月度趋势</text>
     </view>
-    <view class="command-item" bindtap="showToastInfo">
+    <view class="command-item" bindtap="showToastInfo" hover-class="press-active">
       <view class="icon icon-settings"></view>
       <text class="command-text">预算定额</text>
     </view>
   </view>
 
-  <!-- 4. Donut Panel -->
+  <!-- 4. 精致刻度圆形图 -->
   <view class="donut-panel">
     <view class="panel-head">
       <text class="panel-title">支出份额划分</text>
-      <text class="panel-subtitle">Top 分类：{{topCategoryName}} ({{topCategoryPercent}}%)</text>
+      <text class="panel-subtitle">Top 分类：{{topCategoryName || '暂无'}} ({{topCategoryPercent}}%)</text>
     </view>
 
     <view class="donut-chart-box">
@@ -70,20 +70,20 @@
       </view>
     </view>
 
-    <!-- Composition Track -->
+    <!-- 渐变指示条线 -->
     <view class="composition-track">
       <block wx:for="{{categoryStats}}" wx:key="category">
         <view class="composition-segment" style="width: {{item.width}}%; background-color: {{item.barColor}};"></view>
       </block>
     </view>
     <view class="panel-footer-meta">
-      <text>包含活跃分类：{{categoriesCount}} 类</text>
+      <text>包含活跃分类：{{categoryStats.length}} 类</text>
       <text>最大份额占总额 {{topCategoryPercent}}%</text>
     </view>
   </view>
 
-  <!-- 5. Stats Detail List -->
-  <view class="stats-list">
+  <!-- 5. 明细报表单 -->
+  <view class="stats-list" wx:if="{{categoryStats.length > 0}}">
     <view class="section-title-wrap">
       <text class="section-title">分类支出细化明细</text>
     </view>
@@ -98,28 +98,29 @@
           </view>
 
           <view class="detail-center">
-            <view class="progress-track-line">
-              <view class="progress-bar-fill" style="width: {{item.width}}%; background-color: {{item.barColor}};"></view>
+            <view class="progress-track">
+              <view class="progress-bar" style="width: {{item.width}}%; background-color: {{item.barColor}};"></view>
             </view>
-            <text class="progress-percentage-text">{{item.percentText}}</text>
+            <text class="percentage-text">{{item.percentText}}</text>
           </view>
 
           <view class="detail-right">
-            <text class="category-amount-text">¥{{item.amount}}</text>
+            <text class="amount-text">¥{{item.amount}}</text>
+            <text class="cycle-text">/月折算</text>
           </view>
 
         </view>
       </block>
-
-      <!-- Empty State -->
-      <view wx:if="{{categoryStats.length === 0 && !loading}}" class="empty-state">
-        <view class="empty-icon-box">
-          <view class="icon icon-xl icon-sync-muted"></view>
-        </view>
-        <text class="empty-title">无有效记账数据</text>
-        <text class="empty-subtitle">请返回账簿添加处于激活状态的订阅服务</text>
-      </view>
     </view>
+  </view>
+
+  <!-- 缺省空白状态 -->
+  <view wx:if="{{categoryStats.length === 0}}" class="empty-state">
+    <view class="empty-icon-wrap">
+      <view class="icon icon-xl icon-sync-muted"></view>
+    </view>
+    <text class="empty-title">无有效记账数据</text>
+    <text class="empty-desc">请返回账簿添加处于激活状态的订阅服务</text>
   </view>
 
 </view>

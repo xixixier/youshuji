@@ -9,17 +9,17 @@
     "pages/settings/general"
   ],
   "window": {
-    "backgroundColor": "#F7F7F7",
+    "backgroundColor": "#F8F7F4",
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarBackgroundColor": "#F8F7F4",
     "navigationBarTitleText": "有数记",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
-    "color": "#999999",
-    "selectedColor": "#0A5C43",
+    "color": "#8C9691",
+    "selectedColor": "#1C3D32",
     "backgroundColor": "#FFFFFF",
-    "borderStyle": "black",
+    "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/index/index",

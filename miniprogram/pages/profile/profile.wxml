@@ -1,7 +1,7 @@
-<!--pages/profile/profile.wxml-->
+<!--pages/profile/profile.wxml — 有数记 · 个人中心-->
 <view class="container">
 
-  <!-- 1. 账户看板 (Account Showcase Panel) -->
+  <!-- 1. 名片式账户面板 -->
   <view class="account-showcase-panel">
 
     <!-- 未登录状态看板 -->
@@ -33,7 +33,7 @@
 
   </view>
 
-  <!-- 2. 设置列表 (Settings Groups) -->
+  <!-- 2. 琴键式设置列表栏 -->
 
   <view class="settings-section-title">应用同步与参数</view>
   <view class="fluent-list">
@@ -68,7 +68,7 @@
     </view>
   </view>
 
-  <!-- 3. 三合一登录抽屉 (Login Drawer Overlay) -->
+  <!-- 3. 三合一优雅登录抽屉 -->
   <view class="drawer-overlay" wx:if="{{showLoginDrawer}}" bindtap="closeLoginDrawer">
     <view class="drawer-panel" catchtap="preventBubble">
       <view class="drawer-header">
@@ -92,7 +92,7 @@
       <!-- 选项卡 1: 微信快捷登录 -->
       <view class="tab-content" wx:if="{{loginTab === 'wechat'}}">
         <view class="wechat-preview-box">
-          <view class="icon icon-lg icon-wechat wechat-icon-hero"></view>
+          <view class="icon icon-xl icon-wechat wechat-icon-hero"></view>
           <text class="login-tip">同步后，您的订阅数据可随时在微信云端进行安全备份与自动同步</text>
         </view>
         <button class="fluent-login-btn wechat-theme" bindtap="doWechatLogin" hover-class="press-active">
@@ -103,15 +103,15 @@
 
       <!-- 选项卡 2: 手机验证码登录 -->
       <view class="tab-content" wx:if="{{loginTab === 'phone'}}">
-        <view class="form-slot">
-          <view class="input-row">
-            <view class="icon icon-phone input-icon"></view>
-            <input class="drawer-input" type="number" maxlength="11" placeholder="请输入手机号码" model:value="phoneNum" />
+        <view class="form-fields">
+          <view class="field-row">
+            <view class="icon icon-phone field-icon"></view>
+            <input class="field-input" type="number" maxlength="11" placeholder="请输入手机号码" model:value="phoneNum" />
           </view>
-          <view class="input-row">
-            <view class="icon icon-lock input-icon"></view>
-            <input class="drawer-input" type="number" maxlength="6" placeholder="请输入验证码" model:value="smsCode" />
-            <text class="sms-send-btn {{smsCounting ? 'counting' : ''}}" bindtap="sendSmsCode">{{smsBtnText}}</text>
+          <view class="field-row">
+            <view class="icon icon-lock field-icon"></view>
+            <input class="field-input" type="number" maxlength="6" placeholder="请输入验证码" model:value="smsCode" />
+            <text class="sms-btn {{smsCounting ? 'sms-disabled' : ''}}" bindtap="sendSmsCode">{{smsBtnText}}</text>
           </view>
         </view>
         <button class="fluent-login-btn" bindtap="doPhoneLogin" hover-class="press-active">
@@ -121,14 +121,14 @@
 
       <!-- 选项卡 3: 邮箱密码登录 -->
       <view class="tab-content" wx:if="{{loginTab === 'email'}}">
-        <view class="form-slot">
-          <view class="input-row">
-            <view class="icon icon-mail input-icon"></view>
-            <input class="drawer-input" placeholder="请输入邮箱地址" model:value="emailAddr" />
+        <view class="form-fields">
+          <view class="field-row">
+            <view class="icon icon-mail field-icon"></view>
+            <input class="field-input" placeholder="请输入邮箱地址" model:value="emailAddr" />
           </view>
-          <view class="input-row">
-            <view class="icon icon-lock input-icon"></view>
-            <input class="drawer-input" password="true" placeholder="请输入登录密码" model:value="emailPwd" />
+          <view class="field-row">
+            <view class="icon icon-lock field-icon"></view>
+            <input class="field-input" password="true" placeholder="请输入登录密码" model:value="emailPwd" />
           </view>
         </view>
         <button class="fluent-login-btn" bindtap="doEmailLogin" hover-class="press-active">
@@ -137,7 +137,7 @@
       </view>
 
       <!-- 说明底部 -->
-      <text class="drawer-footer-note">有数记严格遵循用户隐私协议保护您的账单数据安全</text>
+      <text class="drawer-footer">有数记严格遵循用户隐私协议保护您的账单数据安全</text>
     </view>
   </view>
 
