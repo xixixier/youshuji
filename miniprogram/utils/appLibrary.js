@@ -769,7 +769,7 @@ const APP_LIBRARY = [
     category: "影音娱乐",
     defaultPrice: 10,
     brandColor: "#FF5E2B",
-    iconUrl: "",
+    iconUrl: "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/e6/75/2f/e6752f0d-6382-3024-67c7-4f4cdba6d1a6/AppIcon-0-0-1x_U007epad-0-11-0-0-0-0-85-220.png/256x256bb.jpg",
     iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23FF5E2B'/><path d='M12 4.5s-4 4.5-4 8.5c0 2.2 1.8 4 4 4s4-1.8 4-4c0-4-4-8.5-4-8.5zm-1.5 6.5s-1.5 1.5-1.5 3c0 1 .8 1.8 1.8 1.8.8 0 1.2-.5 1.2-.5s-1.5-1-1.5-2.8c0-1.5 0-1.5 0-1.5z' fill='white'/></svg>`
   },
   {
