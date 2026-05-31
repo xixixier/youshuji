@@ -304,20 +304,29 @@ Page({
   handleUpdate() {
     this.vibrate();
     
+    if (this.saving) {
+      console.warn('正在保存中，拦截重复点击');
+      return;
+    }
+    this.saving = true;
+    
     const appName = this.data.appName.trim();
     const priceStr = this.data.price.toString().trim();
     const price = Number(priceStr);
 
     // 高精度表单输入完整性验证
     if (!appName) {
+      this.saving = false;
       wx.showToast({ title: '请输入账单服务名称', icon: 'none' });
       return;
     }
     if (!priceStr || isNaN(price) || price <= 0) {
+      this.saving = false;
       wx.showToast({ title: '请输入有效的金额', icon: 'none' });
       return;
     }
     if (!this.data.firstDate) {
+      this.saving = false;
       wx.showToast({ title: '请选择首期扣款日', icon: 'none' });
       return;
     }
@@ -370,6 +379,7 @@ Page({
       }, 1500);
     }).catch(err => {
       console.error('更新账单失败:', err);
+      this.saving = false;
       wx.hideLoading();
       wx.showToast({
         title: '保存失败，请重试',
@@ -381,6 +391,13 @@ Page({
   // 永久删除该账单记录（透明双轨防灾）
   handleDelete() {
     this.vibrate();
+    
+    if (this.deleting) {
+      console.warn('正在删除中，拦截重复点击');
+      return;
+    }
+    this.deleting = true;
+
     wx.showModal({
       title: '永久删除账单',
       content: `您确定要永久删除 [${this.data.appName || '此笔订阅'}] 吗？此操作将无法撤回，所有账簿分析将自动重算。`,
@@ -404,12 +421,15 @@ Page({
             })
             .catch(err => {
               console.error('删除失败:', err);
+              this.deleting = false;
               wx.hideLoading();
               wx.showToast({
                 title: '删除失败，请重试',
                 icon: 'none'
               });
             });
+        } else {
+          this.deleting = false;
         }
       }
     });

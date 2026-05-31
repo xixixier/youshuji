@@ -768,9 +768,9 @@ const APP_LIBRARY = [
     name: "Infuse Pro",
     category: "影音娱乐",
     defaultPrice: 10,
-    brandColor: "#E85B24",
+    brandColor: "#FF5E2B",
     iconUrl: "https://api.companyenrich.com/logo/firecore.com",
-    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23E85B24'/><path d='M6 5.5l12 6.5-12 6.5V5.5z' fill='white'/><path d='M9.5 8.5l7 3.5-7 3.5v-7z' fill='%23E85B24'/></svg>`
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23FF5E2B'/><path d='M12 4.5s-4 4.5-4 8.5c0 2.2 1.8 4 4 4s4-1.8 4-4c0-4-4-8.5-4-8.5zm-1.5 6.5s-1.5 1.5-1.5 3c0 1 .8 1.8 1.8 1.8.8 0 1.2-.5 1.2-.5s-1.5-1-1.5-2.8c0-1.5 0-1.5 0-1.5z' fill='white'/></svg>`
   },
   {
     aliases: ["tidal","潮汐"],

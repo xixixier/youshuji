@@ -260,20 +260,29 @@ Page({
   handleSave() {
     this.vibrate();
     
+    if (this.saving) {
+      console.warn('保存处理中，拦截重复点击');
+      return;
+    }
+    this.saving = true;
+    
     const appName = this.data.appName.trim();
     const priceStr = this.data.price.toString().trim();
     const price = Number(priceStr);
 
     // 高精度表单输入完整性验证
     if (!appName) {
+      this.saving = false;
       wx.showToast({ title: '请输入账单服务名称', icon: 'none' });
       return;
     }
     if (!priceStr || isNaN(price) || price <= 0) {
+      this.saving = false;
       wx.showToast({ title: '请输入有效的金额', icon: 'none' });
       return;
     }
     if (!this.data.firstDate) {
+      this.saving = false;
       wx.showToast({ title: '请选择付款日', icon: 'none' });
       return;
     }
@@ -328,6 +337,7 @@ Page({
       }, 1500);
     }).catch(err => {
       console.error('账单保存失败:', err);
+      this.saving = false;
       wx.hideLoading();
       wx.showToast({
         title: '入账失败，请重试',
