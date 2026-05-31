@@ -726,6 +726,96 @@ const APP_LIBRARY = [
     brandColor: "#FF6E00",
     iconUrl: "https://api.companyenrich.com/logo/dedao.cn",
     iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23FF6E00'/><path d='M6.5 16.5v-9c0-1.5 1.5-3 3.5-3s3.5 1.5 3.5 3v9H6.5zM17.5 10c0-1.5 1.5-2.5 3-2.5s3 1 3 2.5v6.5h-6V10z' fill='white'/></svg>`
+  },
+  {
+    aliases: ["setapp","套用","订阅合集"],
+    name: "Setapp",
+    category: "实用工具",
+    defaultPrice: 65,
+    brandColor: "#000000",
+    iconUrl: "https://api.companyenrich.com/logo/setapp.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23000000'/><path d='M6.5 6.5h11v2.5H9v2h7.5v2.5H9v2h8.5v2.5h-11v-11.5z' fill='white'/></svg>`
+  },
+  {
+    aliases: ["jetbrains","idea","webstorm","pycharm","clion"],
+    name: "JetBrains",
+    category: "学习办公",
+    defaultPrice: 200,
+    brandColor: "#000000",
+    iconUrl: "https://api.companyenrich.com/logo/jetbrains.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23000000'/><path d='M5 13.5v-4L9 5h6.5l3.5 4.5v5L15 19H8l-3-5.5z' fill='none' stroke='white' stroke-width='1.5'/><rect x='8' y='9' width='8' height='6' fill='none' stroke='white' stroke-width='1.2'/><text x='12' y='13' fill='white' font-size='5.5' font-weight='900' font-family='sans-serif' text-anchor='middle'>JB</text></svg>`
+  },
+  {
+    aliases: ["goodnotes","goodnotes 6","goodnotes5","好记","gn"],
+    name: "GoodNotes",
+    category: "学习办公",
+    defaultPrice: 68,
+    brandColor: "#0099FF",
+    iconUrl: "https://api.companyenrich.com/logo/goodnotes.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%230099FF'/><path d='M6.5 17c1-3.5 4-5.5 8.5-5.5s6.5 1 6.5 1m-15 4c0-3 3.5-8.5 8-8.5s6.5 3 6.5 5.5v1.5' stroke='white' stroke-width='1.8' stroke-linecap='round'/><path d='M10 8.5L8.5 7 11 5.5 12.5 7 10 8.5z' fill='white'/></svg>`
+  },
+  {
+    aliases: ["notability","笔计","ntb"],
+    name: "Notability",
+    category: "学习办公",
+    defaultPrice: 80,
+    brandColor: "#00C3FF",
+    iconUrl: "https://api.companyenrich.com/logo/gingerlabs.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%2300C3FF'/><path d='M6 14.5a6 6 0 0112 0v2.5a1.5 1.5 0 01-1.5 1.5h-1a1.5 1.5 0 01-1.5-1.5v-1a1.5 1.5 0 011.5-1.5M10 14.5v2.5a1.5 1.5 0 01-1.5 1.5h-1A1.5 1.5 0 016 17v-2.5' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/><path d='M12 5.5v3M10 7h4' stroke='white' stroke-width='1.5' stroke-linecap='round'/></svg>`
+  },
+  {
+    aliases: ["infuse","infuse pro","infuse播放器","if"],
+    name: "Infuse Pro",
+    category: "影音娱乐",
+    defaultPrice: 10,
+    brandColor: "#E85B24",
+    iconUrl: "https://api.companyenrich.com/logo/firecore.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23E85B24'/><path d='M6 5.5l12 6.5-12 6.5V5.5z' fill='white'/><path d='M9.5 8.5l7 3.5-7 3.5v-7z' fill='%23E85B24'/></svg>`
+  },
+  {
+    aliases: ["tidal","潮汐"],
+    name: "Tidal",
+    category: "影音娱乐",
+    defaultPrice: 60,
+    brandColor: "#000000",
+    iconUrl: "https://api.companyenrich.com/logo/tidal.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23000000'/><path d='M12 4.5l3.5 3.5-3.5 3.5L8.5 8 12 4.5zM12 11.5l3.5 3.5-3.5 3.5-3.5-3.5 3.5-3.5zM19 11.5l3.5-3.5-3.5-3.5-3.5 3.5 3.5 3.5zM5 11.5L8.5 8 5 4.5 1.5 8 5 11.5z' fill='white'/></svg>`
+  },
+  {
+    aliases: ["x","twitter","推特","x premium"],
+    name: "X Premium",
+    category: "其他",
+    defaultPrice: 50,
+    brandColor: "#000000",
+    iconUrl: "https://api.companyenrich.com/logo/x.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23000000'/><path d='M18.2 4.5h-2.5l-4.8 5.8L6.8 4.5H4.2l5.8 7-6 7.2h2.5l5.2-6.2 4.5 6.2h2.6l-6.2-7.8 5.8-6.9zm-2.8 12h-1.4L8.2 6H9.6l5.8 10.5z' fill='white'/></svg>`
+  },
+  {
+    aliases: ["apple arcade","arcade","苹果游戏","苹果街机"],
+    name: "Apple Arcade",
+    category: "游戏",
+    defaultPrice: 38,
+    brandColor: "#FA243C",
+    iconUrl: "https://api.companyenrich.com/logo/arcade.apple.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23FA243C'/><path d='M6.5 16.5V8.5A3.5 3.5 0 0113 5.5v2.2A1.5 1.5 0 0011.5 9v1.5a1.5 1.5 0 001.5 1.5h1.5a1.5 1.5 0 001.5-1.5V9a1.5 1.5 0 00-1.5-1.5h-1.5' stroke='white' stroke-width='1.8' stroke-linecap='round'/></svg>`
+  },
+  {
+    aliases: ["原神小月卡","空月祝福","原神","genshin"],
+    name: "原神空月祝福",
+    category: "游戏",
+    defaultPrice: 30,
+    brandColor: "#4A5B8C",
+    iconUrl: "https://api.companyenrich.com/logo/hoyoverse.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%234A5B8C'/><circle cx='12' cy='12' r='8' stroke='white' stroke-width='1.2'/><path d='M12 4.5a7.5 7.5 0 000 15V4.5z' fill='white'/><path d='M12 7.5a4.5 4.5 0 000 9V7.5z' fill='%234A5B8C'/></svg>`
+  },
+  {
+    aliases: ["星铁小月卡","列车补给凭证","星穹铁道","崩铁","star rail"],
+    name: "崩坏星穹铁道月卡",
+    category: "游戏",
+    defaultPrice: 30,
+    brandColor: "#2B2B4A",
+    iconUrl: "https://api.companyenrich.com/logo/hoyoverse.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%232B2B4A'/><polygon points='12 4.5 14.5 9.5 20 10.5 16 14.5 17 20 12 17 7 20 8 14.5 4 10.5 9.5 9.5' fill='white'/></svg>`
   }
 ];
 

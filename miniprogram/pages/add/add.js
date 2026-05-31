@@ -121,6 +121,86 @@ Page({
     this.updateCategorySvgs(this.data.categories, category);
   },
 
+  // 🗑️ 删除自定义分类
+  deleteCategory(e) {
+    const category = e.currentTarget.dataset.category;
+    this.vibrate();
+    
+    const defaultCats = ['影音娱乐', '实用工具', '学习办公', '游戏', '其他'];
+    if (defaultCats.includes(category)) {
+      wx.showToast({
+        title: '默认分类不可删除',
+        icon: 'none'
+      });
+      return;
+    }
+
+    wx.showModal({
+      title: '删除自定义分类',
+      content: `确定要删除分类 "${category}" 吗？删除后，所有使用该分类的账单都将自动归类到 "其他"。`,
+      confirmColor: '#A64030', // 陶土红
+      success: (res) => {
+        if (res.confirm) {
+          this.vibrate();
+          
+          // 1. 从列表中过滤移除
+          const newList = this.data.categories.filter(c => c !== category);
+          
+          // 2. 如果删除的是当前选中的，切回 "其他"
+          let selected = this.data.selectedCategory;
+          if (selected === category) {
+            selected = '其他';
+          }
+          
+          // 3. 更新 UI
+          this.updateCategorySvgs(newList, selected);
+
+          // 4. 更新数据库关联的所有账单的分类为 "其他"
+          wx.showLoading({ title: '正在清理关联账单...' });
+          db.collection('subscriptions').get().then(subRes => {
+            const matches = subRes.data.filter(sub => sub.category === category);
+            if (matches.length === 0) {
+              wx.hideLoading();
+              wx.showToast({
+                title: '分类已成功删除',
+                icon: 'success'
+              });
+              return;
+            }
+            
+            const updates = matches.map(sub => {
+              return db.collection('subscriptions').doc(sub._id).update({
+                data: { category: '其他' }
+              });
+            });
+            
+            Promise.all(updates).then(() => {
+              wx.hideLoading();
+              wx.showToast({
+                title: '分类已删除，账单已重分类',
+                icon: 'success'
+              });
+            }).catch(err => {
+              console.error('更新账单分类关联失败:', err);
+              wx.hideLoading();
+              wx.showToast({
+                title: '分类已删除，部分账单更新失败',
+                icon: 'none'
+              });
+            });
+          }).catch(err => {
+            console.error('拉取账单以更新分类失败:', err);
+            wx.hideLoading();
+            wx.showToast({
+              title: '分类已删除',
+              icon: 'success'
+            });
+          });
+        }
+      }
+    });
+  },
+
   // ➕ 新建分类对话框 (带输入框的 Modal)
   showNewCategoryInput() {
     this.vibrate();

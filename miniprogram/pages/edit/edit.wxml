@@ -38,7 +38,7 @@
       <text class="form-field-label">账单分类</text>
       <view class="category-grid">
         <block wx:for="{{categoriesWithSvg}}" wx:key="name">
-          <view class="category-chip-item {{selectedCategory === item.name ? 'selected' : ''}}" bindtap="selectCategory" data-category="{{item.name}}">
+          <view class="category-chip-item {{selectedCategory === item.name ? 'selected' : ''}}" bindtap="selectCategory" bindlongpress="deleteCategory" data-category="{{item.name}}">
             <view class="cat-circle-avatar" style="background-image: url('{{item.iconPic}}'); background-size: contain; background-position: center; background-repeat: no-repeat; width: 48rpx; height: 48rpx;"></view>
             <text class="cat-name">{{item.name}}</text>
           </view>
