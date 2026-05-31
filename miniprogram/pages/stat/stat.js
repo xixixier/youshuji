@@ -188,7 +188,7 @@ Page({
     const systemInfo = wx.getSystemInfoSync();
     const rpx = systemInfo.windowWidth / 750;
 
-    const size = 360 * rpx; // 对齐 360rpx 的容器大小
+    const size = 320 * rpx; // 精确对齐 320rpx 的 CSS 容器大小，解决同心圆和切割切边问题
     const cx = size / 2;
     const cy = size / 2;
     const lineWidth = 8 * rpx; // 8rpx 极细线段，高级感圆环核心
