@@ -1,11 +1,7 @@
 <!--pages/edit/edit.wxml — 有数记 · 编辑账单-->
 <view class="container">
 
-  <!-- 表单头部 -->
-  <view class="form-header">
-    <text class="form-title">编辑订阅账单</text>
-    <text class="form-subtitle">修改或删除您已保存的订阅服务或买断项目</text>
-  </view>
+
 
   <!-- 表单内容主体 — 悬浮面板 -->
   <view class="fluent-form-panel">

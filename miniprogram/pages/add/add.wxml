@@ -1,11 +1,7 @@
 <!--pages/add/add.wxml — 有数记 · 新增账单-->
 <view class="container">
 
-  <!-- 表单头部 -->
-  <view class="form-header">
-    <text class="form-title">新增订阅账单</text>
-    <text class="form-subtitle">添加一笔新的订阅或买断服务账目</text>
-  </view>
+
 
   <!-- 表单内容主体 — 悬浮面板 -->
   <view class="fluent-form-panel">
