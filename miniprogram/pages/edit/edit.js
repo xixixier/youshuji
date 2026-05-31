@@ -1,6 +1,7 @@
 // pages/edit/edit.js
 const dateUtils = require('../../utils/date.js');
 const appLibrary = require('../../utils/appLibrary.js');
+const db = require('../../utils/db.js');
 
 Page({
   data: {
@@ -22,7 +23,12 @@ Page({
     firstChar: '数',
     
     // 智能品牌库自动匹配徽标
-    matchedBadge: null
+    matchedBadge: null,
+    iconSvg: '',
+    iconPic: '',
+
+    // 高保真分类图标渲染数组
+    categoriesWithSvg: []
   },
 
   onLoad(options) {
@@ -41,24 +47,39 @@ Page({
     wx.vibrateShort({ type: 'light' });
   },
 
-  // 动态加载用户已创建的所有独特分类 (避免死板固化)
+  // 核心工具：计算并刷新分类高保真 SVG 图标集 (支持动态反色选中)
+  updateCategorySvgs(categories = this.data.categories, selected = this.data.selectedCategory) {
+    const list = categories.map(cat => {
+      const isActive = cat === selected;
+      const svg = appLibrary.getCategoryIcon(cat, isActive);
+      const iconBase64 = appLibrary.svgToBase64(svg);
+      return {
+        name: cat,
+        iconPic: 'data:image/svg+xml;base64,' + iconBase64
+      };
+    });
+    this.setData({
+      categories,
+      selectedCategory: selected,
+      categoriesWithSvg: list
+    });
+  },
+
+  // 动态加载用户已创建的所有独特分类 (采用高可靠降级数据库)
   loadUserCategories() {
-    const db = wx.cloud.database();
     db.collection('subscriptions').get().then(res => {
       const savedCats = res.data.map(item => item.category).filter(Boolean);
       const uniqueCats = Array.from(new Set([...this.data.categories, ...savedCats]));
-      this.setData({
-        categories: uniqueCats
-      });
+      this.updateCategorySvgs(uniqueCats, this.data.selectedCategory);
     }).catch(err => {
       console.warn('加载分类失败，使用默认列表:', err);
+      this.updateCategorySvgs(this.data.categories, this.data.selectedCategory);
     });
   },
 
   // 获取账单单条数据详情
   fetchSubscription(id) {
     wx.showLoading({ title: '账单数据拉取中...' });
-    const db = wx.cloud.database();
     
     db.collection('subscriptions').doc(id).get()
       .then(res => {
@@ -67,11 +88,13 @@ Page({
         let cycleIndex = cycleMap.indexOf(data.cycle || 'month');
         if (cycleIndex === -1) cycleIndex = 1;
         
-        // 如果有缓存的 brandColor 且匹配库里有，重构其预览徽章
+        // 匹配品牌
         const matched = appLibrary.matchApp(data.appName || '');
+        const computedIcon = matched ? matched.iconSvg : appLibrary.generateFallbackSvg(data.appName || '', data.brandColor || '');
+        const iconBase64 = appLibrary.svgToBase64(computedIcon);
+        const iconPic = matched && matched.iconUrl ? matched.iconUrl : ('data:image/svg+xml;base64,' + iconBase64);
         
         this.setData({
-          selectedCategory: data.category || '影音娱乐',
           appName: data.appName || '',
           price: data.price ? Number(data.price) : '',
           cycleIndex: cycleIndex,
@@ -81,8 +104,14 @@ Page({
           remark: data.remark || '',
           brandColor: data.brandColor || '',
           firstChar: data.firstChar || '数',
-          matchedBadge: matched
+          matchedBadge: matched,
+          iconSvg: computedIcon,
+          iconBase64: iconBase64,
+          iconPic: iconPic
         });
+
+        // 加载完成后刷新分类高保真 SVG 列表
+        this.updateCategorySvgs(this.data.categories, data.category || '影音娱乐');
         wx.hideLoading();
       })
       .catch(err => {
@@ -105,16 +134,27 @@ Page({
       if (!list.includes(matched.category)) {
         list.push(matched.category);
       }
+      const iconPic = matched.iconUrl ? matched.iconUrl : ('data:image/svg+xml;base64,' + appLibrary.svgToBase64(matched.iconSvg));
       this.setData({
-        categories: list,
-        selectedCategory: matched.category,
         price: matched.defaultPrice,
-        matchedBadge: matched
+        matchedBadge: matched,
+        iconSvg: matched.iconSvg,
+        iconBase64: appLibrary.svgToBase64(matched.iconSvg),
+        iconPic: iconPic
       });
+      // 自动切换至匹配到的分类，并刷新高亮
+      this.updateCategorySvgs(list, matched.category);
     } else {
+      const fallbackSvg = appLibrary.generateFallbackSvg(val, this.data.brandColor || '');
+      const iconBase64 = appLibrary.svgToBase64(fallbackSvg);
       this.setData({
-        matchedBadge: null
+        matchedBadge: null,
+        iconSvg: fallbackSvg,
+        iconBase64: iconBase64,
+        iconPic: 'data:image/svg+xml;base64,' + iconBase64
       });
+      // 保持分类不变，仅刷新分类图标
+      this.updateCategorySvgs(this.data.categories, this.data.selectedCategory);
     }
   },
 
@@ -122,7 +162,7 @@ Page({
   selectCategory(e) {
     const category = e.currentTarget.dataset.category;
     this.vibrate();
-    this.setData({ selectedCategory: category });
+    this.updateCategorySvgs(this.data.categories, category);
   },
 
   // ➕ 新建分类对话框 (带输入框的 Modal)
@@ -141,10 +181,7 @@ Page({
             if (!list.includes(newCat)) {
               list.push(newCat);
             }
-            this.setData({
-              categories: list,
-              selectedCategory: newCat
-            });
+            this.updateCategorySvgs(list, newCat);
             wx.showToast({
               title: `分类 "${newCat}" 已选择`,
               icon: 'none'
@@ -183,7 +220,7 @@ Page({
     this.setData({ firstDate: e.detail.value });
   },
 
-  // 提交更新账单记录到云端
+  // 提交更新账单记录到云端（透明双轨防灾）
   handleUpdate() {
     this.vibrate();
     
@@ -207,7 +244,6 @@ Page({
 
     wx.showLoading({ title: '正在保存修改...' });
 
-    const db = wx.cloud.database();
     const cycleMap = ['week', 'month', 'quarter', 'year'];
     const cycleCode = cycleMap[this.data.cycleIndex];
     
@@ -262,7 +298,7 @@ Page({
     });
   },
 
-  // 永久删除该账单记录
+  // 永久删除该账单记录（透明双轨防灾）
   handleDelete() {
     this.vibrate();
     wx.showModal({
@@ -272,7 +308,6 @@ Page({
       success: (res) => {
         if (res.confirm) {
           wx.showLoading({ title: '账单移除中...' });
-          const db = wx.cloud.database();
           
           db.collection('subscriptions').doc(this.data.id).remove()
             .then(() => {

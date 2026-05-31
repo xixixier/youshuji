@@ -1,4 +1,5 @@
 const appConfig = require('../../config/appConfig.js');
+const db = require('../../utils/db.js');
 
 // 微软数据看板专用：静谧、高雅低饱和度商务配色系统
 const CHART_COLORS = [
@@ -50,7 +51,6 @@ Page({
 
   fetchAndCalculate() {
     wx.showLoading({ title: '账单数据聚合中...' });
-    const db = wx.cloud.database();
     
     db.collection('subscriptions').get()
       .then(res => {

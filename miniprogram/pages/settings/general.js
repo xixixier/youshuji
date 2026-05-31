@@ -1,9 +1,13 @@
 // pages/settings/general.js
+const appLibrary = require('../../utils/appLibrary.js');
+
 Page({
   data: {
     currencies: ['￥ (人民币)', '$ (美元)', '€ (欧元)', '£ (英镑)'],
     currencyIndex: 0,
-    selectedCategory: '影音娱乐'
+    selectedCategory: '影音娱乐',
+    categories: ['影音娱乐', '实用工具', '学习办公', '游戏', '其他'],
+    categoriesWithSvg: []
   },
 
   onLoad() {
@@ -12,6 +16,23 @@ Page({
 
   vibrate() {
     wx.vibrateShort({ type: 'light' });
+  },
+
+  // 核心微调：计算并更新分类 SVG 图标流式状态
+  updateCategorySvgs(selected = this.data.selectedCategory) {
+    const list = this.data.categories.map(cat => {
+      const isActive = cat === selected;
+      const svg = appLibrary.getCategoryIcon(cat, isActive);
+      const iconBase64 = appLibrary.svgToBase64(svg);
+      return {
+        name: cat,
+        iconPic: 'data:image/svg+xml;base64,' + iconBase64
+      };
+    });
+    this.setData({
+      selectedCategory: selected,
+      categoriesWithSvg: list
+    });
   },
 
   // 从本地存储读取设置
@@ -26,6 +47,8 @@ Page({
       currencyIndex,
       selectedCategory: category
     });
+    
+    this.updateCategorySvgs(category);
   },
 
   // 变更货币
@@ -38,7 +61,7 @@ Page({
   selectCategory(e) {
     const category = e.currentTarget.dataset.category;
     this.vibrate();
-    this.setData({ selectedCategory: category });
+    this.updateCategorySvgs(category);
   },
 
   // 清空本地缓存
@@ -46,8 +69,8 @@ Page({
     this.vibrate();
     wx.showModal({
       title: '确认清空',
-      content: '这将清空所有本地偏好设置和缓存信息。注意：您的账单数据储存在微信云开发数据库中，不会受到影响。',
-      confirmColor: '#D83B01',
+      content: '这将清空所有本地账单数据、偏好设置和缓存信息。注意：此操作将重置您的所有数据，是否继续？',
+      confirmColor: '#A64030', // 陶土红
       success: (res) => {
         if (res.confirm) {
           wx.clearStorageSync();

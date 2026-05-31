@@ -1,5 +1,6 @@
 // pages/profile/profile.js
 const app = getApp();
+const db = require('../../utils/db.js');
 
 Page({
   data: {
@@ -268,7 +269,6 @@ Page({
 
   addSampleData() {
     wx.showLoading({ title: '数据安全写入中...' });
-    const db = wx.cloud.database();
     
     const sampleData = [
       {

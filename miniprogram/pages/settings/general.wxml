@@ -25,26 +25,12 @@
     <view class="form-row-group">
       <text class="form-field-label">默认新增分类</text>
       <view class="category-grid">
-        <view class="category-chip-item {{selectedCategory === '影音娱乐' ? 'selected' : ''}}" bindtap="selectCategory" data-category="影音娱乐">
-          <view class="cat-circle-avatar">影</view>
-          <text class="cat-name">影音娱乐</text>
-        </view>
-        <view class="category-chip-item {{selectedCategory === '实用工具' ? 'selected' : ''}}" bindtap="selectCategory" data-category="实用工具">
-          <view class="cat-circle-avatar">工</view>
-          <text class="cat-name">实用工具</text>
-        </view>
-        <view class="category-chip-item {{selectedCategory === '学习办公' ? 'selected' : ''}}" bindtap="selectCategory" data-category="学习办公">
-          <view class="cat-circle-avatar">学</view>
-          <text class="cat-name">学习办公</text>
-        </view>
-        <view class="category-chip-item {{selectedCategory === '游戏' ? 'selected' : ''}}" bindtap="selectCategory" data-category="游戏">
-          <view class="cat-circle-avatar">游</view>
-          <text class="cat-name">游戏</text>
-        </view>
-        <view class="category-chip-item {{selectedCategory === '其他' ? 'selected' : ''}}" bindtap="selectCategory" data-category="其他">
-          <view class="cat-circle-avatar">其</view>
-          <text class="cat-name">其他</text>
-        </view>
+        <block wx:for="{{categoriesWithSvg}}" wx:key="name">
+          <view class="category-chip-item {{selectedCategory === item.name ? 'selected' : ''}}" bindtap="selectCategory" data-category="{{item.name}}">
+            <view class="cat-circle-avatar" style="background-image: url('{{item.iconPic}}'); background-size: contain; background-position: center; background-repeat: no-repeat; width: 48rpx; height: 48rpx;"></view>
+            <text class="cat-name">{{item.name}}</text>
+          </view>
+        </block>
       </view>
     </view>
 

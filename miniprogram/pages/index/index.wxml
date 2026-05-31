@@ -35,7 +35,7 @@
       <block wx:for="{{upcomingSubscriptions}}" wx:key="_id">
         <view class="upcoming-card {{item.isUrgent ? 'urgent' : ''}}" bindtap="handleItemClick" data-id="{{item._id}}" data-name="{{item.appName}}" hover-class="press-active">
           <view class="upcoming-top">
-            <view class="avatar-sm {{item.isUrgent ? 'avatar-danger' : ''}}" style="{{item.brandColor ? 'background-color: ' + item.brandColor + '; color: #FFFFFF;' : ''}}">{{item.firstChar}}</view>
+            <view class="avatar-sm" style="background-image: url('{{item.iconPic}}'); background-size: cover; background-position: center; background-repeat: no-repeat; border: none;"></view>
             <view class="tag-pill {{item.isUrgent ? 'tag-danger' : 'tag-normal'}}">{{item.daysRemainingText}}</view>
           </view>
           <view class="upcoming-bottom">
@@ -64,7 +64,7 @@
     <block wx:for="{{subscriptions}}" wx:key="_id">
       <view class="sub-row {{item.isExpired ? 'row-expired' : ''}}" bindtap="handleItemClick" data-id="{{item._id}}" data-name="{{item.appName}}" hover-class="press-active">
         <!-- 左：首字母微标 -->
-        <view class="avatar-md {{item.isExpired ? 'avatar-muted' : ''}}" style="{{item.brandColor ? 'background-color: ' + item.brandColor + '; color: #FFFFFF; border-color: ' + item.brandColor : ''}}">{{item.firstChar}}</view>
+        <view class="avatar-md" style="background-image: url('{{item.iconPic}}'); background-size: cover; background-position: center; background-repeat: no-repeat; border: none;"></view>
         <!-- 中：名称 + 标签 -->
         <view class="sub-info">
           <text class="sub-name">{{item.appName}}</text>

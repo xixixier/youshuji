@@ -1,6 +1,8 @@
 // index.js
 const app = getApp();
 const dateUtils = require('../../utils/date.js');
+const appLibrary = require('../../utils/appLibrary.js');
+const db = require('../../utils/db.js');
 
 Page({
   data: {
@@ -348,19 +350,20 @@ Page({
   // 从微信云开发数据库中获取数据
   fetchSubscriptions() {
     wx.showLoading({ title: '加载中...' });
-    const db = wx.cloud.database();
     
     return db.collection('subscriptions')
       .orderBy('createdAt', 'desc')
       .get()
       .then(res => {
-        const list = res.data.map(item => {
+        const rawData = (res && res.data) ? res.data : [];
+        const list = rawData.map(item => {
+          if (!item) return null;
           // 清除可能无效的外部图片连接
           if (!item.iconUrl || item.iconUrl.includes('icons8.com')) {
             item.iconUrl = '';
           }
           return item;
-        });
+        }).filter(Boolean);
         
         this.processData(list);
         wx.hideLoading();
@@ -423,7 +426,13 @@ Page({
         'week': '周', 'month': '月', 'quarter': '季', 'year': '年', 'custom': '自定义'
       };
 
-      const firstChar = item.appName ? item.appName.charAt(0).toUpperCase() : '数';
+      let firstChar = item.firstChar || (item.appName ? item.appName.substring(0, 2) : '数');
+      const matched = appLibrary.matchApp(item.appName);
+      const iconSvg = matched ? matched.iconSvg : appLibrary.generateFallbackSvg(item.appName, item.brandColor);
+      const iconBase64 = appLibrary.svgToBase64(iconSvg);
+      
+      // CompanyEnrich Logo CDN is extremely fast and reliable.
+      const iconPic = matched && matched.iconUrl ? matched.iconUrl : ('data:image/svg+xml;base64,' + iconBase64);
 
       return {
         ...item,
@@ -434,7 +443,11 @@ Page({
         priceFixed: item.price ? Number(item.price).toFixed(2) : '0.00',
         firstChar: firstChar,
         isUrgent: !isExpired && daysRemaining >= 0 && daysRemaining <= 3, // 3天内扣费即紧急
-        isExpired: isExpired
+        isExpired: isExpired,
+        iconSvg: iconSvg,
+        iconBase64: iconBase64,
+        iconUrl: matched ? matched.iconUrl : '',
+        iconPic: iconPic
       };
     });
 
@@ -495,7 +508,6 @@ Page({
   // 删除账单数据
   deleteSubscription(id) {
     wx.showLoading({ title: '正在删除...' });
-    const db = wx.cloud.database();
     
     db.collection('subscriptions').doc(id).remove()
       .then(() => {

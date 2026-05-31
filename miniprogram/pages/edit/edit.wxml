@@ -18,12 +18,12 @@
       </view>
       
       <!-- 智能匹配到的官方徽章预览 -->
-      <view class="brand-preview-pill" style="background-color: {{matchedBadge.brandColor || brandColor}}" wx:if="{{matchedBadge || brandColor}}">
-        <view class="brand-avatar-mini" style="color: {{matchedBadge.brandColor || brandColor}};">{{matchedBadge.initialChar || firstChar}}</view>
-        <text class="brand-name-text">已智能匹配官方服务: {{matchedBadge.name || appName}}</text>
+      <view class="brand-preview-pill" style="background-color: {{matchedBadge.brandColor || brandColor || '#8C9691'}};" wx:if="{{matchedBadge || appName}}">
+        <view class="brand-avatar-mini" style="background-image: url('{{iconPic}}'); background-size: contain; background-position: center; background-repeat: no-repeat; width: 36rpx; height: 36rpx;"></view>
+        <text class="brand-name-text">{{matchedBadge ? '已智能匹配官方服务: ' + matchedBadge.name : '账单字首预览: ' + appName}}</text>
       </view>
     </view>
-
+ 
     <!-- 2. 账单制式分段切换 -->
     <view class="form-row-item">
       <text class="form-row-label">账单类型</text>
@@ -32,21 +32,21 @@
         <view class="segment-item {{purchaseType === 'buyout' ? 'active' : ''}}" bindtap="onPurchaseTypeChange" data-type="buyout">买断制</view>
       </view>
     </view>
-
+ 
     <!-- 3. 动态分类选择 -->
     <view class="form-row-group">
       <text class="form-field-label">账单分类</text>
       <view class="category-grid">
-        <block wx:for="{{categories}}" wx:key="*this">
-          <view class="category-chip-item {{selectedCategory === item ? 'selected' : ''}}" bindtap="selectCategory" data-category="{{item}}">
-            <view class="cat-circle-avatar">{{item === '影音娱乐' ? '影' : (item === '实用工具' ? '工' : (item === '学习办公' ? '学' : (item === '游戏' ? '游' : (item === '其他' ? '其' : item[0]))))}}</view>
-            <text class="cat-name">{{item}}</text>
+        <block wx:for="{{categoriesWithSvg}}" wx:key="name">
+          <view class="category-chip-item {{selectedCategory === item.name ? 'selected' : ''}}" bindtap="selectCategory" data-category="{{item.name}}">
+            <view class="cat-circle-avatar" style="background-image: url('{{item.iconPic}}'); background-size: contain; background-position: center; background-repeat: no-repeat; width: 48rpx; height: 48rpx;"></view>
+            <text class="cat-name">{{item.name}}</text>
           </view>
         </block>
         
         <!-- ➕ 新建自定义分类按钮 -->
         <view class="category-chip-item add-custom-chip" bindtap="showNewCategoryInput" hover-class="press-active">
-          <view class="cat-circle-avatar">+</view>
+          <view class="cat-circle-avatar" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PScwIDAgMjQgMjQnIGZpbGw9J25vbmUnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHBhdGggZD0nTTEyIDV2MTRNNSAxMmgxNCcgc3Ryb2tlPSclMjMxQzNEMzInIHN0cm9rZS13aWR0aD0nMicgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PC9zdmc+'); background-size: contain; background-position: center; background-repeat: no-repeat; width: 48rpx; height: 48rpx;"></view>
           <text class="cat-name">新建分类</text>
         </view>
       </view>

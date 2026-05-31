@@ -1,6 +1,7 @@
 // pages/add/add.js
 const dateUtils = require('../../utils/date.js');
 const appLibrary = require('../../utils/appLibrary.js');
+const db = require('../../utils/db.js');
 
 Page({
   data: {
@@ -19,7 +20,12 @@ Page({
     remark: '',          // 备注说明
     
     // 智能品牌库自动匹配徽标
-    matchedBadge: null
+    matchedBadge: null,
+    iconSvg: '',
+    iconPic: '',
+
+    // 高保真矢量分类图标渲染数组
+    categoriesWithSvg: []
   },
 
   onLoad() {
@@ -42,17 +48,33 @@ Page({
     wx.vibrateShort({ type: 'light' });
   },
 
-  // 动态加载用户已创建的所有独特分类 (避免死板固化)
+  // 核心工具：计算并刷新分类高保真 SVG 图标集 (支持动态反色选中)
+  updateCategorySvgs(categories = this.data.categories, selected = this.data.selectedCategory) {
+    const list = categories.map(cat => {
+      const isActive = cat === selected;
+      const svg = appLibrary.getCategoryIcon(cat, isActive);
+      const iconBase64 = appLibrary.svgToBase64(svg);
+      return {
+        name: cat,
+        iconPic: 'data:image/svg+xml;base64,' + iconBase64
+      };
+    });
+    this.setData({
+      categories,
+      selectedCategory: selected,
+      categoriesWithSvg: list
+    });
+  },
+
+  // 动态加载用户已创建的所有独特分类 (采用高可靠降级数据库)
   loadUserCategories() {
-    const db = wx.cloud.database();
     db.collection('subscriptions').get().then(res => {
       const savedCats = res.data.map(item => item.category).filter(Boolean);
       const uniqueCats = Array.from(new Set([...this.data.categories, ...savedCats]));
-      this.setData({
-        categories: uniqueCats
-      });
+      this.updateCategorySvgs(uniqueCats, this.data.selectedCategory);
     }).catch(err => {
       console.warn('加载分类失败，使用默认列表:', err);
+      this.updateCategorySvgs(this.data.categories, this.data.selectedCategory);
     });
   },
 
@@ -68,16 +90,27 @@ Page({
       if (!list.includes(matched.category)) {
         list.push(matched.category);
       }
+      const iconPic = matched.iconUrl ? matched.iconUrl : ('data:image/svg+xml;base64,' + appLibrary.svgToBase64(matched.iconSvg));
       this.setData({
-        categories: list,
-        selectedCategory: matched.category,
         price: matched.defaultPrice,
-        matchedBadge: matched
+        matchedBadge: matched,
+        iconSvg: matched.iconSvg,
+        iconBase64: appLibrary.svgToBase64(matched.iconSvg),
+        iconPic: iconPic
       });
+      // 智能定位分类并刷新分类图标高亮
+      this.updateCategorySvgs(list, matched.category);
     } else {
+      const fallbackSvg = appLibrary.generateFallbackSvg(val, '');
+      const iconBase64 = appLibrary.svgToBase64(fallbackSvg);
       this.setData({
-        matchedBadge: null
+        matchedBadge: null,
+        iconSvg: fallbackSvg,
+        iconBase64: iconBase64,
+        iconPic: 'data:image/svg+xml;base64,' + iconBase64
       });
+      // 仅重绘当前分类 SVG (保持选中不变)
+      this.updateCategorySvgs(this.data.categories, this.data.selectedCategory);
     }
   },
 
@@ -85,7 +118,7 @@ Page({
   selectCategory(e) {
     const category = e.currentTarget.dataset.category;
     this.vibrate();
-    this.setData({ selectedCategory: category });
+    this.updateCategorySvgs(this.data.categories, category);
   },
 
   // ➕ 新建分类对话框 (带输入框的 Modal)
@@ -104,10 +137,7 @@ Page({
             if (!list.includes(newCat)) {
               list.push(newCat);
             }
-            this.setData({
-              categories: list,
-              selectedCategory: newCat
-            });
+            this.updateCategorySvgs(list, newCat);
             wx.showToast({
               title: `分类 "${newCat}" 已选择`,
               icon: 'none'
@@ -146,7 +176,7 @@ Page({
     this.setData({ firstDate: e.detail.value });
   },
 
-  // 提交并写入云开发数据库
+  // 提交并写入云开发数据库（透明双轨防灾）
   handleSave() {
     this.vibrate();
     
@@ -170,7 +200,6 @@ Page({
 
     wx.showLoading({ title: '账单安全存入中...' });
 
-    const db = wx.cloud.database();
     const cycleMap = ['week', 'month', 'quarter', 'year'];
     const cycleCode = cycleMap[this.data.cycleIndex];
     
@@ -201,7 +230,7 @@ Page({
       remark: this.data.remark.trim(),
       brandColor: this.data.matchedBadge ? this.data.matchedBadge.brandColor : '',
       firstChar: firstChar,
-      createdAt: db.serverDate()
+      createdAt: new Date().toISOString()
     };
 
     db.collection('subscriptions').add({
