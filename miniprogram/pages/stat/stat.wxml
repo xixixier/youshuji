@@ -11,7 +11,7 @@
   <!-- 2. 典雅数据看板格 -->
   <view class="metrics-grid">
     <view class="metric-cell">
-      <text class="metric-label">月度预估总支出</text>
+      <text class="metric-label">月度折算总支出</text>
       <view class="metric-value-wrap">
         <text class="metric-currency">¥</text>
         <text class="metric-value">{{totalMonthly}}</text>
@@ -35,79 +35,215 @@
 
   <!-- 3. 无框分栏导航键 -->
   <view class="command-bar">
-    <view class="command-item active">
-      <view class="icon icon-stat active"></view>
-      <text class="command-text active">构成概览</text>
+    <view class="command-item {{currentSection === 'composition' ? 'active' : ''}}" bindtap="switchSection" data-section="composition">
+      <view class="icon icon-stat {{currentSection === 'composition' ? 'active' : ''}}"></view>
+      <text class="command-text {{currentSection === 'composition' ? 'active' : ''}}">构成概览</text>
     </view>
-    <view class="command-item" bindtap="showToastInfo" hover-class="press-active">
-      <view class="icon icon-home"></view>
-      <text class="command-text">月度趋势</text>
+    <view class="command-item {{currentSection === 'trend' ? 'active' : ''}}" bindtap="switchSection" data-section="trend">
+      <view class="icon icon-home {{currentSection === 'trend' ? 'active' : ''}}"></view>
+      <text class="command-text {{currentSection === 'trend' ? 'active' : ''}}">月度趋势</text>
     </view>
-    <view class="command-item" bindtap="showToastInfo" hover-class="press-active">
-      <view class="icon icon-settings"></view>
-      <text class="command-text">预算定额</text>
+    <view class="command-item {{currentSection === 'quota' ? 'active' : ''}}" bindtap="switchSection" data-section="quota">
+      <view class="icon icon-settings {{currentSection === 'quota' ? 'active' : ''}}"></view>
+      <text class="command-text {{currentSection === 'quota' ? 'active' : ''}}">预算定额</text>
     </view>
   </view>
 
-  <!-- 4. 精致圆环图 -->
-  <view class="donut-panel">
-    <view class="panel-head">
-      <text class="panel-title">支出份额划分</text>
-      <text class="panel-subtitle">最大支出占比分类：{{topCategoryName || '暂无'}}</text>
+  <!-- ==========================================
+     4.1. 构成概览版面 (Composition Section)
+     ========================================== -->
+  <block wx:if="{{currentSection === 'composition'}}">
+    <!-- 精致圆环图 -->
+    <view class="donut-panel">
+      <view class="panel-head">
+        <text class="panel-title">支出份额划分</text>
+        <text class="panel-subtitle">最大支出占比分类：{{topCategoryName || '暂无'}}</text>
+      </view>
+
+      <view class="donut-chart-box">
+        <view class="donut-wrap">
+          <canvas class="donut-canvas" canvas-id="donutCanvas"></canvas>
+          <view class="donut-center">
+            <text class="donut-center-label">最大比重</text>
+            <text class="donut-center-value">{{topCategoryPercent}}%</text>
+            <text class="donut-center-note">{{topCategoryName || '无'}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 占比轨道线 -->
+      <view class="composition-track">
+        <block wx:for="{{categoryStats}}" wx:key="category">
+          <view class="composition-segment" style="width: {{item.width}}%; background-color: {{item.barColor}};"></view>
+        </block>
+      </view>
     </view>
 
-    <view class="donut-chart-box">
-      <view class="donut-wrap">
-        <canvas class="donut-canvas" canvas-id="donutCanvas"></canvas>
-        <view class="donut-center">
-          <text class="donut-center-label">最大比重</text>
-          <text class="donut-center-value">{{topCategoryPercent}}%</text>
-          <text class="donut-center-note">{{topCategoryName || '无'}}</text>
+    <!-- 明细报表单 -->
+    <view class="stats-list" wx:if="{{categoryStats.length > 0}}">
+      <view class="section-title-wrap">
+        <text class="section-title">分类支出细化明细</text>
+      </view>
+
+      <view class="stats-detail-rows">
+        <block wx:for="{{categoryStats}}" wx:key="category">
+          <view class="stats-detail-row">
+            <view class="detail-left">
+              <view class="category-dot" style="background-color: {{item.barColor}};"></view>
+              <text class="category-name-text">{{item.category}}</text>
+            </view>
+
+            <view class="detail-center">
+              <view class="progress-track">
+                <view class="progress-bar" style="width: {{item.width}}%; background-color: {{item.barColor}};"></view>
+              </view>
+              <text class="percentage-text">{{item.percentText}}</text>
+            </view>
+
+            <view class="detail-right">
+              <text class="amount-text">¥{{item.amount}}</text>
+            </view>
+          </view>
+        </block>
+      </view>
+    </view>
+  </block>
+
+  <!-- ==========================================
+     4.2. 月度趋势版面 (Cash Flow Trend Section)
+     ========================================== -->
+  <block wx:if="{{currentSection === 'trend'}}">
+    <view class="donut-panel" style="padding-bottom: var(--sp-md);">
+      <view class="panel-head">
+        <text class="panel-title">周期账期未来预测</text>
+        <text class="panel-subtitle">未来 6 个月的订阅扣款出账波动流向分析</text>
+      </view>
+
+      <!-- CSS 纯 Flex 高保真直方图柱状表 -->
+      <view class="bar-chart-container">
+        <block wx:for="{{trendList}}" wx:key="monthLabel">
+          <view class="bar-column {{activeTrendIndex === index ? 'active' : ''}}" bindtap="selectTrendMonth" data-index="{{index}}">
+            <text class="bar-value">¥{{item.total}}</text>
+            <view class="bar-track">
+              <!-- 按最大高度 120rpx 等比例映射柱子高度 -->
+              <view class="bar-fill" style="height: {{item.total > 0 ? (item.total / 500 * 100 > 100 ? 100 : item.total / 500 * 100) : 0}}%;"></view>
+            </view>
+            <text class="bar-label">{{item.monthLabel}}</text>
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <!-- 选中月份的扣款明细账目 -->
+    <view class="stats-list" style="margin-top: var(--sp-xs);">
+      <view class="section-title-wrap">
+        <text class="section-title">{{trendList[activeTrendIndex].monthName}} · 订阅续费划扣明细</text>
+        <text class="section-count">共 {{trendList[activeTrendIndex].bills.length}} 笔扣费</text>
+      </view>
+
+      <view class="trend-detail-rows" wx:if="{{trendList[activeTrendIndex].bills.length > 0}}">
+        <block wx:for="{{trendList[activeTrendIndex].bills}}" wx:key="appName">
+          <view class="trend-detail-row">
+            <!-- 品牌高清图标 (标准安全 view 底座) -->
+            <view class="trend-app-avatar" style="background-image: url('{{item.iconPic}}'); background-size: cover; background-position: center; background-repeat: no-repeat; border-color: rgba(28, 61, 50, 0.08);"></view>
+            
+            <view class="trend-app-info">
+              <text class="trend-app-name">{{item.appName}}</text>
+              <text class="trend-app-meta">{{item.cycleCN}}付 ¥{{item.price}}</text>
+            </view>
+
+            <view class="trend-app-cost">
+              <text class="trend-cost-value">¥{{item.billCost}}</text>
+              <text class="trend-cost-count">划扣 {{item.billCount}} 次</text>
+            </view>
+          </view>
+        </block>
+      </view>
+
+      <view class="trend-empty" wx:else>
+        <view class="icon icon-sync-muted" style="width: 48rpx; height: 48rpx; margin-bottom: 12rpx; opacity: 0.5;"></view>
+        <text class="trend-empty-text">该月无处于激活状态的周期账单划扣</text>
+      </view>
+    </view>
+  </block>
+
+  <!-- ==========================================
+     4.3. 预算定额版面 (Budget Quota Section)
+     ========================================== -->
+  <block wx:if="{{currentSection === 'quota'}}">
+    <view class="donut-panel" style="padding-bottom: var(--sp-lg);">
+      <view class="panel-head">
+        <text class="panel-title">账簿安全水位监管</text>
+        <text class="panel-subtitle">设置并管控您的订阅开销上限红线</text>
+      </view>
+
+      <!-- 优雅预算进度控制台 -->
+      <view class="quota-meter-panel">
+        <view class="quota-progress-circle">
+          <view class="quota-stats-row">
+            <text class="quota-pct-num {{budgetStatus === 'danger' ? 'danger-color' : ''}}">{{budgetPercent}}%</text>
+            <text class="quota-pct-label">已占用预算比例</text>
+          </view>
+        </view>
+
+        <!-- 水位控制指示轨 -->
+        <view class="quota-track-wrap">
+          <view class="quota-track-bg">
+            <view class="quota-track-fill {{budgetStatus === 'danger' ? 'danger' : ''}}" style="width: {{budgetPercent > 100 ? 100 : budgetPercent}}%;"></view>
+          </view>
+          <view class="quota-track-labels">
+            <text class="quota-label-left">当期月开销: ¥{{totalMonthly}}</text>
+            <text class="quota-label-right">预算红线: ¥{{budgetLimit}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 水位反馈通知卡片 -->
+      <view class="budget-status-card {{budgetStatus === 'danger' ? 'danger' : 'secure'}}">
+        <view class="status-card-inner">
+          <view class="icon icon-sm {{budgetStatus === 'danger' ? 'icon-delete' : 'icon-sync'}}" style="margin-right: var(--sp-sm);"></view>
+          <text class="status-card-text" wx:if="{{budgetStatus === 'danger'}}">超支警报！月开销已超出月预算红线 ¥{{budgetDiff}}，建议立即排查并退订低频服务。</text>
+          <text class="status-card-text" wx:else>预算充裕！当期支出处于安全红线内，额度尚余 ¥{{budgetDiff}}，财务水位十分健康。</text>
         </view>
       </view>
     </view>
 
-    <!-- 占比轨道线 -->
-    <view class="composition-track">
-      <block wx:for="{{categoryStats}}" wx:key="category">
-        <view class="composition-segment" style="width: {{item.width}}%; background-color: {{item.barColor}};"></view>
-      </block>
-    </view>
-  </view>
-
-  <!-- 5. 明细报表单 -->
-  <view class="stats-list" wx:if="{{categoryStats.length > 0}}">
-    <view class="section-title-wrap">
-      <text class="section-title">分类支出细化明细</text>
+    <!-- 预算滑块动态调节器 -->
+    <view class="donut-panel" style="margin-top: var(--sp-xs); padding: var(--sp-lg);">
+      <view class="slider-header">
+        <text class="slider-title">调整月度预算定额红线</text>
+        <text class="slider-value">¥{{budgetLimit}}</text>
+      </view>
+      <slider class="budget-slider" min="50" max="1000" step="10" value="{{budgetLimit}}" bindchange="onBudgetSliderChange" bindinput="onBudgetSliderInput" activeColor="#1C3D32" backgroundColor="#EAEAEA" block-color="#1C3D32" block-size="20" />
+      <text class="slider-tip">拖动滑块可实时调节额度，系统会即时为您重新校准水位状态</text>
     </view>
 
-    <view class="stats-detail-rows">
-      <block wx:for="{{categoryStats}}" wx:key="category">
-        <view class="stats-detail-row">
+    <!-- 财务缩水防漏与优化建议 (Savings Recommendations) -->
+    <view class="stats-list" style="margin-top: var(--sp-xs);" wx:if="{{savingRecommendations.length > 0}}">
+      <view class="section-title-wrap">
+        <text class="section-title">订阅优化与瘦身建议</text>
+      </view>
 
-          <view class="detail-left">
-            <view class="category-dot" style="background-color: {{item.barColor}};"></view>
-            <text class="category-name-text">{{item.category}}</text>
-          </view>
-
-          <view class="detail-center">
-            <view class="progress-track">
-              <view class="progress-bar" style="width: {{item.width}}%; background-color: {{item.barColor}};"></view>
+      <view class="saving-recom-list">
+        <block wx:for="{{savingRecommendations}}" wx:key="_id">
+          <view class="recom-card-item">
+            <view class="recom-card-top">
+              <view class="recom-app-avatar" style="background-image: url('{{item.iconPic}}'); background-size: cover; background-position: center; background-repeat: no-repeat;"></view>
+              <view class="recom-app-meta">
+                <text class="recom-app-name">{{item.appName}}</text>
+                <text class="recom-app-cost">月均折算: ¥{{item.monthlyCost}} ({{item.cycleCN}}付 ¥{{item.price}})</text>
+              </view>
             </view>
-            <text class="percentage-text">{{item.percentText}}</text>
+            <view class="recom-card-divider"></view>
+            <text class="recom-card-tip">本服务属于高支出项目。如果使用率较低，建议在下次扣款日前关闭自动续订，预计每月可节省 ¥{{item.monthlyCost}}。</text>
           </view>
-
-          <view class="detail-right">
-            <text class="amount-text">¥{{item.amount}}</text>
-          </view>
-
-        </view>
-      </block>
+        </block>
+      </view>
     </view>
-  </view>
+  </block>
 
   <!-- 缺省空白状态 -->
-  <view wx:if="{{categoryStats.length === 0}}" class="empty-state">
+  <view wx:if="{{categoryStats.length === 0 && !loading}}" class="empty-state">
     <view class="empty-icon-wrap">
       <view class="icon icon-xl icon-sync-muted"></view>
     </view>
