@@ -1,0 +1,57 @@
+<!--pages/settings/reminder.wxml-->
+<view class="container">
+
+  <!-- 表单头部 -->
+  <view class="form-header">
+    <text class="form-title">续费与提醒设置</text>
+    <text class="form-subtitle">配置扣款消息推送规则，避免忘记续费</text>
+  </view>
+
+  <!-- 表单内容主体 -->
+  <view class="form-panel">
+
+    <!-- 1. 开启订阅提醒 (Switch Row) -->
+    <view class="form-row-item">
+      <text class="form-row-label" style="flex: 1;">启用账单续费提醒</text>
+      <switch checked="{{remindEnabled}}" bindchange="onRemindToggle" color="#0A5C43" />
+    </view>
+
+    <!-- 2. 提前提醒天数 (Selector Picker) -->
+    <view class="form-row-item" wx:if="{{remindEnabled}}">
+      <text class="form-row-label">提前提醒时间</text>
+      <picker mode="selector" range="{{offsets}}" value="{{offsetIndex}}" bindchange="onOffsetChange">
+        <view class="picker-inner-row">
+          <text class="picker-value-text">{{offsets[offsetIndex]}}</text>
+          <view class="icon icon-sm icon-arrow"></view>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 3. 微信订阅消息模板授权状态 -->
+    <view class="form-row-group" wx:if="{{remindEnabled}}">
+      <text class="form-section-label">微信官方消息推送授权</text>
+      <view class="subscribe-auth-box">
+        <view class="auth-status-row">
+          <view class="icon icon-sm {{authorized ? 'icon-sync' : 'icon-sync-muted'}}"></view>
+          <text class="auth-status-text {{authorized ? 'authorized' : 'unauthorized'}}">
+            {{authorized ? '已成功订阅扣款通知模板 (云端已就绪)' : '未获取微信消息订阅权限'}}
+          </text>
+        </view>
+        <text class="auth-tip-text">根据微信官方规范，云端发送服务通知前，需先在小程序中手动进行"授权订阅通知"操作。</text>
+        <button class="auth-outline-btn" bindtap="requestMessageAuth" hover-class="press-active">
+          {{authorized ? '重新获取订阅消息授权' : '立即授权微信服务通知'}}
+        </button>
+      </view>
+    </view>
+
+  </view>
+
+  <!-- 底部保存按钮 -->
+  <view class="form-action-bar">
+    <button class="primary-btn" bindtap="handleSave" hover-class="press-active">
+      <view class="icon icon-sm icon-check-white" style="margin-right: 12rpx;"></view>
+      保存提醒设置
+    </button>
+  </view>
+
+</view>

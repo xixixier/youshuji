@@ -1,16 +1,16 @@
 <!--pages/stat/stat.wxml-->
 <view class="container">
 
-  <!-- 1. 报表头部 (Minimalist Report Header) -->
+  <!-- 1. Report Header -->
   <view class="report-header">
-    <text class="report-meta">ACCOUNT REPORT / 支出分析报告</text>
+    <text class="report-meta">STATISTICAL REPORT</text>
     <view class="report-title-row">
       <text class="report-title">支出统计总览</text>
       <text class="report-date">实时数据更新</text>
     </view>
   </view>
 
-  <!-- 2. 网格化数据总览 (Microsoft Metrics Grid) -->
+  <!-- 2. Metrics Grid -->
   <view class="metrics-grid">
     <view class="metric-cell">
       <text class="metric-label">月度预估总支出</text>
@@ -20,9 +20,9 @@
       </view>
       <text class="metric-footer">已扣除已失效订阅</text>
     </view>
-    
+
     <view class="metric-divider-y"></view>
-    
+
     <view class="metric-cell-group">
       <view class="metric-sub-cell">
         <text class="metric-sub-label">年度账单估算</text>
@@ -36,7 +36,7 @@
     </view>
   </view>
 
-  <!-- 3. 命令条 (Fluent Command Bar) -->
+  <!-- 3. Command Bar -->
   <view class="command-bar">
     <view class="command-item active">
       <view class="icon icon-stat active"></view>
@@ -52,10 +52,10 @@
     </view>
   </view>
 
-  <!-- 4. 线宽高雅环形占比图 (Sophisticated Thin Doughnut Panel) -->
+  <!-- 4. Donut Panel -->
   <view class="donut-panel">
     <view class="panel-head">
-      <text class="panel-title">支出份额划分 (Donut)</text>
+      <text class="panel-title">支出份额划分</text>
       <text class="panel-subtitle">Top 分类：{{topCategoryName}} ({{topCategoryPercent}}%)</text>
     </view>
 
@@ -70,7 +70,7 @@
       </view>
     </view>
 
-    <!-- 精致的横置份额分布槽 -->
+    <!-- Composition Track -->
     <view class="composition-track">
       <block wx:for="{{categoryStats}}" wx:key="category">
         <view class="composition-segment" style="width: {{item.width}}%; background-color: {{item.barColor}};"></view>
@@ -82,54 +82,42 @@
     </view>
   </view>
 
-  <!-- 5. Lists 风格分类明细报表 -->
+  <!-- 5. Stats Detail List -->
   <view class="stats-list">
     <view class="section-title-wrap">
       <text class="section-title">分类支出细化明细</text>
     </view>
 
-    <view class="stats-table">
-      <!-- 表头 (Column Headers) -->
-      <view class="stats-table-header">
-        <text class="col-cat-name">消费分类</text>
-        <text class="col-cat-progress">所占份额比例</text>
-        <text class="col-cat-amount">月折算金额</text>
-      </view>
+    <view class="stats-detail-rows">
+      <block wx:for="{{categoryStats}}" wx:key="category">
+        <view class="stats-detail-row">
 
-      <!-- 列表内容 (Table Rows) -->
-      <view class="stats-table-rows">
-        <block wx:for="{{categoryStats}}" wx:key="category">
-          <view class="stats-table-row">
-            
-            <view class="col-cat-name cell-cat-flex">
-              <view class="category-dot" style="background-color: {{item.barColor}};"></view>
-              <text class="category-name-text">{{item.category}}</text>
-            </view>
-            
-            <view class="col-cat-progress">
-              <view class="progress-wrap-box">
-                <view class="progress-track-line">
-                  <view class="progress-bar-fill" style="width: {{item.width}}%; background-color: {{item.barColor}};"></view>
-                </view>
-                <text class="progress-percentage-text">{{item.percentText}}</text>
-              </view>
-            </view>
-            
-            <view class="col-cat-amount text-right">
-              <text class="category-amount-text">¥{{item.amount}}</text>
-            </view>
-            
+          <view class="detail-left">
+            <view class="category-dot" style="background-color: {{item.barColor}};"></view>
+            <text class="category-name-text">{{item.category}}</text>
           </view>
-        </block>
 
-        <!-- 空状态 (Empty Placeholder) -->
-        <view wx:if="{{categoryStats.length === 0 && !loading}}" class="lists-empty-state" style="border: none;">
-          <view class="empty-icon-box">
-            <view class="icon icon-lg icon-sync-gray"></svg>
+          <view class="detail-center">
+            <view class="progress-track-line">
+              <view class="progress-bar-fill" style="width: {{item.width}}%; background-color: {{item.barColor}};"></view>
+            </view>
+            <text class="progress-percentage-text">{{item.percentText}}</text>
           </view>
-          <text class="empty-title">无有效记账数据</text>
-          <text class="empty-subtitle">请返回账簿添加处于激活状态的订阅服务</text>
+
+          <view class="detail-right">
+            <text class="category-amount-text">¥{{item.amount}}</text>
+          </view>
+
         </view>
+      </block>
+
+      <!-- Empty State -->
+      <view wx:if="{{categoryStats.length === 0 && !loading}}" class="empty-state">
+        <view class="empty-icon-box">
+          <view class="icon icon-xl icon-sync-muted"></view>
+        </view>
+        <text class="empty-title">无有效记账数据</text>
+        <text class="empty-subtitle">请返回账簿添加处于激活状态的订阅服务</text>
       </view>
     </view>
   </view>

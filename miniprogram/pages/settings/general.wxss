@@ -1,4 +1,4 @@
-/* pages/edit/edit.wxss */
+/* pages/settings/general.wxss */
 page {
   background-color: var(--color-canvas);
   padding-bottom: 200rpx;
@@ -37,106 +37,21 @@ page {
   font-weight: 400;
   color: var(--color-text-3);
   margin-top: var(--sp-xs);
+  line-height: 1.4;
 }
 
 /* ==========================================
    2. 表单内容面板
    ========================================== */
-.fluent-form-panel {
+.form-panel {
   background-color: var(--color-surface);
+  margin-top: var(--sp-xs);
   border-top: 1rpx solid var(--color-divider-solid);
   border-bottom: 1rpx solid var(--color-divider-solid);
-  margin-top: var(--sp-xs);
   width: 100%;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-}
-
-/* 分类行组 */
-.form-row-group {
-  display: flex;
-  flex-direction: column;
-  padding: var(--sp-lg);
-  border-bottom: 1rpx solid var(--color-divider);
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.form-field-label {
-  font-size: 20rpx;
-  font-weight: 600;
-  color: var(--color-text-3);
-  text-transform: uppercase;
-  letter-spacing: 1rpx;
-  line-height: 1.2;
-  margin-bottom: var(--sp-md);
-}
-
-/* 分类网格 */
-.category-grid {
-  display: flex;
-  gap: var(--sp-sm);
-  overflow-x: auto;
-  width: 100%;
-  box-sizing: border-box;
-  padding-bottom: var(--sp-xs);
-}
-
-.category-grid::-webkit-scrollbar {
-  display: none;
-}
-
-.category-chip-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--sp-xs);
-  padding: 20rpx 0;
-  background-color: var(--color-surface);
-  border: 1rpx solid var(--color-divider-solid);
-  border-radius: var(--radius-md);
-  width: 120rpx;
-  flex-shrink: 0;
-  transition: all 0.2s ease;
-}
-
-.cat-circle-avatar {
-  width: 48rpx;
-  height: 48rpx;
-  border-radius: 50%;
-  background-color: var(--color-canvas);
-  color: var(--color-text-2);
-  font-size: 22rpx;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1rpx solid var(--color-divider-solid);
-  transition: all 0.2s ease;
-}
-
-.cat-name {
-  font-size: 20rpx;
-  color: var(--color-text-2);
-  font-weight: 500;
-}
-
-/* 选中高亮状态 */
-.category-chip-item.selected {
-  background-color: var(--color-primary-soft);
-  border-color: var(--color-primary);
-}
-
-.category-chip-item.selected .cat-circle-avatar {
-  background-color: var(--color-primary);
-  color: #FFFFFF;
-  border-color: var(--color-primary);
-}
-
-.category-chip-item.selected .cat-name {
-  color: var(--color-primary);
-  font-weight: 600;
 }
 
 /* 标准表单行 */
@@ -149,23 +64,12 @@ page {
   box-sizing: border-box;
 }
 
-.form-row-item:last-child {
-  border-bottom: none;
-}
-
 .form-row-label {
-  width: 180rpx;
+  width: 200rpx;
   font-size: 26rpx;
   color: var(--color-text-2);
   font-weight: 500;
   flex-shrink: 0;
-}
-
-.form-row-input {
-  flex: 1;
-  font-size: 28rpx;
-  color: var(--color-text-1);
-  font-weight: 500;
 }
 
 /* Picker 包装行 */
@@ -188,7 +92,127 @@ picker {
 }
 
 /* ==========================================
-   3. 底部操作栏 (双按钮布局)
+   3. 行组 (分类网格 / 危险区域)
+   ========================================== */
+.form-row-group {
+  display: flex;
+  flex-direction: column;
+  padding: var(--sp-lg);
+  border-bottom: 1rpx solid var(--color-divider);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-section-label {
+  font-size: 20rpx;
+  font-weight: 600;
+  color: var(--color-text-3);
+  text-transform: uppercase;
+  letter-spacing: 1rpx;
+  line-height: 1.2;
+  margin-bottom: var(--sp-md);
+}
+
+/* ==========================================
+   4. 分类网格选择器
+   ========================================== */
+.category-grid {
+  display: flex;
+  gap: var(--sp-sm);
+  overflow-x: auto;
+  width: 100%;
+  box-sizing: border-box;
+  padding-bottom: 4rpx;
+}
+.category-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.category-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-xs);
+  padding: 20rpx 12rpx;
+  background-color: var(--color-canvas);
+  border: 1rpx solid var(--color-divider-solid);
+  border-radius: var(--radius-md);
+  width: 130rpx;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.cat-avatar {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  background-color: var(--color-surface);
+  color: var(--color-text-2);
+  font-size: 24rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1rpx solid var(--color-divider-solid);
+  transition: all 0.2s ease;
+}
+
+.cat-name {
+  font-size: 20rpx;
+  color: var(--color-text-2);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.category-chip.selected {
+  background-color: var(--color-primary-soft);
+  border-color: var(--color-primary);
+}
+
+.category-chip.selected .cat-avatar {
+  background-color: var(--color-primary);
+  color: #FFFFFF;
+  border-color: var(--color-primary);
+}
+
+.category-chip.selected .cat-name {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* ==========================================
+   5. 危险区域
+   ========================================== */
+.danger-zone-box {
+  display: flex;
+  flex-direction: column;
+  padding: var(--sp-md) 0;
+}
+
+.danger-tip {
+  font-size: 22rpx;
+  color: var(--color-text-3);
+  line-height: 1.6;
+  margin-bottom: var(--sp-md);
+}
+
+.danger-outline-btn {
+  background-color: transparent;
+  color: var(--color-danger);
+  border: 1rpx solid rgba(185, 28, 28, 0.2);
+  font-size: 26rpx;
+  font-weight: 600;
+  height: 80rpx;
+  border-radius: var(--radius-pill);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 80rpx;
+}
+
+/* ==========================================
+   6. 底部操作栏
    ========================================== */
 .form-action-bar {
   position: fixed;
@@ -201,15 +225,8 @@ picker {
   z-index: 99;
 }
 
-.flex-buttons {
-  display: flex;
-  gap: var(--sp-md);
-  width: 100%;
-  box-sizing: border-box;
-}
-
 .primary-btn {
-  flex: 1;
+  width: 100%;
   height: 92rpx;
   background-color: var(--color-primary);
   color: #FFFFFF;
@@ -219,23 +236,5 @@ picker {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.danger-btn {
-  flex: 0.6;
-  height: 92rpx;
-  background-color: var(--color-danger-soft);
-  color: var(--color-danger);
-  border: 1rpx solid rgba(185, 28, 28, 0.12);
-  font-size: 28rpx;
-  font-weight: 600;
-  border-radius: var(--radius-pill);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.primary-btn::after,
-.danger-btn::after {
-  border: none;
+  line-height: 92rpx;
 }

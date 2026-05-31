@@ -1,5 +1,6 @@
 // index.js
 const app = getApp();
+const dateUtils = require('../../utils/date.js');
 
 Page({
   data: {
@@ -392,44 +393,25 @@ Page({
       }
 
       // 计算下次扣款日期及剩余天数 (倒计时日程)
-      let nextPaymentDateStr = item.firstDate;
+      let nextPaymentDateStr = item.nextPaymentDate;
+      if (!nextPaymentDateStr && !isExpired && item.purchaseType === 'sub' && item.firstDate) {
+        // 向下兼容：自动推算缺失的字段
+        nextPaymentDateStr = dateUtils.calculateNextPaymentDate(item.firstDate, item.cycle);
+      }
+
       let daysRemaining = 999;
       let daysRemainingText = '';
-      let nextDateObj = null;
 
-      if (!isExpired) {
-        if (item.purchaseType === 'sub' && item.cycle !== 'custom') {
-          let tempDate = new Date(item.firstDate);
-          while (tempDate < now) {
-            if (item.cycle === 'week') tempDate.setDate(tempDate.getDate() + 7);
-            else if (item.cycle === 'month') tempDate.setMonth(tempDate.getMonth() + 1);
-            else if (item.cycle === 'quarter') tempDate.setMonth(tempDate.getMonth() + 3);
-            else if (item.cycle === 'year') tempDate.setFullYear(tempDate.getFullYear() + 1);
-            else break;
-          }
-          nextDateObj = tempDate;
-          daysRemaining = Math.ceil((nextDateObj - now) / (1000 * 60 * 60 * 24));
-          
-          const y = nextDateObj.getFullYear();
-          const m = (nextDateObj.getMonth() + 1).toString().padStart(2, '0');
-          const d = nextDateObj.getDate().toString().padStart(2, '0');
-          nextPaymentDateStr = `${y}-${m}-${d}`;
-          
-          if (daysRemaining < 0) daysRemainingText = '已到期';
-          else if (daysRemaining === 0) daysRemainingText = '今天';
-          else if (daysRemaining === 1) daysRemainingText = '明天';
-          else daysRemainingText = `${daysRemaining}天后`;
-          
-        } else if (item.purchaseType === 'sub' && item.cycle === 'custom' && item.endDate) {
-          nextDateObj = new Date(item.endDate);
-          daysRemaining = Math.ceil((nextDateObj - now) / (1000 * 60 * 60 * 24));
-          nextPaymentDateStr = item.endDate;
-          
-          if (daysRemaining < 0) daysRemainingText = '已到期';
-          else if (daysRemaining === 0) daysRemainingText = '今天';
-          else if (daysRemaining === 1) daysRemainingText = '明天';
-          else daysRemainingText = `${daysRemaining}天后`;
-        }
+      if (!isExpired && nextPaymentDateStr) {
+        const nextDateObj = new Date(nextPaymentDateStr);
+        const todayZero = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const nextZero = new Date(nextDateObj.getFullYear(), nextDateObj.getMonth(), nextDateObj.getDate());
+        daysRemaining = Math.ceil((nextZero - todayZero) / (1000 * 60 * 60 * 24));
+        
+        if (daysRemaining < 0) daysRemainingText = '已到期';
+        else if (daysRemaining === 0) daysRemainingText = '今天';
+        else if (daysRemaining === 1) daysRemainingText = '明天';
+        else daysRemainingText = `${daysRemaining}天后`;
       }
 
       const cycleMap = {

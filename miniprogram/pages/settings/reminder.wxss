@@ -1,0 +1,192 @@
+/* pages/settings/reminder.wxss */
+page {
+  background-color: var(--color-canvas);
+  padding-bottom: 200rpx;
+}
+
+.container {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ==========================================
+   1. 表单头部
+   ========================================== */
+.form-header {
+  display: flex;
+  flex-direction: column;
+  padding: var(--sp-xl) var(--sp-lg);
+  background-color: var(--color-surface);
+  border-bottom: 1rpx solid var(--color-divider-solid);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: var(--color-text-1);
+  line-height: 1.3;
+}
+
+.form-subtitle {
+  font-size: 24rpx;
+  font-weight: 400;
+  color: var(--color-text-3);
+  margin-top: var(--sp-xs);
+  line-height: 1.4;
+}
+
+/* ==========================================
+   2. 表单内容面板
+   ========================================== */
+.form-panel {
+  background-color: var(--color-surface);
+  margin-top: var(--sp-xs);
+  border-top: 1rpx solid var(--color-divider-solid);
+  border-bottom: 1rpx solid var(--color-divider-solid);
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 标准表单行 */
+.form-row-item {
+  display: flex;
+  align-items: center;
+  padding: var(--sp-lg);
+  border-bottom: 1rpx solid var(--color-divider);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-row-label {
+  font-size: 26rpx;
+  color: var(--color-text-2);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+/* Picker 包装行 */
+picker {
+  flex: 1;
+  width: 100%;
+}
+
+.picker-inner-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.picker-value-text {
+  font-size: 28rpx;
+  color: var(--color-text-1);
+  font-weight: 500;
+}
+
+/* ==========================================
+   3. 行组
+   ========================================== */
+.form-row-group {
+  display: flex;
+  flex-direction: column;
+  padding: var(--sp-lg);
+  border-bottom: 1rpx solid var(--color-divider);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-section-label {
+  font-size: 20rpx;
+  font-weight: 600;
+  color: var(--color-text-3);
+  text-transform: uppercase;
+  letter-spacing: 1rpx;
+  line-height: 1.2;
+  margin-bottom: var(--sp-md);
+}
+
+/* ==========================================
+   4. 微信推送消息订阅授权
+   ========================================== */
+.subscribe-auth-box {
+  display: flex;
+  flex-direction: column;
+  padding: var(--sp-md) 0;
+}
+
+.auth-status-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+}
+
+.auth-status-text {
+  font-size: 24rpx;
+}
+
+.auth-status-text.authorized {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.auth-status-text.unauthorized {
+  color: var(--color-text-3);
+  font-weight: 500;
+}
+
+.auth-tip-text {
+  font-size: 22rpx;
+  color: var(--color-text-3);
+  line-height: 1.6;
+  margin: var(--sp-sm) 0 var(--sp-md);
+}
+
+.auth-outline-btn {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 1rpx solid var(--color-primary);
+  font-size: 26rpx;
+  font-weight: 600;
+  height: 80rpx;
+  border-radius: var(--radius-pill);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 80rpx;
+}
+
+/* ==========================================
+   5. 底部操作栏
+   ========================================== */
+.form-action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--color-surface);
+  border-top: 1rpx solid var(--color-divider-solid);
+  padding: 28rpx var(--sp-lg) 48rpx;
+  z-index: 99;
+}
+
+.primary-btn {
+  width: 100%;
+  height: 92rpx;
+  background-color: var(--color-primary);
+  color: #FFFFFF;
+  font-size: 28rpx;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 92rpx;
+}

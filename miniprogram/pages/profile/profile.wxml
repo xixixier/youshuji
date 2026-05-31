@@ -1,19 +1,19 @@
 <!--pages/profile/profile.wxml-->
 <view class="container">
 
-  <!-- 1. 微软 Fluent 风格账户看板 (Fluent Account Showcase) -->
+  <!-- 1. 账户看板 (Account Showcase Panel) -->
   <view class="account-showcase-panel">
-    
+
     <!-- 未登录状态看板 -->
     <view class="unlogin-box" wx:if="{{!hasLogin}}" bindtap="triggerLoginAction">
       <view class="circle-avatar-placeholder">
-        <view class="icon icon-lg icon-user" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%238A8A8A\' stroke-width=\'1.5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><path d=\'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2\'></path><circle cx=\'12\' cy=\'7\' r=\'4\'></circle></svg>');"></view>
+        <view class="icon icon-lg icon-user"></view>
       </view>
       <view class="account-meta-text">
         <text class="account-title">暂未开启账户同步</text>
         <text class="account-subtitle">点击登录，保护您的账本数据安全</text>
       </view>
-      <button class="fluent-mini-btn" hover-class="fluent-btn-active">立即登录</button>
+      <button class="fluent-mini-btn" hover-class="press-active">立即登录</button>
     </view>
 
     <!-- 已登录状态看板 -->
@@ -33,17 +33,17 @@
 
   </view>
 
-  <!-- 2. 精平分隔线设置列表 (Fluent Setting Groups) -->
-  
+  <!-- 2. 设置列表 (Settings Groups) -->
+
   <view class="settings-section-title">应用同步与参数</view>
   <view class="fluent-list">
-    <view class="fluent-item" bindtap="navigateTo" data-url="/pages/settings/reminder">
-      <view class="icon icon-settings" style="margin-right: 24rpx;"></view>
+    <view class="fluent-item" bindtap="navigateTo" data-url="/pages/settings/reminder" hover-class="press-active">
+      <view class="icon icon-settings menu-icon"></view>
       <text class="menu-text">续费提醒设置</text>
       <view class="icon icon-sm icon-arrow"></view>
     </view>
-    <view class="fluent-item" bindtap="navigateTo" data-url="/pages/settings/backup">
-      <view class="icon icon-backup" style="margin-right: 24rpx;"></view>
+    <view class="fluent-item" bindtap="navigateTo" data-url="/pages/settings/backup" hover-class="press-active">
+      <view class="icon icon-backup menu-icon"></view>
       <text class="menu-text">云端数据备份与下载</text>
       <view class="icon icon-sm icon-arrow"></view>
     </view>
@@ -51,33 +51,31 @@
 
   <view class="settings-section-title">实用工具与数据</view>
   <view class="fluent-list">
-    <view class="fluent-item" bindtap="loadSampleData">
-      <view class="icon icon-sync" style="margin-right: 24rpx;"></view>
+    <view class="fluent-item" bindtap="loadSampleData" hover-class="press-active">
+      <view class="icon icon-sync menu-icon"></view>
       <text class="menu-text">一键注入预置示例账单</text>
       <view class="icon icon-sm icon-arrow"></view>
     </view>
-    <view class="fluent-item" bindtap="navigateTo" data-url="/pages/help/index">
-      <view class="icon icon-help" style="margin-right: 24rpx;"></view>
-      <text class="menu-text">帮助手册与反馈反馈</text>
+    <view class="fluent-item" bindtap="navigateTo" data-url="/pages/help/index" hover-class="press-active">
+      <view class="icon icon-help menu-icon"></view>
+      <text class="menu-text">帮助手册与反馈</text>
       <view class="icon icon-sm icon-arrow"></view>
     </view>
-    <view class="fluent-item" bindtap="navigateTo" data-url="/pages/about/index">
-      <view class="icon icon-info" style="margin-right: 24rpx;"></view>
+    <view class="fluent-item" bindtap="navigateTo" data-url="/pages/about/index" hover-class="press-active">
+      <view class="icon icon-info menu-icon"></view>
       <text class="menu-text">关于有数记小应用</text>
       <view class="icon icon-sm icon-arrow"></view>
     </view>
   </view>
 
-  <!-- ==========================================
-     3. 三合一高保真登录抽屉 (Login Drawer Overlay)
-     ========================================== -->
+  <!-- 3. 三合一登录抽屉 (Login Drawer Overlay) -->
   <view class="drawer-overlay" wx:if="{{showLoginDrawer}}" bindtap="closeLoginDrawer">
     <view class="drawer-panel" catchtap="preventBubble">
       <view class="drawer-header">
         <text class="drawer-title">云端账号同步管理</text>
         <view class="drawer-close-btn" bindtap="closeLoginDrawer">✕</view>
       </view>
-      
+
       <!-- 登录选项卡 Tabs -->
       <view class="drawer-tabs">
         <view class="drawer-tab-item {{loginTab === 'wechat' ? 'active' : ''}}" bindtap="switchLoginTab" data-tab="wechat">
@@ -94,11 +92,11 @@
       <!-- 选项卡 1: 微信快捷登录 -->
       <view class="tab-content" wx:if="{{loginTab === 'wechat'}}">
         <view class="wechat-preview-box">
-          <view class="icon icon-lg icon-wechat" style="margin-bottom: 24rpx;"></view>
+          <view class="icon icon-lg icon-wechat wechat-icon-hero"></view>
           <text class="login-tip">同步后，您的订阅数据可随时在微信云端进行安全备份与自动同步</text>
         </view>
-        <button class="fluent-login-btn wechat-theme" bindtap="doWechatLogin" hover-class="fluent-btn-active">
-          <view class="icon icon-plus-white" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23FFFFFF\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><path d=\'M17 10c0-3.3-3.6-6-8-6s-8 2.7-8 6c0 1.9 1.2 3.6 3 4.7l-.8 2.5 2.7-1.4c1 .3 2.1.4 3.1.4 4.4 0 8-2.7 8-6zM23 15c0-2.8-2.9-5-6.5-5-.3 0-.6 0-.8.1 2.6 1.8 2.6 4.3 2.6 4.9 0 1.4-.9 2.7-2.3 3.5l.6 1.8 2-1c.8.2 1.6.3 2.4.3 3.6 0 6.5-2.2 6.5-5z\'></path></svg>'); margin-right: 12rpx;"></view>
+        <button class="fluent-login-btn wechat-theme" bindtap="doWechatLogin" hover-class="press-active">
+          <view class="icon icon-wechat-white wechat-btn-icon"></view>
           微信账号一键同步
         </button>
       </view>
@@ -116,7 +114,7 @@
             <text class="sms-send-btn {{smsCounting ? 'counting' : ''}}" bindtap="sendSmsCode">{{smsBtnText}}</text>
           </view>
         </view>
-        <button class="fluent-login-btn" bindtap="doPhoneLogin" hover-class="fluent-btn-active">
+        <button class="fluent-login-btn" bindtap="doPhoneLogin" hover-class="press-active">
           验证并同步账号
         </button>
       </view>
@@ -133,7 +131,7 @@
             <input class="drawer-input" password="true" placeholder="请输入登录密码" model:value="emailPwd" />
           </view>
         </view>
-        <button class="fluent-login-btn" bindtap="doEmailLogin" hover-class="fluent-btn-active">
+        <button class="fluent-login-btn" bindtap="doEmailLogin" hover-class="press-active">
           账户密码同步
         </button>
       </view>

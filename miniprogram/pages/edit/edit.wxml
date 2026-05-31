@@ -4,13 +4,13 @@
   <!-- 表单头部 -->
   <view class="form-header">
     <text class="form-title">编辑订阅账单</text>
-    <text class="form-subtitle">微软 Fluent 高精度账薄修正</text>
+    <text class="form-subtitle">修改订阅详情</text>
   </view>
 
-  <!-- 表单内容主体 (Fluent Fields Panel) -->
+  <!-- 表单内容主体 -->
   <view class="fluent-form-panel">
     
-    <!-- 1. 分类选择 (Category Grid Selector) -->
+    <!-- 1. 分类选择 -->
     <view class="form-row-group">
       <text class="form-field-label">账单分类</text>
       <view class="category-grid">
@@ -37,19 +37,19 @@
       </view>
     </view>
 
-    <!-- 2. 服务名称 (Text Input) -->
+    <!-- 2. 服务名称 -->
     <view class="form-row-item">
       <text class="form-row-label">服务名称</text>
-      <input class="form-row-input" model:value="{{appName}}" placeholder="服务名称" placeholder-style="color: var(--fluent-text-mute);" />
+      <input class="form-row-input" model:value="{{appName}}" placeholder="服务名称" placeholder-style="color: var(--color-text-3);" />
     </view>
 
-    <!-- 3. 金额输入 (Digit Input) -->
+    <!-- 3. 金额输入 -->
     <view class="form-row-item">
       <text class="form-row-label">账单金额 (¥)</text>
-      <input class="form-row-input" type="digit" model:value="{{price}}" placeholder="0.00" placeholder-style="color: var(--fluent-text-mute);" />
+      <input class="form-row-input" type="digit" model:value="{{price}}" placeholder="0.00" placeholder-style="color: var(--color-text-3);" />
     </view>
 
-    <!-- 4. 计费周期 (Selector Picker) -->
+    <!-- 4. 计费周期 -->
     <view class="form-row-item">
       <text class="form-row-label">扣款周期</text>
       <picker mode="selector" range="{{cycles}}" value="{{cycleIndex}}" bindchange="onCycleChange">
@@ -60,7 +60,7 @@
       </picker>
     </view>
 
-    <!-- 5. 下次扣款日期 (Date Picker) -->
+    <!-- 5. 下次扣款日期 -->
     <view class="form-row-item">
       <text class="form-row-label">首次/下次付款日</text>
       <picker mode="date" value="{{firstDate}}" bindchange="onDateChange">
@@ -73,17 +73,18 @@
 
   </view>
 
-  <!-- 底部操作按钮两栏布局 (Fluent Commands Bar) -->
-  <view class="form-action-bar flex-buttons">
-    <button class="fluent-danger-btn" bindtap="handleDelete" hover-class="fluent-btn-active">
-      <view class="icon icon-delete" style="margin-right: 12rpx;"></view>
-      删除此记录
-    </button>
-    
-    <button class="fluent-primary-btn flex-one" bindtap="handleUpdate" hover-class="fluent-btn-active">
-      <view class="icon icon-plus-white" style="margin-right: 12rpx; background-image: url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23FFFFFF\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><polyline points=\'20 6 9 17 4 12\'></polyline></svg>');"></view>
-      确认修改
-    </button>
+  <!-- 底部操作按钮两栏布局 -->
+  <view class="form-action-bar">
+    <view class="flex-buttons">
+      <button class="danger-btn" bindtap="handleDelete" hover-class="press-active">
+        <view class="icon icon-sm icon-delete" style="margin-right: 12rpx;"></view>
+        删除此记录
+      </button>
+      <button class="primary-btn" bindtap="handleUpdate" hover-class="press-active">
+        <view class="icon icon-sm icon-check-white" style="margin-right: 12rpx;"></view>
+        确认修改
+      </button>
+    </view>
   </view>
 
 </view>

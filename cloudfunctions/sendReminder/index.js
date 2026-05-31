@@ -8,98 +8,162 @@ cloud.init({
 const db = cloud.database();
 const _ = db.command;
 
+// 格式化日期为 YYYY-MM-DD
+const formatDate = (date) => {
+  const y = date.getFullYear();
+  const m = (date.getMonth() + 1).toString().padStart(2, '0');
+  const d = date.getDate().toString().padStart(2, '0');
+  return `${y}-${m}-${d}`;
+};
+
+// 计算下次扣款日期 (对齐客户端 date.js 算法逻辑)
+const calculateNextPaymentDate = (firstDateStr, cycle) => {
+  if (!firstDateStr) return '';
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  let tempDate = new Date(firstDateStr);
+  if (isNaN(tempDate.getTime())) {
+    tempDate = new Date();
+  }
+  const tempDateZero = new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate());
+
+  if (tempDateZero >= today) {
+    return formatDate(tempDate);
+  }
+
+  let safetyCount = 0;
+  while (tempDateZero < today && safetyCount < 1000) {
+    safetyCount++;
+    if (cycle === 'week') {
+      tempDate.setDate(tempDate.getDate() + 7);
+    } else if (cycle === 'month') {
+      tempDate.setMonth(tempDate.getMonth() + 1);
+    } else if (cycle === 'quarter') {
+      tempDate.setMonth(tempDate.getMonth() + 3);
+    } else if (cycle === 'year') {
+      tempDate.setFullYear(tempDate.getFullYear() + 1);
+    } else {
+      break;
+    }
+    tempDateZero.setTime(Date.UTC(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate()));
+  }
+  return formatDate(tempDate);
+};
+
 exports.main = async (event, context) => {
   try {
     const now = new Date();
-    // 计算3天后的日期
-    const threeDaysLater = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000);
+    const todayStr = formatDate(now);
     
-    // 格式化日期为 YYYY-MM-DD
-    const formatDate = (date) => {
-      const y = date.getFullYear();
-      const m = (date.getMonth() + 1).toString().padStart(2, '0');
-      const d = date.getDate().toString().padStart(2, '0');
-      return `${y}-${m}-${d}`;
-    };
-
+    // 计算 3 天后的扣款截止目标日期
+    const threeDaysLater = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000);
     const targetDateStr = formatDate(threeDaysLater);
 
-    // 查询即将到期的订阅 (简单示例：直接匹配 endDate 或 nextPaymentDate)
-    // 注意：实际生产中，nextPaymentDate 可能需要服务端定时任务每天更新计算，或者在存储时就计算好所有未来的扣费日。
-    // 这里简化逻辑：假设我们只检查 endDate (自定义周期) 或者假设有字段 nextPaymentDate 存储了下次扣费日。
-    // 由于之前前端逻辑是实时计算 nextPaymentDate，云函数无法直接查询计算字段。
-    // 临时方案：查询 endDate 匹配的（针对自定义周期），或 purchaseType='sub' 的所有记录拉出来遍历计算。
-    // 为避免拉取量过大，这里演示查询 endDate <= 3天后且 >= 今天的记录。
-    
-    // 实际上，更稳妥的方式是：在每次保存/更新时，将 nextPaymentDate 存入数据库。
-    // 但为了不破坏现有结构，我们先只处理 'custom' 周期且 endDate 明确的情况，
-    // 或者遍历所有订阅制数据（数据量不大时可行）。
-    
-    // 这里采用遍历所有订阅制数据的方法 (适用于小规模用户)
-    const { data: subscriptions } = await db.collection('subscriptions')
+    console.log(`Starting scheduled checker. Range: [${todayStr} ~ ${targetDateStr}]`);
+
+    // 1. 高性能查询：直通索引，查找 nextPaymentDate 在扣款提醒区间内的记录
+    const { data: directMatches } = await db.collection('subscriptions')
       .where({
         purchaseType: 'sub',
-        isRemind: true // 仅针对开启提醒的
+        isRemind: true,
+        nextPaymentDate: _.gte(todayStr).and(_.lte(targetDateStr))
       })
       .get();
 
-    const tasks = [];
+    console.log(`Direct nextPaymentDate query hits: ${directMatches.length}`);
 
-    for (const item of subscriptions) {
-      // 计算剩余天数逻辑 (复用前端逻辑的简化版)
-      let nextPaymentDate = null;
-      
-      if (item.cycle === 'custom' && item.endDate) {
-        nextPaymentDate = new Date(item.endDate);
-      } else if (item.firstDate) {
-        // 简单推算：基于 firstDate 和 cycle 推算下一个日期
-        let tempDate = new Date(item.firstDate);
-        // 如果 firstDate 已经是未来，则它就是下次扣费日
-        if (tempDate > now) {
-          nextPaymentDate = tempDate;
-        } else {
-           // 否则累加直到超过现在
-           while (tempDate < now) {
-            if (item.cycle === 'month') tempDate.setMonth(tempDate.getMonth() + 1);
-            else if (item.cycle === 'quarter') tempDate.setMonth(tempDate.getMonth() + 3);
-            else if (item.cycle === 'year') tempDate.setFullYear(tempDate.getFullYear() + 1);
-            else if (item.cycle === 'week') tempDate.setDate(tempDate.getDate() + 7);
-            else break;
+    // 2. 兼容性查询（懒迁移）：针对历史未存入该字段的旧记录
+    const { data: legacyRecords } = await db.collection('subscriptions')
+      .where({
+        purchaseType: 'sub',
+        isRemind: true,
+        nextPaymentDate: _.exists(false)
+      })
+      .get();
+
+    console.log(`Legacy records to scan & lazy-migrate: ${legacyRecords.length}`);
+
+    const allMatchedSubscriptions = [...directMatches];
+    const migrationPromises = [];
+
+    // 处理未迁移的历史账单
+    for (const item of legacyRecords) {
+      if (item.firstDate && item.cycle) {
+        const nextPaymentDate = calculateNextPaymentDate(item.firstDate, item.cycle);
+        
+        if (nextPaymentDate) {
+          // 异步写回数据库，持久化补齐字段，下次巡检将直接命中直达索引！
+          const updatePromise = db.collection('subscriptions').doc(item._id).update({
+            data: { nextPaymentDate: nextPaymentDate }
+          }).then(() => {
+            console.log(`Lazy-migrated subscription ${item._id} with nextPaymentDate: ${nextPaymentDate}`);
+          }).catch(err => {
+            console.error(`Failed to lazy-migrate subscription ${item._id}:`, err);
+          });
+          migrationPromises.push(updatePromise);
+
+          // 比对是否属于 3 天内的提醒区间
+          if (nextPaymentDate >= todayStr && nextPaymentDate <= targetDateStr) {
+            allMatchedSubscriptions.push({
+              ...item,
+              nextPaymentDate: nextPaymentDate
+            });
           }
-          nextPaymentDate = tempDate;
         }
-      }
-
-      if (!nextPaymentDate) continue;
-
-      // 计算天数差
-      const diffTime = nextPaymentDate - now;
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-      // 命中 3 天内且未过期 (>=0)
-      if (diffDays >= 0 && diffDays <= 3) {
-        const promise = cloud.openapi.subscribeMessage.send({
-          touser: item._openid, // 用户的 openid
-          templateId: 'oQ_WbG11JmLmLLHzX7jrkkfCq5p1TlFgP1S9pDDrHt4',
-          page: 'pages/index/index',
-          data: {
-            thing1: { value: item.appName.slice(0, 20) }, // 限制长度
-            amount2: { value: item.currency + item.price },
-            time3: { value: formatDate(nextPaymentDate) } // 到期时间
-            // 注意：thing1, amount2, time3 必须与微信后台模板变量名一致
-          }
-        }).catch(err => {
-          console.error('发送失败', item._id, err);
-        });
-        tasks.push(promise);
       }
     }
 
-    await Promise.all(tasks);
-    return { success: true, sentCount: tasks.length };
+    // 并行执行老数据回写
+    if (migrationPromises.length > 0) {
+      await Promise.all(migrationPromises);
+    }
+
+    console.log(`Total matched subscriptions for reminders: ${allMatchedSubscriptions.length}`);
+
+    const tasks = [];
+
+    // 巡检发送消息模板
+    for (const item of allMatchedSubscriptions) {
+      // 提取用户的 openid，若记录未绑定 openid 则从上下文中获取兜底
+      const openid = item._openid || (context.userInfo ? context.userInfo.openId : null);
+      if (!openid) {
+        console.warn(`Skipping message for ${item._id} due to missing OpenID`);
+        continue;
+      }
+
+      const nextPayDate = item.nextPaymentDate || item.firstDate;
+
+      const promise = cloud.openapi.subscribeMessage.send({
+        touser: openid,
+        templateId: 'oQ_WbG11JmLmLLHzX7jrkkfCq5p1TlFgP1S9pDDrHt4',
+        page: 'pages/index/index',
+        data: {
+          thing1: { value: item.appName.slice(0, 20) }, // 限制20字以内
+          amount2: { value: item.currency + Number(item.price).toFixed(2) },
+          time3: { value: nextPayDate }
+        }
+      }).then(res => {
+        console.log(`Successfully sent reminder message to user ${openid} for bill ${item._id}`);
+        return { success: true };
+      }).catch(err => {
+        console.error(`Failed to send message to user ${openid} for bill ${item._id}:`, err);
+        return { success: false, error: err };
+      });
+      tasks.push(promise);
+    }
+
+    const results = await Promise.all(tasks);
+    const successCount = results.filter(r => r.success).length;
+
+    return {
+      success: true,
+      scannedLegacyCount: legacyRecords.length,
+      matchedCount: allMatchedSubscriptions.length,
+      sentSuccessCount: successCount
+    };
 
   } catch (err) {
-    console.error(err);
+    console.error('sendReminder execution failed with critical error:', err);
     return { success: false, error: err };
   }
 };

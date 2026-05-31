@@ -1,4 +1,6 @@
 // pages/edit/edit.js
+const dateUtils = require('../../utils/date.js');
+
 Page({
   data: {
     // 账单记录编辑状态
@@ -99,6 +101,8 @@ Page({
 
     const db = wx.cloud.database();
     const cycleMap = ['week', 'month', 'quarter', 'year'];
+    const cycleCode = cycleMap[this.data.cycleIndex];
+    const nextPaymentDate = dateUtils.calculateNextPaymentDate(this.data.firstDate, cycleCode);
     
     const updateData = {
       appName: appName,
@@ -106,8 +110,9 @@ Page({
       price: price,
       currency: '￥',
       purchaseType: 'sub',
-      cycle: cycleMap[this.data.cycleIndex],
+      cycle: cycleCode,
       firstDate: this.data.firstDate,
+      nextPaymentDate: nextPaymentDate,
       isRemind: true
     };
 

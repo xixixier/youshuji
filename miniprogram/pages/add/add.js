@@ -1,4 +1,6 @@
 // pages/add/add.js
+const dateUtils = require('../../utils/date.js');
+
 Page({
   data: {
     // 账单记录表单字段
@@ -72,6 +74,8 @@ Page({
 
     const db = wx.cloud.database();
     const cycleMap = ['week', 'month', 'quarter', 'year'];
+    const cycleCode = cycleMap[this.data.cycleIndex];
+    const nextPaymentDate = dateUtils.calculateNextPaymentDate(this.data.firstDate, cycleCode);
     
     const saveData = {
       appName: appName,
@@ -79,8 +83,9 @@ Page({
       price: price,
       currency: '￥',
       purchaseType: 'sub', // 默认为定期订阅制
-      cycle: cycleMap[this.data.cycleIndex],
+      cycle: cycleCode,
       firstDate: this.data.firstDate,
+      nextPaymentDate: nextPaymentDate,
       isRemind: true, // 默认开启提醒
       createdAt: db.serverDate()
     };

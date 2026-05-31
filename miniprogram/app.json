@@ -4,7 +4,9 @@
     "pages/stat/stat",
     "pages/profile/profile",
     "pages/add/add",
-    "pages/edit/edit"
+    "pages/edit/edit",
+    "pages/settings/reminder",
+    "pages/settings/general"
   ],
   "window": {
     "backgroundColor": "#F7F7F7",
@@ -15,7 +17,7 @@
   },
   "tabBar": {
     "color": "#999999",
-    "selectedColor": "#07C160",
+    "selectedColor": "#0A5C43",
     "backgroundColor": "#FFFFFF",
     "borderStyle": "black",
     "list": [

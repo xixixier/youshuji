@@ -374,7 +374,9 @@ Page({
       '/pages/stat/stat',
       '/pages/profile/profile',
       '/pages/add/add',
-      '/pages/edit/edit'
+      '/pages/edit/edit',
+      '/pages/settings/reminder',
+      '/pages/settings/general'
     ];
     
     if (existingPages.includes(url)) {

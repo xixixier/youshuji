@@ -1,31 +1,46 @@
-/**app.wxss**/
+/**app.wxss — 有数记 · 像素级全局设计系统 */
 
 /* ==========================================
-   1. Microsoft Fluent 全局设计变量与基线样式
+   1. 像素级设计变量 (Pixel-Perfect Design Tokens)
    ========================================== */
 page {
-  /* 配色系统 - 微软扁平数据与生产力美学 */
-  --fluent-bg: #F3F4F6;            /* 冷灰偏亮背景 */
-  --fluent-surface: #FFFFFF;       /* 纯白容器面 */
-  --fluent-text-main: #1F1F1F;     /* 微软深炭黑 - 主阅读字 */
-  --fluent-text-sec: #505050;      /* 中度灰 - 辅助信息 */
-  --fluent-text-mute: #8A8A8A;     /* 淡灰 - 元数据与占位符 */
-  --fluent-divider: #EAEAEA;       /* 1px 极细分隔线色 */
-  
-  /* 品牌强调色 - 微软企业绿/数据绿 */
-  --fluent-primary: #107C41;       /* 经典高雅 Excel 绿 - 代表“有数”与理财 */
-  --fluent-primary-light: #E1F2E8; /* 浅绿背景 - 适用于徽章 */
-  --fluent-danger: #D83B01;        /* 经典橙红 - 紧急/过期告警 */
-  --fluent-danger-light: #FDE7E9;  /* 浅粉红背景 */
+  /* —— 精密色彩系统 (Color Architecture) —— */
+  --color-canvas: #FAF9F6;          /* 粉垩砂白背景 */
+  --color-surface: #FFFFFF;         /* 纯净白容器 */
+  --color-primary: #0A5C43;         /* 曜岩翠绿（品牌色） */
+  --color-primary-soft: #E8F5EE;    /* 淡翡翠背景 */
+  --color-primary-mist: rgba(10, 92, 67, 0.06); /* 极淡翡翠雾 */
+  --color-text-1: #0F172A;          /* 曜石极黑（主文字） */
+  --color-text-2: #475569;          /* 板岩中灰（次级） */
+  --color-text-3: #94A3B8;          /* 冷杉浅灰（弱化） */
+  --color-danger: #B91C1C;          /* 绯红警示 */
+  --color-danger-soft: #FEF2F2;     /* 淡绯红背景 */
+  --color-wechat: #07C160;          /* 微信绿 */
+  --color-divider: rgba(15, 23, 42, 0.04); /* 极淡分割线 */
+  --color-divider-solid: #F1F0EE;   /* 实体分割线（用于需要精确控制处） */
 
-  /* 字体字重 - Tabular Nums 等宽数字确保账单对齐 */
-  --fluent-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", sans-serif;
-  --fluent-font-nums: "Segoe UI", "SF Pro Display", -apple-system, monospace;
+  /* —— 黄金间距尺度 (Golden Spacing Scale) —— */
+  --sp-xs: 8rpx;
+  --sp-sm: 16rpx;
+  --sp-md: 24rpx;
+  --sp-lg: 32rpx;
+  --sp-xl: 48rpx;
+
+  /* —— 精密字体系统 (Typography) —— */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", sans-serif;
+  --font-mono: "Segoe UI", "SF Pro Display", -apple-system, monospace;
+
+  /* —— 圆角系统 (Border Radius) —— */
+  --radius-xs: 6rpx;
+  --radius-sm: 8rpx;
+  --radius-md: 12rpx;
+  --radius-lg: 16rpx;
+  --radius-pill: 200rpx;
 
   /* 基础页面重置 */
-  background-color: var(--fluent-bg);
-  font-family: var(--fluent-font);
-  color: var(--fluent-text-main);
+  background-color: var(--color-canvas);
+  font-family: var(--font-sans);
+  color: var(--color-text-1);
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
 }
@@ -37,6 +52,9 @@ page {
   width: 100%;
 }
 
+/* ==========================================
+   2. 全局元素重置 (Element Reset)
+   ========================================== */
 button {
   background: initial;
   padding: 0;
@@ -46,12 +64,17 @@ button {
 button::after {
   border: none;
 }
-button:active {
-  opacity: 0.85;
+
+/* ==========================================
+   3. 微交互通用类 (Micro-interactions)
+   ========================================== */
+.press-active {
+  transform: scale(0.97);
+  opacity: 0.88;
 }
 
 /* ==========================================
-   2. 统一 1.5px 微软细线矢量图标系统 (CSS inline SVG)
+   4. 统一 1.5px 精细矢量图标系统 (SVG Icon Library)
    ========================================== */
 .icon {
   display: inline-block;
@@ -65,130 +88,136 @@ button:active {
   transition: all 0.2s ease;
 }
 
-.icon-sm {
-  width: 32rpx;
-  height: 32rpx;
-}
+.icon-sm { width: 32rpx; height: 32rpx; }
+.icon-lg { width: 48rpx; height: 48rpx; }
+.icon-xl { width: 64rpx; height: 64rpx; }
 
-.icon-lg {
-  width: 48rpx;
-  height: 48rpx;
-}
-
-/* 主页图标 (Home) */
+/* 主页 (Home) */
 .icon-home {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23242424' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'></path><polyline points='9 22 9 12 15 12 15 22'></polyline></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'></path><polyline points='9 22 9 12 15 12 15 22'></polyline></svg>");
 }
 .icon-home.active {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23107C41' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'></path><polyline points='9 22 9 12 15 12 15 22'></polyline></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230A5C43' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'></path><polyline points='9 22 9 12 15 12 15 22'></polyline></svg>");
 }
 
-/* 统计图标 (Stat/Trend) */
+/* 统计 (Stat/Bar Chart) */
 .icon-stat {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23242424' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><line x1='18' y1='20' x2='18' y2='10'></line><line x1='12' y1='20' x2='12' y2='4'></line><line x1='6' y1='20' x2='6' y2='14'></line></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><line x1='18' y1='20' x2='18' y2='10'></line><line x1='12' y1='20' x2='12' y2='4'></line><line x1='6' y1='20' x2='6' y2='14'></line></svg>");
 }
 .icon-stat.active {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23107C41' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><line x1='18' y1='20' x2='18' y2='10'></line><line x1='12' y1='20' x2='12' y2='4'></line><line x1='6' y1='20' x2='6' y2='14'></line></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230A5C43' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><line x1='18' y1='20' x2='18' y2='10'></line><line x1='12' y1='20' x2='12' y2='4'></line><line x1='6' y1='20' x2='6' y2='14'></line></svg>");
 }
 
-/* 个人图标 (Profile/User) */
+/* 用户 (User) */
 .icon-user {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23242424' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>");
 }
 .icon-user.active {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23107C41' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230A5C43' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>");
 }
 
-/* 添加图标 (Plus) */
+/* 加号 (Plus) */
 .icon-plus {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23107C41' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><line x1='12' y1='5' x2='12' y2='19'></line><line x1='5' y1='12' x2='19' y2='12'></line></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230A5C43' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><line x1='12' y1='5' x2='12' y2='19'></line><line x1='5' y1='12' x2='19' y2='12'></line></svg>");
 }
 .icon-plus-white {
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><line x1='12' y1='5' x2='12' y2='19'></line><line x1='5' y1='12' x2='19' y2='12'></line></svg>");
 }
 
-/* 微信图标 (WeChat) */
+/* 勾号 (Check) */
+.icon-check-white {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'></polyline></svg>");
+}
+
+/* 微信 (WeChat) */
 .icon-wechat {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23107C41' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M17 10c0-3.3-3.6-6-8-6s-8 2.7-8 6c0 1.9 1.2 3.6 3 4.7l-.8 2.5 2.7-1.4c1 .3 2.1.4 3.1.4 4.4 0 8-2.7 8-6zM23 15c0-2.8-2.9-5-6.5-5-.3 0-.6 0-.8.1 2.6 1.8 2.6 4.3 2.6 4.9 0 1.4-.9 2.7-2.3 3.5l.6 1.8 2-1c.8.2 1.6.3 2.4.3 3.6 0 6.5-2.2 6.5-5z'></path></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230A5C43' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M17 10c0-3.3-3.6-6-8-6s-8 2.7-8 6c0 1.9 1.2 3.6 3 4.7l-.8 2.5 2.7-1.4c1 .3 2.1.4 3.1.4 4.4 0 8-2.7 8-6zM23 15c0-2.8-2.9-5-6.5-5-.3 0-.6 0-.8.1 2.6 1.8 2.6 4.3 2.6 4.9 0 1.4-.9 2.7-2.3 3.5l.6 1.8 2-1c.8.2 1.6.3 2.4.3 3.6 0 6.5-2.2 6.5-5z'></path></svg>");
+}
+.icon-wechat-white {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M17 10c0-3.3-3.6-6-8-6s-8 2.7-8 6c0 1.9 1.2 3.6 3 4.7l-.8 2.5 2.7-1.4c1 .3 2.1.4 3.1.4 4.4 0 8-2.7 8-6zM23 15c0-2.8-2.9-5-6.5-5-.3 0-.6 0-.8.1 2.6 1.8 2.6 4.3 2.6 4.9 0 1.4-.9 2.7-2.3 3.5l.6 1.8 2-1c.8.2 1.6.3 2.4.3 3.6 0 6.5-2.2 6.5-5z'></path></svg>");
 }
 
-/* 手机图标 (Phone) */
+/* 手机 (Phone) */
 .icon-phone {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23505050' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><rect x='5' y='2' width='14' height='20' rx='2' ry='2'></rect><line x1='12' y1='18' x2='12.01' y2='18'></line></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><rect x='5' y='2' width='14' height='20' rx='2' ry='2'></rect><line x1='12' y1='18' x2='12.01' y2='18'></line></svg>");
 }
 
-/* 邮箱图标 (Mail) */
+/* 邮箱 (Mail) */
 .icon-mail {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23505050' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z'></path><polyline points='22,6 12,13 2,6'></polyline></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z'></path><polyline points='22,6 12,13 2,6'></polyline></svg>");
 }
 
-/* 编辑图标 (Edit/Pencil) */
-.icon-edit {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23505050' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M12 20h9'></path><path d='M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z'></path></svg>");
-}
-
-/* 垃圾桶删除图标 (Delete/Trash) */
-.icon-delete {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23D83B01' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='3 6 5 6 21 6'></polyline><path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'></path><line x1='10' y1='11' x2='10' y2='17'></line><line x1='14' y1='11' x2='14' y2='17'></line></svg>");
-}
-
-/* 状态同步图标 (Sync) */
-.icon-sync {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23107C41' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='23 4 23 10 17 10'></polyline><polyline points='1 20 1 14 7 14'></polyline><path d='M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15'></path></svg>");
-}
-.icon-sync-gray {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238A8A8A' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='23 4 23 10 17 10'></polyline><polyline points='1 20 1 14 7 14'></polyline><path d='M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15'></path></svg>");
-}
-
-/* 信息图标 (Info) */
-.icon-info {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23505050' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'></circle><line x1='12' y1='16' x2='12' y2='12'></line><line x1='12' y1='8' x2='12.01' y2='8'></line></svg>");
-}
-
-/* 指示箭头 (Chevron-Right) */
-.icon-arrow {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238A8A8A' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='9 18 15 12 9 6'></polyline></svg>");
-}
-
-/* 齿轮设置 (Settings) */
-.icon-settings {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23505050' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='3'></circle><path d='M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z'></path></svg>");
-}
-
-/* 锁 (Lock/Password) */
+/* 锁 (Lock) */
 .icon-lock {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23505050' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='11' width='18' height='11' rx='2' ry='2'></rect><path d='M7 11V7a5 5 0 0 1 10 0v4'></path></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='11' width='18' height='11' rx='2' ry='2'></rect><path d='M7 11V7a5 5 0 0 1 10 0v4'></path></svg>");
 }
 
-/* 云备份 (Backup) */
+/* 编辑 (Edit) */
+.icon-edit {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M12 20h9'></path><path d='M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z'></path></svg>");
+}
+
+/* 删除 (Trash) */
+.icon-delete {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23B91C1C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='3 6 5 6 21 6'></polyline><path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'></path><line x1='10' y1='11' x2='10' y2='17'></line><line x1='14' y1='11' x2='14' y2='17'></line></svg>");
+}
+
+/* 同步 (Sync/Refresh) */
+.icon-sync {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230A5C43' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='23 4 23 10 17 10'></polyline><polyline points='1 20 1 14 7 14'></polyline><path d='M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15'></path></svg>");
+}
+.icon-sync-muted {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='23 4 23 10 17 10'></polyline><polyline points='1 20 1 14 7 14'></polyline><path d='M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15'></path></svg>");
+}
+
+/* 箭头 (Chevron-Right) */
+.icon-arrow {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='9 18 15 12 9 6'></polyline></svg>");
+}
+
+/* 齿轮 (Settings) */
+.icon-settings {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='3'></circle><path d='M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z'></path></svg>");
+}
+
+/* 信息 (Info) */
+.icon-info {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'></circle><line x1='12' y1='16' x2='12' y2='12'></line><line x1='12' y1='8' x2='12.01' y2='8'></line></svg>");
+}
+
+/* 云备份 (Upload/Backup) */
 .icon-backup {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23505050' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'></path><polyline points='17 8 12 3 7 8'></polyline><line x1='12' y1='3' x2='12' y2='15'></line></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'></path><polyline points='17 8 12 3 7 8'></polyline><line x1='12' y1='3' x2='12' y2='15'></line></svg>");
 }
 
-/* 帮助反馈 (Help) */
+/* 帮助 (Help) */
 .icon-help {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23505050' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3'></path><line x1='12' y1='17' x2='12.01' y2='17'></line></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'></circle><path d='M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3'></path><line x1='12' y1='17' x2='12.01' y2='17'></line></svg>");
 }
 
+/* 时钟 (Clock) */
+.icon-clock {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230A5C43' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'></circle><polyline points='12 6 12 12 16 14'></polyline></svg>");
+}
 
 /* ==========================================
-   3. 全局通用的高级扁平化骨架与列表样式 (Fluent Styles)
+   5. 全局通用骨架样式 (Universal Skeletons)
    ========================================== */
 
-/* 主页、统计页的列表项分割样式 */
+/* Fluent 设置列表 */
 .fluent-list {
-  background-color: var(--fluent-surface);
-  border-top: 1rpx solid var(--fluent-divider);
-  border-bottom: 1rpx solid var(--fluent-divider);
+  background-color: var(--color-surface);
+  border-top: 1rpx solid var(--color-divider-solid);
+  border-bottom: 1rpx solid var(--color-divider-solid);
   width: 100%;
 }
 
 .fluent-item {
   display: flex;
   align-items: center;
-  padding: 32rpx 24rpx;
-  border-bottom: 1rpx solid var(--fluent-divider);
-  background-color: var(--fluent-surface);
+  padding: var(--sp-lg) var(--sp-lg);
+  border-bottom: 1rpx solid var(--color-divider);
+  background-color: var(--color-surface);
   transition: background-color 0.15s ease;
 }
 
@@ -197,11 +226,8 @@ button:active {
 }
 
 .fluent-item:active {
-  background-color: #F8F9FA;
+  background-color: var(--color-canvas);
 }
 
-/* 触点按压轻微收缩回弹动画 */
-.fluent-btn-active {
-  transform: scale(0.98);
-  opacity: 0.9;
-}
+/* 通用文本修正 */
+.text-right { text-align: right; }
