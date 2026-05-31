@@ -208,3 +208,22 @@ picker {
   letter-spacing: 2rpx !important;
   width: 100% !important;
 }
+
+/* ==========================================
+   5. 提醒细分选项行项 (Fine-Grained Option Rows)
+   ========================================== */
+.setting-option-row {
+  display: flex;
+  align-items: center;
+  height: 96rpx;
+  border-bottom: 1rpx solid var(--color-divider);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.setting-option-label {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--color-text-2);
+  letter-spacing: 0.5rpx;
+}

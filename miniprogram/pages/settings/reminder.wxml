@@ -28,7 +28,7 @@
     </view>
 
     <!-- 3. 微信订阅消息模板授权状态 -->
-    <view class="form-row-group" wx:if="{{remindEnabled}}" style="border-bottom: none;">
+    <view class="form-row-group" wx:if="{{remindEnabled}}" style="border-bottom: {{authorized ? '1px solid var(--color-divider)' : 'none'}};">
       <text class="form-field-label">微信官方消息推送授权</text>
       <view class="subscribe-auth-box">
         <view class="auth-status-row">
@@ -41,6 +41,26 @@
         <button class="auth-outline-btn" bindtap="requestMessageAuth" hover-class="press-active">
           {{authorized ? '重新获取订阅消息授权' : '立即授权微信服务通知'}}
         </button>
+      </view>
+    </view>
+
+    <!-- 4. 授权成功后的提醒细分选项 -->
+    <view class="form-row-group" wx:if="{{remindEnabled && authorized}}" style="border-bottom: none;">
+      <text class="form-field-label">微信提醒细分选项</text>
+      
+      <view class="setting-option-row">
+        <text class="setting-option-label" style="flex: 1;">订阅到期提醒</text>
+        <switch checked="{{remindOnExpiry}}" bindchange="onExpiryToggle" color="#1C3D32" />
+      </view>
+
+      <view class="setting-option-row">
+        <text class="setting-option-label" style="flex: 1;">订阅即将到期提醒</text>
+        <switch checked="{{remindBeforeExpiry}}" bindchange="onBeforeExpiryToggle" color="#1C3D32" />
+      </view>
+
+      <view class="setting-option-row" style="border-bottom: none; padding-bottom: 0; padding-top: 12rpx;">
+        <text class="setting-option-label" style="flex: 1;">周期扣款变动警报</text>
+        <switch checked="{{remindPriceChange}}" bindchange="onPriceChangeToggle" color="#1C3D32" />
       </view>
     </view>
 

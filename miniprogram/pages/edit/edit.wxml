@@ -1,56 +1,65 @@
-<!--pages/edit/edit.wxml-->
+<!--pages/edit/edit.wxml — 有数记 · 编辑账单-->
 <view class="container">
 
   <!-- 表单头部 -->
   <view class="form-header">
     <text class="form-title">编辑订阅账单</text>
-    <text class="form-subtitle">修改订阅详情</text>
+    <text class="form-subtitle">修改或删除您已保存的订阅服务或买断项目</text>
   </view>
 
-  <!-- 表单内容主体 -->
+  <!-- 表单内容主体 — 悬浮面板 -->
   <view class="fluent-form-panel">
     
-    <!-- 1. 分类选择 -->
+    <!-- 1. 服务名称与智能匹配预览 -->
+    <view class="form-row-item" style="height: auto; min-height: 112rpx; padding: 24rpx var(--sp-lg); flex-direction: column; align-items: flex-start; justify-content: center; gap: 12rpx;">
+      <view style="display: flex; align-items: center; width: 100%;">
+        <text class="form-row-label" style="margin-bottom: 0;">服务名称</text>
+        <input class="form-row-input" model:value="{{appName}}" bindinput="onAppNameInput" placeholder="例如：Netflix, Spotify, iCloud" placeholder-style="color: var(--color-text-3);" />
+      </view>
+      
+      <!-- 智能匹配到的官方徽章预览 -->
+      <view class="brand-preview-pill" style="background-color: {{matchedBadge.brandColor || brandColor}}" wx:if="{{matchedBadge || brandColor}}">
+        <view class="brand-avatar-mini" style="color: {{matchedBadge.brandColor || brandColor}};">{{matchedBadge.initialChar || firstChar}}</view>
+        <text class="brand-name-text">已智能匹配官方服务: {{matchedBadge.name || appName}}</text>
+      </view>
+    </view>
+
+    <!-- 2. 账单制式分段切换 -->
+    <view class="form-row-item">
+      <text class="form-row-label">账单类型</text>
+      <view class="segment-control">
+        <view class="segment-item {{purchaseType === 'sub' ? 'active' : ''}}" bindtap="onPurchaseTypeChange" data-type="sub">订阅制</view>
+        <view class="segment-item {{purchaseType === 'buyout' ? 'active' : ''}}" bindtap="onPurchaseTypeChange" data-type="buyout">买断制</view>
+      </view>
+    </view>
+
+    <!-- 3. 动态分类选择 -->
     <view class="form-row-group">
       <text class="form-field-label">账单分类</text>
       <view class="category-grid">
-        <view class="category-chip-item {{selectedCategory === '影音娱乐' ? 'selected' : ''}}" bindtap="selectCategory" data-category="影音娱乐">
-          <view class="cat-circle-avatar">影</view>
-          <text class="cat-name">影音娱乐</text>
-        </view>
-        <view class="category-chip-item {{selectedCategory === '实用工具' ? 'selected' : ''}}" bindtap="selectCategory" data-category="实用工具">
-          <view class="cat-circle-avatar">工</view>
-          <text class="cat-name">实用工具</text>
-        </view>
-        <view class="category-chip-item {{selectedCategory === '学习办公' ? 'selected' : ''}}" bindtap="selectCategory" data-category="学习办公">
-          <view class="cat-circle-avatar">学</view>
-          <text class="cat-name">学习办公</text>
-        </view>
-        <view class="category-chip-item {{selectedCategory === '游戏' ? 'selected' : ''}}" bindtap="selectCategory" data-category="游戏">
-          <view class="cat-circle-avatar">游</view>
-          <text class="cat-name">游戏</text>
-        </view>
-        <view class="category-chip-item {{selectedCategory === '其他' ? 'selected' : ''}}" bindtap="selectCategory" data-category="其他">
-          <view class="cat-circle-avatar">其</view>
-          <text class="cat-name">其他</text>
+        <block wx:for="{{categories}}" wx:key="*this">
+          <view class="category-chip-item {{selectedCategory === item ? 'selected' : ''}}" bindtap="selectCategory" data-category="{{item}}">
+            <view class="cat-circle-avatar">{{item === '影音娱乐' ? '影' : (item === '实用工具' ? '工' : (item === '学习办公' ? '学' : (item === '游戏' ? '游' : (item === '其他' ? '其' : item[0]))))}}</view>
+            <text class="cat-name">{{item}}</text>
+          </view>
+        </block>
+        
+        <!-- ➕ 新建自定义分类按钮 -->
+        <view class="category-chip-item add-custom-chip" bindtap="showNewCategoryInput" hover-class="press-active">
+          <view class="cat-circle-avatar">+</view>
+          <text class="cat-name">新建分类</text>
         </view>
       </view>
     </view>
 
-    <!-- 2. 服务名称 -->
-    <view class="form-row-item">
-      <text class="form-row-label">服务名称</text>
-      <input class="form-row-input" model:value="{{appName}}" placeholder="服务名称" placeholder-style="color: var(--color-text-3);" />
-    </view>
-
-    <!-- 3. 金额输入 -->
+    <!-- 4. 金额输入 -->
     <view class="form-row-item">
       <text class="form-row-label">账单金额 (¥)</text>
       <input class="form-row-input" type="digit" model:value="{{price}}" placeholder="0.00" placeholder-style="color: var(--color-text-3);" />
     </view>
 
-    <!-- 4. 计费周期 -->
-    <view class="form-row-item">
+    <!-- 5. 计费周期（仅订阅制显示） -->
+    <view class="form-row-item" wx:if="{{purchaseType === 'sub'}}">
       <text class="form-row-label">扣款周期</text>
       <picker mode="selector" range="{{cycles}}" value="{{cycleIndex}}" bindchange="onCycleChange">
         <view class="picker-inner-row">
@@ -60,15 +69,27 @@
       </picker>
     </view>
 
-    <!-- 5. 下次扣款日期 -->
+    <!-- 6. 扣款起始日/买断日期 -->
     <view class="form-row-item">
-      <text class="form-row-label">首次/下次付款日</text>
+      <text class="form-row-label">{{purchaseType === 'sub' ? '扣款付款日' : '买断日期'}}</text>
       <picker mode="date" value="{{firstDate}}" bindchange="onDateChange">
         <view class="picker-inner-row">
-          <text class="picker-value-text">{{firstDate || '请选择起始扣费日期'}}</text>
+          <text class="picker-value-text">{{firstDate || '请选择日期'}}</text>
           <view class="icon icon-sm icon-arrow"></view>
         </view>
       </picker>
+    </view>
+
+    <!-- 7. 到期自动发送通知 Switch -->
+    <view class="form-row-item">
+      <text class="form-row-label" style="flex: 1;">到期自动发送服务通知</text>
+      <switch checked="{{isRemind}}" bindchange="onRemindToggle" color="#1C3D32" />
+    </view>
+
+    <!-- 8. 说明备注 -->
+    <view class="form-row-item" style="border-bottom: none;">
+      <text class="form-row-label">备注说明</text>
+      <input class="form-row-input" model:value="{{remark}}" placeholder="备注说明（选填）" placeholder-style="color: var(--color-text-3);" />
     </view>
 
   </view>
@@ -78,11 +99,12 @@
     <view class="flex-buttons">
       <button class="danger-btn" bindtap="handleDelete" hover-class="press-active">
         <view class="icon icon-sm icon-delete" style="margin-right: 12rpx;"></view>
-        删除此记录
+        删除账单
       </button>
+
       <button class="primary-btn" bindtap="handleUpdate" hover-class="press-active">
         <view class="icon icon-sm icon-check-white" style="margin-right: 12rpx;"></view>
-        确认修改
+        保存修改
       </button>
     </view>
   </view>
