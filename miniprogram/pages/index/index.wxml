@@ -1,13 +1,6 @@
 <!--index.wxml — 有数记 · 首页仪表盘-->
 <view class="container">
 
-  <!-- 1. 流线型同步状态药丸 (Sleek Status Pill) -->
-  <view class="status-pill {{hasLogin ? 'synced' : ''}}" bindtap="triggerLoginAction" hover-class="press-active">
-    <view class="status-dot {{hasLogin ? 'dot-synced' : 'dot-idle'}}"></view>
-    <text class="status-label">{{hasLogin ? '云端已同步' : '尚未登录同步'}}</text>
-    <text class="status-action">{{hasLogin ? '查看' : '登录'}}</text>
-    <view class="icon icon-sm icon-arrow"></view>
-  </view>
 
   <!-- 2. 核心数据面板 (Hero Metrics Panel) -->
   <view class="metrics-panel">
@@ -29,26 +22,6 @@
         <text class="metric-side-label">日均消费</text>
         <text class="metric-side-value">¥{{dailyCost}}</text>
       </view>
-    </view>
-  </view>
-
-  <!-- 3. 快捷操作栏 (Command Strip) -->
-  <view class="cmd-strip">
-    <view class="cmd-item" bindtap="navigateToAdd" hover-class="press-active">
-      <view class="icon icon-plus"></view>
-      <text class="cmd-text">添加</text>
-    </view>
-    <view class="cmd-item" bindtap="navigateToStat" hover-class="press-active">
-      <view class="icon icon-stat"></view>
-      <text class="cmd-text">分析</text>
-    </view>
-    <view class="cmd-item" bindtap="navigateToReminder" hover-class="press-active">
-      <view class="icon icon-settings"></view>
-      <text class="cmd-text">提醒</text>
-    </view>
-    <view class="cmd-item" bindtap="navigateToExport" hover-class="press-active">
-      <view class="icon icon-backup"></view>
-      <text class="cmd-text">导出</text>
     </view>
   </view>
 
@@ -127,71 +100,6 @@
     <view class="icon icon-plus-white"></view>
   </view>
 
-  <!-- ===== 7. 三合一登录抽屉 (Login Drawer) ===== -->
-  <view class="drawer-mask" wx:if="{{showLoginDrawer}}" bindtap="closeLoginDrawer">
-    <view class="drawer-body" catchtap="preventBubble">
-      <!-- 抽屉头部 -->
-      <view class="drawer-head">
-        <text class="drawer-title">账号登录</text>
-        <view class="drawer-close" bindtap="closeLoginDrawer">✕</view>
-      </view>
 
-      <!-- 登录选项卡 -->
-      <view class="drawer-tabs">
-        <view class="tab-item {{loginTab === 'wechat' ? 'active' : ''}}" bindtap="switchLoginTab" data-tab="wechat">微信快捷</view>
-        <view class="tab-item {{loginTab === 'phone' ? 'active' : ''}}" bindtap="switchLoginTab" data-tab="phone">手机号</view>
-        <view class="tab-item {{loginTab === 'email' ? 'active' : ''}}" bindtap="switchLoginTab" data-tab="email">邮箱</view>
-      </view>
-
-      <!-- Tab 1: 微信 -->
-      <view class="tab-body" wx:if="{{loginTab === 'wechat'}}">
-        <view class="wx-promo">
-          <view class="icon icon-xl icon-wechat" style="margin-bottom: 24rpx;"></view>
-          <text class="wx-tip">授权微信账号后，订阅数据将安全同步至云端</text>
-        </view>
-        <button class="btn-wechat-pill" bindtap="doWechatLogin" hover-class="press-active">
-          <view class="icon icon-sm icon-wechat-white" style="margin-right: 12rpx;"></view>
-          微信一键登录
-        </button>
-      </view>
-
-      <!-- Tab 2: 手机号 -->
-      <view class="tab-body" wx:if="{{loginTab === 'phone'}}">
-        <view class="form-fields">
-          <view class="field-row">
-            <view class="icon icon-phone field-icon"></view>
-            <input class="field-input" type="number" maxlength="11" placeholder="请输入手机号码" model:value="phoneNum" />
-          </view>
-          <view class="field-row">
-            <view class="icon icon-lock field-icon"></view>
-            <input class="field-input" type="number" maxlength="6" placeholder="请输入验证码" model:value="smsCode" />
-            <text class="sms-btn {{smsCounting ? 'sms-disabled' : ''}}" bindtap="sendSmsCode">{{smsBtnText}}</text>
-          </view>
-        </view>
-        <button class="btn-primary-pill" bindtap="doPhoneLogin" hover-class="press-active">
-          验证并登录
-        </button>
-      </view>
-
-      <!-- Tab 3: 邮箱 -->
-      <view class="tab-body" wx:if="{{loginTab === 'email'}}">
-        <view class="form-fields">
-          <view class="field-row">
-            <view class="icon icon-mail field-icon"></view>
-            <input class="field-input" placeholder="请输入邮箱地址" model:value="emailAddr" />
-          </view>
-          <view class="field-row">
-            <view class="icon icon-lock field-icon"></view>
-            <input class="field-input" password="true" placeholder="请输入登录密码" model:value="emailPwd" />
-          </view>
-        </view>
-        <button class="btn-primary-pill" bindtap="doEmailLogin" hover-class="press-active">
-          邮箱登录
-        </button>
-      </view>
-
-      <text class="drawer-footer">有数记严格遵循隐私协议保护您的数据安全</text>
-    </view>
-  </view>
 
 </view>

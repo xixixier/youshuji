@@ -1,0 +1,99 @@
+/* custom-tab-bar/index.wxss — 有数记 · 高订导航栏样式 */
+
+.tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: calc(108rpx + env(safe-area-inset-bottom));
+  background-color: #FFFFFF;
+  display: flex;
+  box-shadow: 0 -8px 24px rgba(28, 61, 50, 0.02);
+  z-index: 9999;
+  padding-bottom: env(safe-area-inset-bottom);
+  box-sizing: border-box;
+}
+
+.tab-bar-border {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 1rpx;
+  background-color: rgba(28, 61, 50, 0.06);
+}
+
+.tab-bar-item {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 108rpx;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.tab-icon {
+  width: 44rpx;
+  height: 44rpx;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.tab-text {
+  font-size: 20rpx;
+  font-weight: 600;
+  margin-top: 6rpx;
+  letter-spacing: 0.5rpx;
+  transition: all 0.2s ease;
+}
+
+.tab-bar-item.active .tab-text {
+  font-weight: 700;
+}
+
+.tab-bar-item.active .tab-icon {
+  transform: translateY(-2rpx);
+}
+
+/* 按钮微动按下态：慢速沉降 */
+.press-active {
+  opacity: 0.85;
+  transform: scale(0.97);
+}
+
+/* ==========================================
+   自包含 1.5px 精细矢量图标 (Self-Contained SVG Iconset)
+   ========================================== */
+.icon {
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* 首页 (Home) */
+.icon-home {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238C9691' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'></path><polyline points='9 22 9 12 15 12 15 22'></polyline></svg>");
+}
+.icon-home.active {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231C3D32' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'></path><polyline points='9 22 9 12 15 12 15 22'></polyline></svg>");
+}
+
+/* 统计报告 (Stat) */
+.icon-stat {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238C9691' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><line x1='18' y1='20' x2='18' y2='10'></line><line x1='12' y1='20' x2='12' y2='4'></line><line x1='6' y1='20' x2='6' y2='14'></line></svg>");
+}
+.icon-stat.active {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231C3D32' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><line x1='18' y1='20' x2='18' y2='10'></line><line x1='12' y1='20' x2='12' y2='4'></line><line x1='6' y1='20' x2='6' y2='14'></line></svg>");
+}
+
+/* 个人中心 (User) */
+.icon-user {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238C9691' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>");
+}
+.icon-user.active {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231C3D32' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>");
+}
