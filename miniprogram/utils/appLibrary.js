@@ -483,6 +483,250 @@ const APP_LIBRARY = [
     iconUrl: 'https://api.companyenrich.com/logo/steampowered.com',
     iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23171A21'/><circle cx='12' cy='12' r='6.5' stroke='white' stroke-width='1.5'/><path d='M12 5.5a6.5 6.5 0 015.5 3L13 13.5v1.5l-2.5-1v-2.5L8.5 10c1.5-2.5 3-4.5 3.5-4.5z' fill='white'/></svg>`
   }
+,
+  {
+    aliases: ["paramount","paramount+","派拉蒙"],
+    name: "Paramount+",
+    category: "影音娱乐",
+    defaultPrice: 50,
+    brandColor: "#0064FF",
+    iconUrl: "https://api.companyenrich.com/logo/paramountplus.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%230064FF'/><path d='M12 4.5l1.5 3 3.5.5-2.5 2.5.5 3.5-3-2-3 2 .5-3.5-2.5-2.5 3.5-.5z' fill='white'/><circle cx='12' cy='12' r='8' stroke='white' stroke-width='0.8' stroke-dasharray='1 2'/></svg>`
+  },
+  {
+    aliases: ["apple tv","apple tv+","苹果tv"],
+    name: "Apple TV+",
+    category: "影音娱乐",
+    defaultPrice: 38,
+    brandColor: "#000000",
+    iconUrl: "https://api.companyenrich.com/logo/tv.apple.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23111111'/><path d='M16 11.5c.3-2.3 2.1-3 2.2-3.1-1-1.5-2.6-1.7-3.2-1.8-1.4-.2-2.8.8-3.5.8s-1.9-.8-3.1-.8c-1.5 0-3 1-3.8 2.3-1.6 2.8-.4 6.9 1.1 9.2.8 1.1 1.7 2.3 2.8 2.2 1.1-.1 1.5-.7 2.8-.7s1.7.7 2.8.6c1.1 0 1.9-1.1 2.6-2.1.8-1.2 1.1-2.4 1.2-2.4s-2.3-.9-2.3-3.6zM14.5 4.8c.6-.7 1-1.7.9-2.7-.9.1-1.9.6-2.5 1.3-.6.6-1.1 1.6-1 2.6 1 .1 1.9-.5 2.6-1.2z' fill='white'/></svg>`
+  },
+  {
+    aliases: ["crunchyroll","cr","动漫限时"],
+    name: "Crunchyroll",
+    category: "影音娱乐",
+    defaultPrice: 48,
+    brandColor: "#DF6300",
+    iconUrl: "https://api.companyenrich.com/logo/crunchyroll.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23DF6300'/><circle cx='12' cy='12' r='7.5' stroke='white' stroke-width='1.5'/><circle cx='13.5' cy='12' r='4' fill='white'/><circle cx='13.5' cy='12' r='1.5' fill='%23DF6300'/></svg>`
+  },
+  {
+    aliases: ["咪咕","咪咕视频","migu"],
+    name: "咪咕视频",
+    category: "影音娱乐",
+    defaultPrice: 15,
+    brandColor: "#FF007F",
+    iconUrl: "https://api.companyenrich.com/logo/miguvideo.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23FF007F'/><circle cx='12' cy='12' r='7' stroke='white' stroke-width='1.5'/><path d='M9.5 9.5h5L12 14.5z' fill='white'/></svg>`
+  },
+  {
+    aliases: ["虎牙","虎牙直播","huya"],
+    name: "虎牙直播",
+    category: "影音娱乐",
+    defaultPrice: 20,
+    brandColor: "#FF9000",
+    iconUrl: "https://api.companyenrich.com/logo/huya.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23FF9000'/><path d='M7 8.5c1-1 4-1.5 5 0s1.5 4 0 5-4 1-5 0' stroke='white' stroke-width='1.8'/><circle cx='15.5' cy='11.5' r='1.2' fill='white'/></svg>`
+  },
+  {
+    aliases: ["斗鱼","斗鱼直播","douyu"],
+    name: "斗鱼直播",
+    category: "影音娱乐",
+    defaultPrice: 20,
+    brandColor: "#FF5500",
+    iconUrl: "https://api.companyenrich.com/logo/douyu.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23FF5500'/><path d='M6.5 13.5a5.5 5.5 0 0111 0c0 1.5-1 3.5-3 4.5l-2.5-1' stroke='white' stroke-width='1.8' stroke-linecap='round'/><circle cx='12' cy='11.5' r='1.2' fill='white'/></svg>`
+  },
+  {
+    aliases: ["deepseek","深度求索","ds"],
+    name: "DeepSeek",
+    category: "学习办公",
+    defaultPrice: 0,
+    brandColor: "#003BFF",
+    iconUrl: "https://api.companyenrich.com/logo/deepseek.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23003BFF'/><path d='M7.5 10c0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5v5c0 1-.8 1.8-1.8 1.8h-1c-.5 0-1-.3-1.3-.7L12 14.5M10.5 10v4' stroke='white' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>`
+  },
+  {
+    aliases: ["perplexity","pplx"],
+    name: "Perplexity AI",
+    category: "学习办公",
+    defaultPrice: 145,
+    brandColor: "#10B981",
+    iconUrl: "https://api.companyenrich.com/logo/perplexity.ai",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%2310B981'/><rect x='6.5' y='6.5' width='11' height='11' rx='1.5' stroke='white' stroke-width='1.5'/><line x1='12' y1='6.5' x2='12' y2='17.5' stroke='white' stroke-width='1.5'/></svg>`
+  },
+  {
+    aliases: ["cursor","cursor editor","cursor.sh"],
+    name: "Cursor",
+    category: "学习办公",
+    defaultPrice: 145,
+    brandColor: "#000000",
+    iconUrl: "https://api.companyenrich.com/logo/cursor.sh",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23111111'/><path d='M7 7.5L17 11.5M7 16.5L17 12.5' stroke='white' stroke-width='2' stroke-linecap='round'/></svg>`
+  },
+  {
+    aliases: ["grammarly","语法纠错"],
+    name: "Grammarly",
+    category: "学习办公",
+    defaultPrice: 88,
+    brandColor: "#15C39A",
+    iconUrl: "https://api.companyenrich.com/logo/grammarly.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%2315C39A'/><circle cx='12' cy='12' r='7.5' stroke='white' stroke-width='1.8'/><path d='M9.5 12a2.5 2.5 0 012.5-2.5h2.5' stroke='white' stroke-width='1.8' stroke-linecap='round'/></svg>`
+  },
+  {
+    aliases: ["obsidian","ob"],
+    name: "Obsidian",
+    category: "学习办公",
+    defaultPrice: 0,
+    brandColor: "#4B2C84",
+    iconUrl: "https://api.companyenrich.com/logo/obsidian.md",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%234B2C84'/><path d='M12 4.5l5.5 3.5-2.5 11.5-3-2.5-3.5 2.5-2.5-11.5L12 4.5z' fill='white' fill-opacity='0.9'/><path d='M12 4.5v12.5L9.5 20l-2.5-12L12 4.5z' fill='black' fill-opacity='0.15'/></svg>`
+  },
+  {
+    aliases: ["heptabase","hepta"],
+    name: "Heptabase",
+    category: "学习办公",
+    defaultPrice: 68,
+    brandColor: "#4A154B",
+    iconUrl: "https://api.companyenrich.com/logo/heptabase.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%234A154B'/><rect x='6.5' y='6.5' width='11' height='11' rx='2.2' stroke='white' stroke-width='1.8'/><rect x='10.5' y='10.5' width='3' height='3' fill='white'/></svg>`
+  },
+  {
+    aliases: ["语雀","yuque"],
+    name: "语雀",
+    category: "学习办公",
+    defaultPrice: 9,
+    brandColor: "#00B96B",
+    iconUrl: "https://api.companyenrich.com/logo/yuque.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%2300B96B'/><path d='M6.5 15.5c2.5-3 5-3 7.5 0M9 8.5C9.5 6 12 5 14.5 7s2.5 5 0 6' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/></svg>`
+  },
+  {
+    aliases: ["幕布","mubu"],
+    name: "幕布",
+    category: "学习办公",
+    defaultPrice: 9,
+    brandColor: "#00C27F",
+    iconUrl: "https://api.companyenrich.com/logo/mubu.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%2300C27F'/><path d='M7.5 7.5h9v9h-9v-9z' fill='white'/><path d='M10.5 10.5h3v3h-3v-3z' fill='%2300C27F'/></svg>`
+  },
+  {
+    aliases: ["wolai","我来"],
+    name: "Wolai 我来",
+    category: "学习办公",
+    defaultPrice: 15,
+    brandColor: "#FF0000",
+    iconUrl: "https://api.companyenrich.com/logo/wolai.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23FF0000'/><path d='M7 7.5h10v9H7v-9z' stroke='white' stroke-width='1.8'/><line x1='12' y1='7.5' x2='12' y2='16.5' stroke='white' stroke-width='1.5'/></svg>`
+  },
+  {
+    aliases: ["飞书","feishu","lark"],
+    name: "飞书",
+    category: "学习办公",
+    defaultPrice: 0,
+    brandColor: "#007AFF",
+    iconUrl: "https://api.companyenrich.com/logo/feishu.cn",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23007AFF'/><circle cx='9' cy='9' r='2' fill='white'/><path d='M15 15.5c0-1.5-2-3-4.5-3s-4.5 1.5-4.5 3H15z' fill='white'/><circle cx='14' cy='10' r='1.5' fill='white'/></svg>`
+  },
+  {
+    aliases: ["钉钉","dingtalk","dd"],
+    name: "钉钉",
+    category: "学习办公",
+    defaultPrice: 0,
+    brandColor: "#007FFF",
+    iconUrl: "https://api.companyenrich.com/logo/dingtalk.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23007FFF'/><path d='M6.5 16.5C8 12.5 11 11.5 13 11.5s4 1.5 4.5 5H6.5z' fill='white'/><path d='M10 7.5L13.5 10 10 12.5V7.5z' fill='white'/></svg>`
+  },
+  {
+    aliases: ["腾讯会议","voov","voov meeting"],
+    name: "腾讯会议",
+    category: "实用工具",
+    defaultPrice: 30,
+    brandColor: "#0066FF",
+    iconUrl: "https://api.companyenrich.com/logo/meeting.tencent.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%230066FF'/><rect x='5.5' y='8.5' width='9' height='7' rx='1.5' fill='white'/><polygon points='14.5 10 18.5 8 18.5 16 14.5 14' fill='white'/></svg>`
+  },
+  {
+    aliases: ["阿里云盘","阿里网盘","alipan"],
+    name: "阿里云盘",
+    category: "实用工具",
+    defaultPrice: 15,
+    brandColor: "#FF5722",
+    iconUrl: "https://api.companyenrich.com/logo/alipan.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23FF5722'/><circle cx='12' cy='12' r='7.5' stroke='white' stroke-width='1.8'/><line x1='12' y1='4.5' x2='12' y2='19.5' stroke='white' stroke-width='1.5'/></svg>`
+  },
+  {
+    aliases: ["夸克","夸克网盘","quark"],
+    name: "夸克网盘",
+    category: "实用工具",
+    defaultPrice: 12,
+    brandColor: "#004EFF",
+    iconUrl: "https://api.companyenrich.com/logo/quark.cn",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23004EFF'/><circle cx='12' cy='12' r='7.5' fill='white'/><circle cx='12' cy='12' r='4' fill='%23004EFF'/></svg>`
+  },
+  {
+    aliases: ["115","115网盘"],
+    name: "115网盘",
+    category: "实用工具",
+    defaultPrice: 38,
+    brandColor: "#007AFF",
+    iconUrl: "https://api.companyenrich.com/logo/115.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23007AFF'/><rect x='5.5' y='6.5' width='13' height='11' rx='2.2' stroke='white' stroke-width='1.8'/><line x1='12' y1='6.5' x2='12' y2='17.5' stroke='white' stroke-width='1.5'/></svg>`
+  },
+  {
+    aliases: ["nordvpn","nord"],
+    name: "NordVPN",
+    category: "实用工具",
+    defaultPrice: 88,
+    brandColor: "#4687FF",
+    iconUrl: "https://api.companyenrich.com/logo/nordvpn.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%234687FF'/><path d='M5 16.5l3.5-10 3.5 10 3.5-10 3.5 10' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/></svg>`
+  },
+  {
+    aliases: ["shadowrocket","小火箭"],
+    name: "Shadowrocket",
+    category: "实用工具",
+    defaultPrice: 18,
+    brandColor: "#007AFF",
+    iconUrl: "https://api.companyenrich.com/logo/shadowrocket.app",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23007AFF'/><polygon points='12 4.5 16.5 17.5 12 14.5 7.5 17.5' fill='white'/></svg>`
+  },
+  {
+    aliases: ["keep","keep会员"],
+    name: "Keep",
+    category: "其他",
+    defaultPrice: 19,
+    brandColor: "#24283C",
+    iconUrl: "https://api.companyenrich.com/logo/gotokeep.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%2324283C'/><path d='M6.5 7.5v9h3.5v-9H6.5zm5.5 0v9h5.5M12 12h3' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/></svg>`
+  },
+  {
+    aliases: ["strava"],
+    name: "Strava",
+    category: "其他",
+    defaultPrice: 60,
+    brandColor: "#FC5200",
+    iconUrl: "https://api.companyenrich.com/logo/strava.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23FC5200'/><polyline points='5 7.5 12 16.5 19 7.5' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/></svg>`
+  },
+  {
+    aliases: ["微信读书","weread"],
+    name: "微信读书",
+    category: "学习办公",
+    defaultPrice: 19,
+    brandColor: "#3F84F8",
+    iconUrl: "https://api.companyenrich.com/logo/weread.qq.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%233F84F8'/><path d='M6.5 6.5C8.5 7.5 10 9 12 9.5s3.5-2 5.5-3v11c-2 1-3.5 2.5-5.5 3s-3.5-2-5.5-3v-11z' fill='white'/><line x1='12' y1='9.5' x2='12' y2='20.5' stroke='%233F84F8' stroke-width='1.5'/></svg>`
+  },
+  {
+    aliases: ["得到","dedao"],
+    name: "得到",
+    category: "学习办公",
+    defaultPrice: 38,
+    brandColor: "#FF6E00",
+    iconUrl: "https://api.companyenrich.com/logo/dedao.cn",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23FF6E00'/><path d='M6.5 16.5v-9c0-1.5 1.5-3 3.5-3s3.5 1.5 3.5 3v9H6.5zM17.5 10c0-1.5 1.5-2.5 3-2.5s3 1 3 2.5v6.5h-6V10z' fill='white'/></svg>`
+  }
 ];
 
 /**
