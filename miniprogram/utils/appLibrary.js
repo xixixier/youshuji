@@ -816,6 +816,69 @@ const APP_LIBRARY = [
     brandColor: "#2B2B4A",
     iconUrl: "https://api.companyenrich.com/logo/hoyoverse.com",
     iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%232B2B4A'/><polygon points='12 4.5 14.5 9.5 20 10.5 16 14.5 17 20 12 17 7 20 8 14.5 4 10.5 9.5 9.5' fill='white'/></svg>`
+  },
+  {
+    aliases: ["王者荣耀","王者","王者荣耀战令","wzry","honor of kings"],
+    name: "王者荣耀",
+    category: "游戏",
+    defaultPrice: 30,
+    brandColor: "#E2A93B",
+    iconUrl: "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/d4/b5/ec/d4b5ecd8-f14f-04a8-b9a6-2e53ed9eade4/AppIcon-1x_U007emarketing-0-8-0-85-220-0.png/256x256bb.jpg",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23E2A93B'/><circle cx='12' cy='12' r='7' stroke='white' stroke-width='1.5'/><path d='M8 12h8M12 8v8' stroke='white' stroke-width='1.5'/></svg>`
+  },
+  {
+    aliases: ["和平精英","吃鸡","pubg mobile","peace elite","和平精英手册"],
+    name: "和平精英",
+    category: "游戏",
+    defaultPrice: 18,
+    brandColor: "#FCC702",
+    iconUrl: "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/72/4d/88/724d880d-fdd9-0f42-f7be-c7791e493b96/AppIcon-1x_U007emarketing-0-11-0-85-220-0.png/256x256bb.jpg",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23FCC702'/><polygon points='12 5.5 16.5 16.5 12 13.5 7.5 16.5' fill='white'/></svg>`
+  },
+  {
+    aliases: ["我的世界","minecraft","我的世界领域","realms","mc"],
+    name: "Minecraft 我的世界",
+    category: "游戏",
+    defaultPrice: 50,
+    brandColor: "#5A8F35",
+    iconUrl: "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/80/a9/c1/80a9c1b5-a049-4aa1-aafb-56ff7c5402b8/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/256x256bb.jpg",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%235A8F35'/><rect x='6' y='6' width='12' height='12' rx='2' fill='none' stroke='white' stroke-width='1.8'/></svg>`
+  },
+  {
+    aliases: ["roblox","roblox premium","罗布乐思","罗布乐思会员"],
+    name: "Roblox 罗布乐思",
+    category: "游戏",
+    defaultPrice: 38,
+    brandColor: "#111111",
+    iconUrl: "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/43/66/d8/4366d8ee-cf6d-0593-ffaa-a2847359aa4b/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.jpg",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23111111'/><rect x='7.5' y='7.5' width='9' height='9' fill='none' stroke='white' stroke-width='2'/></svg>`
+  },
+  {
+    aliases: ["魔兽世界","wow","魔兽","world of warcraft","战网","battle.net","暴雪"],
+    name: "魔兽世界 / 战网",
+    category: "游戏",
+    defaultPrice: 75,
+    brandColor: "#00AEFF",
+    iconUrl: "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/7d/ad/b6/7dadb66e-c4e5-df38-9e93-a6da4a2eb751/AppIconGlass-0-0-1x_U007ephone-0-1-0-sRGB-85-220.png/256x256bb.jpg",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%2300AEFF'/><circle cx='12' cy='12' r='7.5' stroke='white' stroke-width='1.8'/></svg>`
+  },
+  {
+    aliases: ["最终幻想14","ff14","final fantasy xiv","最终幻想"],
+    name: "最终幻想14",
+    category: "游戏",
+    defaultPrice: 88,
+    brandColor: "#1A2C3C",
+    iconUrl: "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/c6/a4/7a/c6a47a6e-8a43-a9cc-91c4-b68db5082e36/AppIcon-0-1x_U007epad-0-1-85-220-0.png/256x256bb.jpg",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%231A2C3C'/><path d='M6.5 12h11M12 6.5v11' stroke='white' stroke-width='1.8'/></svg>`
+  },
+  {
+    aliases: ["ubisoft","uplay","育碧","ubisoft+"],
+    name: "Ubisoft+",
+    category: "游戏",
+    defaultPrice: 99,
+    brandColor: "#000000",
+    iconUrl: "https://api.companyenrich.com/logo/ubisoft.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23000000'/><circle cx='12' cy='12' r='7.5' stroke='white' stroke-width='1.8'/></svg>`
   }
 ];
 
