@@ -879,6 +879,33 @@ const APP_LIBRARY = [
     brandColor: "#000000",
     iconUrl: "https://api.companyenrich.com/logo/ubisoft.com",
     iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23000000'/><circle cx='12' cy='12' r='7.5' stroke='white' stroke-width='1.8'/></svg>`
+  },
+  {
+    aliases: ["黑神话：悟空","黑神话悟空","黑神话","悟空","wukong","black myth wukong"],
+    name: "黑神话：悟空",
+    category: "游戏",
+    defaultPrice: 268,
+    brandColor: "#1C1C1C",
+    iconUrl: "https://api.companyenrich.com/logo/heishenhua.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%231C1C1C'/><path d='M12 4.5c.3 1.5.8 2.8 1.8 3.8s2.5 1.5 3.7 2.2c-1.5.5-2.8 1.2-3.8 2.5s-1.5 2.8-1.7 4.5c-.3-1.7-.8-3.2-1.8-4.5s-2.5-2-3.7-2.5c1.5-.5 2.8-1.2 3.8-2.5s1.5-2.8 1.7-4.5z' fill='%23D4AF37'/></svg>`
+  },
+  {
+    aliases: ["wegame","腾讯wegame","wg"],
+    name: "WeGame",
+    category: "游戏",
+    defaultPrice: 0,
+    brandColor: "#FFA000",
+    iconUrl: "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/4a/79/a0/4a79a0f7-7a2e-8bb7-b048-f26ddc6f7b19/AppIcon-1x_U007emarketing-0-4-0-0-85-220-0.png/256x256bb.jpg",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23FFA000'/><polygon points='12 5.5 16.5 16.5 12 13.5 7.5 16.5' fill='white'/></svg>`
+  },
+  {
+    aliases: ["epic","epic games","epic games store","埃匹克"],
+    name: "Epic Games Store",
+    category: "游戏",
+    defaultPrice: 0,
+    brandColor: "#000000",
+    iconUrl: "https://api.companyenrich.com/logo/epicgames.com",
+    iconSvg: `<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='6' fill='%23000000'/><polygon points='5 10 12 4 19 10 19 16 12 20 5 16' fill='none' stroke='white' stroke-width='1.8'/></svg>`
   }
 ];
 
