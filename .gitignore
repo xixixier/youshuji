@@ -1,0 +1,15 @@
+# WeChat Mini Program Local Configurations
+project.private.config.json
+
+# Hidden Assistant Metadata
+.antigravitycli/
+
+# Explicitly Excluded by User
+SKILL.md
+
+# OS Specific Files
+.DS_Store
+Thumbs.db
+
+# Log Files
+*.log

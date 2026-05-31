@@ -1,0 +1,84 @@
+<!--pages/add/add.wxml-->
+<view class="container">
+
+  <!-- 表单头部 -->
+  <view class="form-header">
+    <text class="form-title">新增订阅账单</text>
+    <text class="form-subtitle">微软 Fluent 高精度账簿记录</text>
+  </view>
+
+  <!-- 表单内容主体 (Fluent Fields Panel) -->
+  <view class="fluent-form-panel">
+    
+    <!-- 1. 分类选择 (Category Grid Selector) -->
+    <view class="form-row-group">
+      <text class="form-field-label">账单分类</text>
+      <view class="category-grid">
+        <view class="category-chip-item {{selectedCategory === '影音娱乐' ? 'selected' : ''}}" bindtap="selectCategory" data-category="影音娱乐">
+          <view class="cat-circle-avatar">影</view>
+          <text class="cat-name">影音娱乐</text>
+        </view>
+        <view class="category-chip-item {{selectedCategory === '实用工具' ? 'selected' : ''}}" bindtap="selectCategory" data-category="实用工具">
+          <view class="cat-circle-avatar">工</view>
+          <text class="cat-name">实用工具</text>
+        </view>
+        <view class="category-chip-item {{selectedCategory === '学习办公' ? 'selected' : ''}}" bindtap="selectCategory" data-category="学习办公">
+          <view class="cat-circle-avatar">学</view>
+          <text class="cat-name">学习办公</text>
+        </view>
+        <view class="category-chip-item {{selectedCategory === '游戏' ? 'selected' : ''}}" bindtap="selectCategory" data-category="游戏">
+          <view class="cat-circle-avatar">游</view>
+          <text class="cat-name">游戏</text>
+        </view>
+        <view class="category-chip-item {{selectedCategory === '其他' ? 'selected' : ''}}" bindtap="selectCategory" data-category="其他">
+          <view class="cat-circle-avatar">其</view>
+          <text class="cat-name">其他</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 2. 服务名称 (Text Input) -->
+    <view class="form-row-item">
+      <text class="form-row-label">服务名称</text>
+      <input class="form-row-input" model:value="{{appName}}" placeholder="例如：Netflix, Spotify, iCloud" placeholder-style="color: var(--fluent-text-mute);" />
+    </view>
+
+    <!-- 3. 金额输入 (Digit Input) -->
+    <view class="form-row-item">
+      <text class="form-row-label">账单金额 (¥)</text>
+      <input class="form-row-input" type="digit" model:value="{{price}}" placeholder="0.00" placeholder-style="color: var(--fluent-text-mute);" />
+    </view>
+
+    <!-- 4. 计费周期 (Selector Picker) -->
+    <view class="form-row-item">
+      <text class="form-row-label">扣款周期</text>
+      <picker mode="selector" range="{{cycles}}" value="{{cycleIndex}}" bindchange="onCycleChange">
+        <view class="picker-inner-row">
+          <text class="picker-value-text">{{cycles[cycleIndex]}}</text>
+          <view class="icon icon-sm icon-arrow"></view>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 5. 下次扣款日期 (Date Picker) -->
+    <view class="form-row-item">
+      <text class="form-row-label">首次/下次付款日</text>
+      <picker mode="date" value="{{firstDate}}" bindchange="onDateChange">
+        <view class="picker-inner-row">
+          <text class="picker-value-text">{{firstDate || '请选择起始扣费日期'}}</text>
+          <view class="icon icon-sm icon-arrow"></view>
+        </view>
+      </picker>
+    </view>
+
+  </view>
+
+  <!-- 底部操作按钮 (Fluent Command Button) -->
+  <view class="form-action-bar">
+    <button class="fluent-primary-btn" bindtap="handleSave" hover-class="fluent-btn-active">
+      <view class="icon icon-plus-white" style="margin-right: 12rpx; background-image: url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23FFFFFF\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><polyline points=\'20 6 9 17 4 12\'></polyline></svg>');"></view>
+      保存账单记录
+    </button>
+  </view>
+
+</view>

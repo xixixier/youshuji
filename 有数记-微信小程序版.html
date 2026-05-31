@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>有数记 - 微信小程序版</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #f7f7f7;
+  --bg-card: #ffffff;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --text-tertiary: #999999;
+  --wechat-green: #07c160;
+  --wechat-green-light: #e8f7ef;
+  --accent: #8b7355;
+  --border: #e5e5e5;
+  --divider: #f0f0f0;
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+body {
+  background: var(--bg);
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+  color: var(--text-primary);
+  padding: 40px;
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+.page-label {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-bottom: 16px;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+}
+
+.phone-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.phone {
+  width: 375px;
+  height: 812px;
+  background: var(--bg);
+  border-radius: 40px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.wechat-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 88px;
+  background: var(--bg-card);
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 16px 12px;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--divider);
+}
+
+.wechat-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex: 1;
+  text-align: center;
+}
+
+.wechat-nav-btn {
+  width: 24px;
+  height: 24px;
+  color: var(--text-primary);
+  opacity: 0.3;
+}
+
+.screen {
+  width: 100%;
+  height: 100%;
+  padding: 100px 16px 83px;
+  overflow-y: auto;
+  position: relative;
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.3s ease;
+}
+
+.screen.hidden {
+  display: none;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.empty-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e8f7ef, #07c160);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  color: white;
+  font-size: 28px;
+}
+
+.empty-title {
+  font-size: 17px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.empty-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+.wechat-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--wechat-green);
+  color: white;
+  border: none;
+  border-radius: 24px;
+  padding: 12px 48px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.wechat-btn:hover {
+  background: #06ad56;
+}
+
+.wechat-btn:active {
+  transform: scale(0.98);
+}
+
+.stats-card {
+  background: linear-gradient(135deg, var(--wechat-green) 0%, #06ad56 100%);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.stats-card::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+}
+
+.stats-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.stats-card-title {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.stats-card-tag {
+  font-size: 11px;
+  padding: 2px 8px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+}
+
+.stats-card-amount {
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+
+.stats-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.stats-card-item {
+  text-align: center;
+}
+
+.stats-card-item-value {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.stats-card-item-label {
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.section {
+  margin-bottom: 16px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0 8px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.section-more {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.quick-menu {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px 8px;
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 20px 12px;
+}
+
+.quick-menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quick-menu-item:active {
+  opacity: 0.6;
+}
+
+.quick-menu-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--wechat-green-light);
+}
+
+.quick-menu-icon svg {
+  width: 22px;
+  height: 22px;
+  color: var(--wechat-green);
+}
+
+.quick-menu-text {
+  font-size: 12px;
+  color: var(--text-primary);
+}
+
+.upcoming-list {
+  background: var(--bg-card);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.upcoming-item {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid var(--divider);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.upcoming-item:last-child {
+  border-bottom: none;
+}
+
+.upcoming-item:active {
+  background: var(--bg);
+}
+
+.upcoming-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--wechat-green-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.upcoming-icon svg {
+  width: 22px;
+  height: 22px;
+  color: var(--wechat-green);
+}
+
+.upcoming-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.upcoming-name {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.upcoming-date {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.upcoming-right {
+  text-align: right;
+}
+
+.upcoming-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+}
+
+.upcoming-tag.warning {
+  background: #fff3e0;
+  color: #ff9800;
+}
+
+.upcoming-tag.normal {
+  background: var(--wechat-green-light);
+  color: var(--wechat-green);
+}
+
+.upcoming-price {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.sub-list {
+  background: var(--bg-card);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.sub-item {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid var(--divider);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.sub-item:last-child {
+  border-bottom: none;
+}
+
+.sub-item:active {
+  background: var(--bg);
+}
+
+.sub-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--wechat-green-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.sub-icon svg {
+  width: 22px;
+  height: 22px;
+  color: var(--wechat-green);
+}
+
+.sub-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.sub-name {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.sub-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.sub-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--text-tertiary);
+}
+
+.sub-right {
+  text-align: right;
+}
+
+.sub-price {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.sub-cycle {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.bottom-tabbar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 83px;
+  background: var(--bg-card);
+  border-top: 1px solid var(--divider);
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding-top: 6px;
+  z-index: 100;
+}
+
+.tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 24px;
+  cursor: pointer;
+  color: var(--text-tertiary);
+  transition: color 0.2s ease;
+}
+
+.tab-item.active {
+  color: var(--wechat-green);
+}
+
+.tab-item:active {
+  opacity: 0.6;
+}
+
+.tab-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.tab-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.tab-label {
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.add-form {
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 20px 16px;
+  margin-bottom: 16px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 15px;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  transition: border-color 0.2s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--wechat-green);
+}
+
+.form-select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 15px;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+}
+
+.category-selector {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.category-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 8px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--bg-card);
+}
+
+.category-option.selected {
+  border-color: var(--wechat-green);
+  background: var(--wechat-green-light);
+}
+
+.category-option:active {
+  opacity: 0.6;
+}
+
+.category-option-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--wechat-green-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.category-option.selected .category-option-icon {
+  background: var(--wechat-green);
+}
+
+.category-option.selected .category-option-icon svg {
+  color: white;
+}
+
+.category-option-icon svg {
+  width: 20px;
+  height: 20px;
+  color: var(--wechat-green);
+}
+
+.category-option-name {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.primary-btn {
+  width: 100%;
+  padding: 14px 24px;
+  background: var(--wechat-green);
+  color: white;
+  border: none;
+  border-radius: 24px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.primary-btn:hover {
+  background: #06ad56;
+}
+
+.primary-btn:active {
+  transform: scale(0.98);
+}
+
+.profile-header {
+  background: linear-gradient(135deg, var(--wechat-green) 0%, #06ad56 100%);
+  padding: 40px 20px 30px;
+  color: white;
+  text-align: center;
+  margin: -16px -16px 16px;
+}
+
+.profile-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  font-size: 28px;
+  color: var(--wechat-green);
+  border: 3px solid rgba(255,255,255,0.3);
+}
+
+.profile-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.profile-id {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.profile-menu {
+  background: var(--bg-card);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.profile-menu-item {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid var(--divider);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.profile-menu-item:last-child {
+  border-bottom: none;
+}
+
+.profile-menu-item:active {
+  background: var(--bg);
+}
+
+.profile-menu-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.profile-menu-icon svg {
+  width: 18px;
+  height: 18px;
+  color: var(--text-primary);
+}
+
+.profile-menu-text {
+  flex: 1;
+  font-size: 15px;
+}
+
+.profile-menu-badge {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  margin-right: 8px;
+}
+
+.profile-menu-arrow {
+  color: var(--text-tertiary);
+  font-size: 16px;
+}
+
+@media (max-width: 900px) {
+  body {
+    padding: 24px 12px;
+  }
+  .phone {
+    transform: scale(0.9);
+    transform-origin: top center;
+  }
+}
+@media (max-width: 480px) {
+  body {
+    padding: 16px 8px;
+  }
+  .phone {
+    transform: scale(0.75);
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="phone-wrapper">
+  <div class="page-label">微信小程序版 · WeChat Mini Program</div>
+  <div class="phone" id="mainPhone">
+    <!-- 微信小程序顶部导航 -->
+    <div class="wechat-header">
+      <div class="wechat-nav-btn"></div>
+      <div class="wechat-title" id="pageTitle">有数记</div>
+      <div class="wechat-nav-btn"></div>
+    </div>
+
+    <!-- 首页 - 已登录状态 -->
+    <div class="screen" id="screen-home">
+      <!-- 统计卡片 -->
+      <div class="stats-card">
+        <div class="stats-card-header">
+          <span class="stats-card-title">本月支出</span>
+          <span class="stats-card-tag">实时更新</span>
+        </div>
+        <div class="stats-card-amount">¥1,286</div>
+        <div class="stats-card-grid">
+          <div class="stats-card-item">
+            <div class="stats-card-item-value">8</div>
+            <div class="stats-card-item-label">活跃订阅</div>
+          </div>
+          <div class="stats-card-item">
+            <div class="stats-card-item-value">¥42.8</div>
+            <div class="stats-card-item-label">日均消费</div>
+          </div>
+          <div class="stats-card-item">
+            <div class="stats-card-item-value">35%</div>
+            <div class="stats-card-item-label">最大分类</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 快捷菜单 -->
+      <div class="section">
+        <div class="quick-menu">
+          <div class="quick-menu-item" onclick="switchTab('add')">
+            <div class="quick-menu-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </div>
+            <span class="quick-menu-text">添加订阅</span>
+          </div>
+          <div class="quick-menu-item" onclick="switchTab('stats')">
+            <div class="quick-menu-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="20" x2="18" y2="10"></line>
+                <line x1="12" y1="20" x2="12" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="14"></line>
+              </svg>
+            </div>
+            <span class="quick-menu-text">数据分析</span>
+          </div>
+          <div class="quick-menu-item">
+            <div class="quick-menu-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+              </svg>
+            </div>
+            <span class="quick-menu-text">续费提醒</span>
+          </div>
+          <div class="quick-menu-item">
+            <div class="quick-menu-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+              </svg>
+            </div>
+            <span class="quick-menu-text">账单导出</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 即将续费 -->
+      <div class="section">
+        <div class="section-header">
+          <span class="section-title">即将续费</span>
+          <span class="section-more">查看全部 ›</span>
+        </div>
+        <div class="upcoming-list">
+          <div class="upcoming-item">
+            <div class="upcoming-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+            </div>
+            <div class="upcoming-info">
+              <div class="upcoming-name">Netflix</div>
+              <div class="upcoming-date">下次扣款：5月10日</div>
+            </div>
+            <div class="upcoming-right">
+              <div class="upcoming-tag normal">
+                <span>●</span>
+                <span>3天后</span>
+              </div>
+              <div class="upcoming-price">¥49</div>
+            </div>
+          </div>
+          <div class="upcoming-item">
+            <div class="upcoming-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18V5l12-2v13"></path>
+                <circle cx="6" cy="18" r="3"></circle>
+                <circle cx="18" cy="16" r="3"></circle>
+              </svg>
+            </div>
+            <div class="upcoming-info">
+              <div class="upcoming-name">Apple Music</div>
+              <div class="upcoming-date">下次扣款：5月8日</div>
+            </div>
+            <div class="upcoming-right">
+              <div class="upcoming-tag warning">
+                <span>●</span>
+                <span>明天</span>
+              </div>
+              <div class="upcoming-price">¥10</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 全部订阅 -->
+      <div class="section">
+        <div class="section-header">
+          <span class="section-title">全部订阅</span>
+          <span class="section-more">管理 ›</span>
+        </div>
+        <div class="sub-list">
+          <div class="sub-item">
+            <div class="sub-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+            </div>
+            <div class="sub-info">
+              <div class="sub-name">Netflix</div>
+              <div class="sub-meta">
+                <span>影音娱乐</span>
+                <span class="sub-dot"></span>
+                <span>自动续费</span>
+              </div>
+            </div>
+            <div class="sub-right">
+              <div class="sub-price">¥49</div>
+              <div class="sub-cycle">每月</div>
+            </div>
+          </div>
+          <div class="sub-item">
+            <div class="sub-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18V5l12-2v13"></path>
+                <circle cx="6" cy="18" r="3"></circle>
+                <circle cx="18" cy="16" r="3"></circle>
+              </svg>
+            </div>
+            <div class="sub-info">
+              <div class="sub-name">Apple Music</div>
+              <div class="sub-meta">
+                <span>音乐</span>
+                <span class="sub-dot"></span>
+                <span>自动续费</span>
+              </div>
+            </div>
+            <div class="sub-right">
+              <div class="sub-price">¥10</div>
+              <div class="sub-cycle">每月</div>
+            </div>
+          </div>
+          <div class="sub-item">
+            <div class="sub-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+                <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+                <path d="M2 2l7.586 7.586"></path>
+                <circle cx="11" cy="11" r="2"></circle>
+              </svg>
+            </div>
+            <div class="sub-info">
+              <div class="sub-name">Notion</div>
+              <div class="sub-meta">
+                <span>工具效率</span>
+                <span class="sub-dot"></span>
+                <span>自动续费</span>
+              </div>
+            </div>
+            <div class="sub-right">
+              <div class="sub-price">¥58</div>
+              <div class="sub-cycle">每月</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 首页 - 未登录空状态 -->
+    <div class="screen hidden" id="screen-login">
+      <div class="empty-state">
+        <div class="empty-avatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <div class="empty-title">欢迎使用有数记</div>
+        <div class="empty-desc">微信一键登录，开始管理您的订阅</div>
+        <button class="wechat-btn" onclick="switchTab('home')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;">
+            <path d="M8.5 19c0 1.4-1.1 2.5-2.5 2.5S3.5 20.4 3.5 19 4.6 16.5 6 16.5 8.5 17.6 8.5 19z"></path>
+            <path d="M15.5 19c0 1.4-1.1 2.5-2.5 2.5s-2.5-1.1-2.5-2.5 1.1-2.5 2.5-2.5 2.5 1.1 2.5 2.5z"></path>
+            <path d="M18 7a4 4 0 0 0-4-4H10a4 4 0 0 0-4 4v1a3 3 0 0 1-3 3v3a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V11a3 3 0 0 1-3-3V7z"></path>
+          </svg>
+          微信一键登录
+        </button>
+      </div>
+    </div>
+
+    <!-- 统计页 -->
+    <div class="screen hidden" id="screen-stats">
+      <!-- 统计卡片 -->
+      <div class="stats-card">
+        <div class="stats-card-header">
+          <span class="stats-card-title">本月预估总支出</span>
+          <span class="stats-card-tag">年度账单</span>
+        </div>
+        <div class="stats-card-amount">¥1,286</div>
+        <div class="stats-card-grid">
+          <div class="stats-card-item">
+            <div class="stats-card-item-value">¥15,432</div>
+            <div class="stats-card-item-label">年度支出</div>
+          </div>
+          <div class="stats-card-item">
+            <div class="stats-card-item-value">8</div>
+            <div class="stats-card-item-label">活跃订阅</div>
+          </div>
+          <div class="stats-card-item">
+            <div class="stats-card-item-value">影音</div>
+            <div class="stats-card-item-label">最大分类</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 快捷菜单 -->
+      <div class="section">
+        <div class="quick-menu">
+          <div class="quick-menu-item">
+            <div class="quick-menu-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <span class="quick-menu-text">月度趋势</span>
+          </div>
+          <div class="quick-menu-item">
+            <div class="quick-menu-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <pie cx="12" cy="12" r="10"></pie>
+              </svg>
+            </div>
+            <span class="quick-menu-text">分类占比</span>
+          </div>
+          <div class="quick-menu-item">
+            <div class="quick-menu-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="20" x2="12" y2="10"></line>
+                <line x1="18" y1="20" x2="18" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="14"></line>
+              </svg>
+            </div>
+            <span class="quick-menu-text">排行榜</span>
+          </div>
+          <div class="quick-menu-item">
+            <div class="quick-menu-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+            </div>
+            <span class="quick-menu-text">预算设置</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 分类明细 -->
+      <div class="section">
+        <div class="section-header">
+          <span class="section-title">分类明细</span>
+        </div>
+        <div class="sub-list">
+          <div class="sub-item">
+            <div class="sub-icon" style="background:#e8f7ef;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+            </div>
+            <div class="sub-info">
+              <div class="sub-name">影音娱乐</div>
+              <div class="sub-meta">
+                <span>3个订阅</span>
+                <span class="sub-dot"></span>
+                <span>占比35%</span>
+              </div>
+            </div>
+            <div class="sub-right">
+              <div class="sub-price">¥450</div>
+            </div>
+          </div>
+          <div class="sub-item">
+            <div class="sub-icon" style="background:#f0f0f0;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+                <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+                <path d="M2 2l7.586 7.586"></path>
+                <circle cx="11" cy="11" r="2"></circle>
+              </svg>
+            </div>
+            <div class="sub-info">
+              <div class="sub-name">工具效率</div>
+              <div class="sub-meta">
+                <span>2个订阅</span>
+                <span class="sub-dot"></span>
+                <span>占比21%</span>
+              </div>
+            </div>
+            <div class="sub-right">
+              <div class="sub-price">¥270</div>
+            </div>
+          </div>
+          <div class="sub-item">
+            <div class="sub-icon" style="background:#fff3e0;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17.5 19c0 1.7-1.6 3-3.5 3s-3.5-1.3-3.5-3"></path>
+                <path d="M4 12c0-1.7 1.3-3 3-3h6c1.7 0 3 1.3 3 3v1c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3v-1z"></path>
+                <path d="M7 12V8c0-3 2.2-5 5-5s5 2 5 5v4"></path>
+              </svg>
+            </div>
+            <div class="sub-info">
+              <div class="sub-name">云存储</div>
+              <div class="sub-meta">
+                <span>1个订阅</span>
+                <span class="sub-dot"></span>
+                <span>占比14%</span>
+              </div>
+            </div>
+            <div class="sub-right">
+              <div class="sub-price">¥180</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 我的页面 -->
+    <div class="screen hidden" id="screen-profile">
+      <div class="profile-header">
+        <div class="profile-avatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <div class="profile-name">微信用户</div>
+        <div class="profile-id">微信号：WeChatUser</div>
+      </div>
+
+      <div class="profile-menu">
+        <div class="profile-menu-item">
+          <div class="profile-menu-icon" style="background:#e8f7ef;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <span class="profile-menu-text">个人资料</span>
+          <span class="profile-menu-arrow">›</span>
+        </div>
+        <div class="profile-menu-item">
+          <div class="profile-menu-icon" style="background:#fff3e0;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+          </div>
+          <span class="profile-menu-text">提醒设置</span>
+          <span class="profile-menu-arrow">›</span>
+        </div>
+      </div>
+
+      <div class="profile-menu">
+        <div class="profile-menu-item">
+          <div class="profile-menu-icon" style="background:#f0f0f0;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+          </div>
+          <span class="profile-menu-text">数据备份与恢复</span>
+          <span class="profile-menu-arrow">›</span>
+        </div>
+        <div class="profile-menu-item">
+          <div class="profile-menu-icon" style="background:#e3f2fd;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+          </div>
+          <span class="profile-menu-text">通用设置</span>
+          <span class="profile-menu-arrow">›</span>
+        </div>
+      </div>
+
+      <div class="profile-menu">
+        <div class="profile-menu-item">
+          <div class="profile-menu-icon" style="background:#fff9c4;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          </div>
+          <span class="profile-menu-text">帮助与反馈</span>
+          <span class="profile-menu-arrow">›</span>
+        </div>
+        <div class="profile-menu-item">
+          <div class="profile-menu-icon" style="background:#f3e5f5;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+          </div>
+          <span class="profile-menu-text">关于有数记</span>
+          <span class="profile-menu-arrow">›</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 添加订阅页 -->
+    <div class="screen hidden" id="screen-add">
+      <div class="add-form">
+        <div class="form-group">
+          <label class="form-label">选择分类</label>
+          <div class="category-selector">
+            <div class="category-option selected" onclick="selectCategory(this)">
+              <div class="category-option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+              </div>
+              <span class="category-option-name">影音</span>
+            </div>
+            <div class="category-option" onclick="selectCategory(this)">
+              <div class="category-option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+                  <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+                  <path d="M2 2l7.586 7.586"></path>
+                  <circle cx="11" cy="11" r="2"></circle>
+                </svg>
+              </div>
+              <span class="category-option-name">工具</span>
+            </div>
+            <div class="category-option" onclick="selectCategory(this)">
+              <div class="category-option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17.5 19c0 1.7-1.6 3-3.5 3s-3.5-1.3-3.5-3"></path>
+                  <path d="M4 12c0-1.7 1.3-3 3-3h6c1.7 0 3 1.3 3 3v1c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3v-1z"></path>
+                  <path d="M7 12V8c0-3 2.2-5 5-5s5 2 5 5v4"></path>
+                </svg>
+              </div>
+              <span class="category-option-name">云存储</span>
+            </div>
+            <div class="category-option" onclick="selectCategory(this)">
+              <div class="category-option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
+              </div>
+              <span class="category-option-name">学习</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">服务名称</label>
+          <input type="text" class="form-input" placeholder="例如：Netflix、Notion">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">月费金额</label>
+          <input type="text" class="form-input" placeholder="¥0.00">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">计费周期</label>
+          <select class="form-select">
+            <option>每月</option>
+            <option>每季度</option>
+            <option>每半年</option>
+            <option>每年</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">下次付款日期</label>
+          <input type="date" class="form-input">
+        </div>
+
+        <button class="primary-btn" onclick="saveSubscription()">保存订阅</button>
+      </div>
+    </div>
+
+    <!-- 底部标签栏 -->
+    <div class="bottom-tabbar">
+      <div class="tab-item active" onclick="switchTab('home')" id="tab-home">
+        <div class="tab-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </div>
+        <span class="tab-label">首页</span>
+      </div>
+      <div class="tab-item" onclick="switchTab('stats')" id="tab-stats">
+        <div class="tab-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
+        </div>
+        <span class="tab-label">统计</span>
+      </div>
+      <div class="tab-item" onclick="switchTab('profile')" id="tab-profile">
+        <div class="tab-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <span class="tab-label">我的</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentTab = 'home';
+let pageTitles = {
+  'home': '有数记',
+  'stats': '数据统计',
+  'profile': '我的',
+  'add': '添加订阅',
+  'login': '有数记'
+};
+
+function switchTab(tab) {
+  const screens = ['home', 'stats', 'profile', 'add', 'login'];
+  const tabItems = ['tab-home', 'tab-stats', 'tab-profile'];
+  const screenIds = ['screen-home', 'screen-stats', 'screen-profile', 'screen-add', 'screen-login'];
+
+  screens.forEach((t, i) => {
+    const screen = document.getElementById(screenIds[i]);
+    const tabItem = i < tabItems.length ? document.getElementById(tabItems[i]) : null;
+    
+    if (t === tab) {
+      screen.classList.remove('hidden');
+      if (tabItem) tabItem.classList.add('active');
+      setTimeout(() => {
+        screen.style.opacity = '1';
+        screen.style.transform = 'translateY(0)';
+      }, 10);
+    } else {
+      screen.style.opacity = '0';
+      screen.style.transform = 'translateY(20px)';
+      setTimeout(() => {
+        screen.classList.add('hidden');
+      }, 300);
+      if (tabItem) tabItem.classList.remove('active');
+    }
+  });
+
+  document.getElementById('pageTitle').textContent = pageTitles[tab];
+  currentTab = tab;
+}
+
+function selectCategory(el) {
+  const options = el.parentElement.querySelectorAll('.category-option');
+  options.forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function saveSubscription() {
+  wx.showToast({
+    title: '保存成功',
+    icon: 'success'
+  });
+  setTimeout(() => {
+    switchTab('home');
+  }, 1500);
+}
+</script>
+
+</body>
+</html>

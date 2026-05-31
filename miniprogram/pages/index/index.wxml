@@ -1,0 +1,239 @@
+<!--index.wxml-->
+<view class="container">
+
+  <!-- 1. 顶部云端数据同步控制条 (Microsoft Fluent Status Strip) -->
+  <view class="sync-status-strip {{hasLogin ? 'synced' : 'pending'}}" bindtap="triggerLoginAction">
+    <view class="sync-status-left">
+      <view class="icon icon-sm icon-sync{{hasLogin ? '' : '-gray'}} {{hasLogin ? 'rotating' : ''}}"></view>
+      <text class="sync-status-text">{{hasLogin ? '云端账单同步完成 · 实时已备份' : '本地暂未登录 · 点击一键微信/手机/邮箱登录'}}</text>
+    </view>
+    <view class="sync-status-right">
+      <text class="sync-action-btn">{{hasLogin ? '查看账户' : '登录'}}</text>
+      <view class="icon icon-sm icon-arrow"></view>
+    </view>
+  </view>
+
+  <!-- 2. 网格化数字总览 (Microsoft Metrics Grid) -->
+  <view class="metrics-grid">
+    <view class="metric-cell" bindtap="navigateToStat">
+      <text class="metric-label">本月支出</text>
+      <view class="metric-value-wrap">
+        <text class="metric-currency">¥</text>
+        <text class="metric-value">{{totalMonthlyCost}}</text>
+      </view>
+      <text class="metric-footer">年度预估 ¥{{yearlyEstimate}}</text>
+    </view>
+    
+    <view class="metric-divider-y"></view>
+    
+    <view class="metric-cell-group">
+      <view class="metric-sub-cell" bindtap="navigateToStat">
+        <text class="metric-sub-label">活跃订阅</text>
+        <text class="metric-sub-value">{{totalCount}}</text>
+      </view>
+      <view class="metric-divider-x"></view>
+      <view class="metric-sub-cell" bindtap="navigateToStat">
+        <text class="metric-sub-label">日均消费</text>
+        <text class="metric-sub-value">¥{{dailyCost}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 3. 极平整工具条 (Minimalist Command Bar) -->
+  <view class="command-bar">
+    <view class="command-item" bindtap="navigateToAdd" hover-class="fluent-btn-active">
+      <view class="icon icon-plus"></view>
+      <text class="command-text">添加订阅</text>
+    </view>
+    <view class="command-item" bindtap="navigateToStat" hover-class="fluent-btn-active">
+      <view class="icon icon-stat"></view>
+      <text class="command-text">数据分析</text>
+    </view>
+    <view class="command-item" bindtap="navigateToReminder" hover-class="fluent-btn-active">
+      <view class="icon icon-settings"></view>
+      <text class="command-text">提醒设置</text>
+    </view>
+    <view class="command-item" bindtap="navigateToExport" hover-class="fluent-btn-active">
+      <view class="icon icon-backup"></view>
+      <text class="command-text">账单导出</text>
+    </view>
+  </view>
+
+  <!-- 4. 即将续订日程栏 (Fluent Upcoming Timeline) -->
+  <block wx:if="{{upcomingSubscriptions.length > 0}}">
+    <view class="section-title-wrap">
+      <text class="section-title">临近续订日程</text>
+      <text class="section-badge">{{upcomingSubscriptions.length}} 笔近期</text>
+    </view>
+    
+    <scroll-view class="upcoming-scroll" scroll-x="true" enable-flex="true">
+      <block wx:for="{{upcomingSubscriptions}}" wx:key="_id">
+        <view class="upcoming-strip-card {{item.isUrgent ? 'urgent' : ''}}" bindtap="handleItemClick" data-id="{{item._id}}" data-name="{{item.appName}}">
+          <view class="upcoming-card-top">
+            <view class="app-avatar-circle {{item.isUrgent ? 'urgent-bg' : ''}}">
+              {{item.firstChar}}
+            </view>
+            <view class="upcoming-tag-capsule {{item.isUrgent ? 'urgent' : 'normal'}}">
+              {{item.daysRemainingText}}
+            </view>
+          </view>
+          <view class="upcoming-card-bottom">
+            <text class="upcoming-app-name">{{item.appName}}</text>
+            <text class="upcoming-app-price">{{item.currency}}{{item.priceFixed}} / {{item.cycleCN}}</text>
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+  </block>
+
+  <!-- 5. 列表分类筛选 (Microsoft Lists Column Headers) -->
+  <view class="lists-header-wrap">
+    <view class="section-title-wrap" style="margin-bottom: 0;">
+      <text class="section-title">账单数据总表 (Lists)</text>
+    </view>
+    <view class="filter-capsules">
+      <block wx:for="{{categories}}" wx:key="*this">
+        <view class="filter-chip {{currentCategory === item ? 'active' : ''}}" bindtap="switchCategory" data-category="{{item}}">
+          {{item}}
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 6. Excel/Lists 风格数据总表 -->
+  <view class="lists-wrapper">
+    <!-- 表头 (Column Headers) -->
+    <view class="lists-columns-title">
+      <text class="col-name">订阅服务</text>
+      <text class="col-category">所属分类</text>
+      <text class="col-price">价格周期</text>
+      <text class="col-date">下次扣款</text>
+    </view>
+    
+    <!-- 列表实体 (List Rows) -->
+    <view class="lists-rows">
+      <block wx:for="{{subscriptions}}" wx:key="_id">
+        <view class="list-row-item {{item.isExpired ? 'expired-row' : ''}}" bindtap="handleItemClick" data-id="{{item._id}}" data-name="{{item.appName}}">
+          
+          <view class="col-name cell-flex">
+            <view class="list-char-circle {{item.isExpired ? 'expired-circle' : ''}}">
+              {{item.firstChar}}
+            </view>
+            <view class="list-app-meta">
+              <text class="list-app-title">{{item.appName}}</text>
+              <text class="list-app-sub">{{item.purchaseType === 'sub' ? '自动续订' : '一次买断'}}</text>
+            </view>
+          </view>
+          
+          <view class="col-category">
+            <text class="list-cell-badge">{{item.category || '其他'}}</text>
+          </view>
+          
+          <view class="col-price text-right">
+            <text class="list-price-text">{{item.currency}}{{item.priceFixed}}</text>
+            <text class="list-cycle-text" wx:if="{{item.cycleCN}}">/{{item.cycleCN}}</text>
+          </view>
+          
+          <view class="col-date">
+            <text class="list-date-text {{item.isUrgent && !item.isExpired ? 'urgent-text' : ''}}">{{item.isExpired ? '已失效' : item.formattedNextPayment}}</text>
+          </view>
+          
+        </view>
+      </block>
+    </view>
+
+    <!-- 空数据占位 (Microsoft Empty State) -->
+    <view wx:if="{{subscriptions.length === 0}}" class="lists-empty-state">
+      <view class="empty-icon-box">
+        <view class="icon icon-lg icon-sync-gray"></view>
+      </view>
+      <text class="empty-title">账本尚无记录</text>
+      <text class="empty-subtitle">微软 Fluent 高精度账簿，轻触添加第一笔订阅</text>
+      <button class="fluent-action-btn" bindtap="navigateToAdd" hover-class="fluent-btn-active">
+        <view class="icon icon-plus-white" style="margin-right: 12rpx;"></view>
+        添加新账单
+      </button>
+    </view>
+  </view>
+
+  <!-- 悬浮快捷添加按钮 (FAB) -->
+  <view wx:if="{{subscriptions.length > 0}}" class="fluent-fab" bindtap="navigateToAdd" hover-class="fluent-btn-active">
+    <view class="icon icon-plus-white"></view>
+  </view>
+
+  <!-- ==========================================
+     7. 三合一高保真登录抽屉 (Login Drawer Overlay)
+     ========================================== -->
+  <view class="drawer-overlay" wx:if="{{showLoginDrawer}}" bindtap="closeLoginDrawer">
+    <view class="drawer-panel" catchtap="preventBubble">
+      <view class="drawer-header">
+        <text class="drawer-title">云端账号同步管理</text>
+        <view class="drawer-close-btn" bindtap="closeLoginDrawer">✕</view>
+      </view>
+      
+      <!-- 登录选项卡 Tabs -->
+      <view class="drawer-tabs">
+        <view class="drawer-tab-item {{loginTab === 'wechat' ? 'active' : ''}}" bindtap="switchLoginTab" data-tab="wechat">
+          微信快捷
+        </view>
+        <view class="drawer-tab-item {{loginTab === 'phone' ? 'active' : ''}}" bindtap="switchLoginTab" data-tab="phone">
+          手机号登录
+        </view>
+        <view class="drawer-tab-item {{loginTab === 'email' ? 'active' : ''}}" bindtap="switchLoginTab" data-tab="email">
+          邮箱登录
+        </view>
+      </view>
+
+      <!-- 选项卡 1: 微信快捷登录 -->
+      <view class="tab-content" wx:if="{{loginTab === 'wechat'}}">
+        <view class="wechat-preview-box">
+          <view class="icon icon-lg icon-wechat" style="margin-bottom: 24rpx;"></view>
+          <text class="login-tip">同步后，您的订阅数据可随时在微信云端进行安全备份与自动同步</text>
+        </view>
+        <button class="fluent-login-btn wechat-theme" bindtap="doWechatLogin" hover-class="fluent-btn-active">
+          <view class="icon icon-plus-white" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23FFFFFF\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><path d=\'M17 10c0-3.3-3.6-6-8-6s-8 2.7-8 6c0 1.9 1.2 3.6 3 4.7l-.8 2.5 2.7-1.4c1 .3 2.1.4 3.1.4 4.4 0 8-2.7 8-6zM23 15c0-2.8-2.9-5-6.5-5-.3 0-.6 0-.8.1 2.6 1.8 2.6 4.3 2.6 4.9 0 1.4-.9 2.7-2.3 3.5l.6 1.8 2-1c.8.2 1.6.3 2.4.3 3.6 0 6.5-2.2 6.5-5z\'></path></svg>'); margin-right: 12rpx;"></view>
+          微信账号一键同步
+        </button>
+      </view>
+
+      <!-- 选项卡 2: 手机验证码登录 -->
+      <view class="tab-content" wx:if="{{loginTab === 'phone'}}">
+        <view class="form-slot">
+          <view class="input-row">
+            <view class="icon icon-phone input-icon"></view>
+            <input class="drawer-input" type="number" maxlength="11" placeholder="请输入手机号码" model:value="phoneNum" />
+          </view>
+          <view class="input-row">
+            <view class="icon icon-lock input-icon"></view>
+            <input class="drawer-input" type="number" maxlength="6" placeholder="请输入验证码" model:value="smsCode" />
+            <text class="sms-send-btn {{smsCounting ? 'counting' : ''}}" bindtap="sendSmsCode">{{smsBtnText}}</text>
+          </view>
+        </view>
+        <button class="fluent-login-btn" bindtap="doPhoneLogin" hover-class="fluent-btn-active">
+          验证并同步账号
+        </button>
+      </view>
+
+      <!-- 选项卡 3: 邮箱密码登录 -->
+      <view class="tab-content" wx:if="{{loginTab === 'email'}}">
+        <view class="form-slot">
+          <view class="input-row">
+            <view class="icon icon-mail input-icon"></view>
+            <input class="drawer-input" placeholder="请输入邮箱地址" model:value="emailAddr" />
+          </view>
+          <view class="input-row">
+            <view class="icon icon-lock input-icon"></view>
+            <input class="drawer-input" password="true" placeholder="请输入登录密码" model:value="emailPwd" />
+          </view>
+        </view>
+        <button class="fluent-login-btn" bindtap="doEmailLogin" hover-class="fluent-btn-active">
+          账户密码同步
+        </button>
+      </view>
+
+      <!-- 说明底部 -->
+      <text class="drawer-footer-note">有数记严格遵循用户隐私协议保护您的账单数据安全</text>
+    </view>
+  </view>
+
+</view>
